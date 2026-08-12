@@ -1,0 +1,21 @@
+[
+  {
+    "company_id": "CO-0084",
+    "name": "Tenex",
+    "comp_ids": [
+      "LC-0003"
+    ],
+    "cb_urls": [],
+    "sheet_hq": [
+      "NY"
+    ],
+    "sheet_funding_variants": [
+      {
+        "lr_date": null,
+        "lr_type": null,
+        "lr_amt_M": null,
+        "total_fund_M": null
+      }
+    ]
+  }
+]

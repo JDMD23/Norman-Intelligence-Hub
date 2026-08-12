@@ -1,0 +1,84 @@
+company_id,company,field,sheet_says,found,verdict,primary_source,date_checked
+CO-0090,Warp,Total funding,$24M,$73M,CORRECTED,FinSMEs,2026-08-12
+CO-0090,Warp,Latest round,Series A $18M 2025-06-18,Series B $50M 2023-06-01,CORRECTED,FinSMEs,2026-08-12
+CO-0076,Scale AI,Total funding,"$15,900M","$1,600M",CORRECTED,FinSMEs,2026-08-12
+CO-0076,Scale AI,Latest round,"Late Stage Venture $14,300M 2025-06-01","Series F $1,000M 2024-05-21",CORRECTED,FinSMEs,2026-08-12
+CO-0020,Cloudflare,Total funding,$182M,$332M,CORRECTED,Cloudflare (company press release),2026-08-12
+CO-0069,Privy,Latest round,Series A $18M 2023-11-01,"Venture round (Series B per some trackers), led by Ribbit Capital $15M 2025-03-19",CORRECTED,Fortune,2026-08-12
+CO-0015,Brex,Latest round,Late Stage Venture 2025-01-01,"Acquired by Capital One (announced 2026-01-22, closed 2026-04-07, $5.15B) 2026-04-07",CORRECTED,Capital One (primary),2026-08-12
+CO-0018,Chime,Latest round,Late Stage Venture $750M 2024-08-01,"Public (IPO 2025-06-12, Nasdaq: CHYM) $864M 2025-06-12",CORRECTED,CNBC,2026-08-12
+CO-0034,Figma,Latest round,Series E $200M 2021-06-01,"Public (IPO 2025-07-31) 2025-07-31 [IPO on NYSE, ticker FIG, priced $33/share, ~$1.2B gross raised (majority to selling shareholders)]",CORRECTED,CNBC,2026-08-12
+CO-0037,GlossGenius,Total funding,$72M,$125M,CORRECTED,ACCESS Newswire (company release),2026-08-12
+CO-0037,GlossGenius,Latest round,Series C $28M 2023-07-27,Series D $44M 2026-07-21,CORRECTED,ACCESS Newswire (company release),2026-08-12
+CO-0011,Baseten Labs,Total funding,$585M,"$2,085M",CORRECTED,Business Wire (company release),2026-08-12
+CO-0011,Baseten Labs,Latest round,Late Stage Venture $300M 2026-01-01,"Series F $1,500M 2026-06-22",CORRECTED,Business Wire (company release),2026-08-12
+CO-0021,Cognition,Total funding,$896M,"$1,900M",CORRECTED,TechCrunch,2026-08-12
+CO-0021,Cognition,Latest round,Series C $400M 2025-09-01,"Series D $1,000M 2026-05-27",CORRECTED,TechCrunch,2026-08-12
+CO-0077,Sierra AI,Total funding,$635M,"$1,585M",CORRECTED,TechCrunch,2026-08-12
+CO-0077,Sierra AI,Latest round,Series C $350M 2025-09-01,growth round (reported by some outlets as Series E) $950M 2026-05-04,CORRECTED,TechCrunch,2026-08-12
+CO-0072,Ramp,Total funding,"$2,300M","$3,000M",CORRECTED,TechCrunch,2026-08-12
+CO-0072,Ramp,Latest round,Late Stage Venture $500M 2025-07-01,Series F $750M 2026-06-04,CORRECTED,TechCrunch,2026-08-12
+CO-0027,Cyera,Total funding,"$1,700M","$2,300M",CORRECTED,Business Wire (company release),2026-08-12
+CO-0027,Cyera,Latest round,Late Stage Venture $400M 2025-12-01,Series G $600M 2026-06-10,CORRECTED,Business Wire (company release),2026-08-12
+CO-0091,Whatnot,Total funding,$968M,"$1,520M",CORRECTED,CNBC,2026-08-12
+CO-0091,Whatnot,Latest round,Late Stage Venture $225M 2025-10-01,Series G $545M 2026-08-07,CORRECTED,CNBC,2026-08-12
+CO-0051,Modal Labs,Total funding,$110M,$466M,CORRECTED,FinSMEs,2026-08-12
+CO-0051,Modal Labs,Latest round,Series B $87M 2025-09-01,Series C $355M 2026-05-21,CORRECTED,FinSMEs,2026-08-12
+CO-0001,Abridge,Total funding,$758M,"$1,074M",CORRECTED,TechJack Solutions,2026-08-12
+CO-0001,Abridge,Latest round,Late Stage Venture $300M 2025-06-01,Series E extension $316M 2026-04,CORRECTED,TechJack Solutions,2026-08-12
+CO-0064,Peregrine,Total funding,$220M,$470M,CORRECTED,PR Newswire (company PR),2026-08-12
+CO-0064,Peregrine,Latest round,Series C $190M 2025-03-01,Series D $250M 2026-06-22,CORRECTED,PR Newswire (company PR),2026-08-12
+CO-0045,Kalshi,Total funding,"$2,600M","$2,800M",CORRECTED,Business Wire (company press release),2026-08-12
+CO-0045,Kalshi,Latest round,"Late Stage Venture $1,000M 2025-11-01","Series F $1,000M 2026-05-07",CORRECTED,Business Wire (company press release),2026-08-12
+CO-0085,The Farmer's Dog,Total funding,$430M,$268M,CORRECTED,CB Insights,2026-08-12
+CO-0085,The Farmer's Dog,Latest round,Series C $275M 2022-01-01,Series E $100M 2022-06-08,CORRECTED,CB Insights,2026-08-12
+CO-0074,Rogo,Total funding,$165M,$311M,CORRECTED,Morningstar (PR Newswire),2026-08-12
+CO-0074,Rogo,Latest round,Series C $75M 2026-01-28,Series D $160M 2026-04-29,CORRECTED,Morningstar (PR Newswire),2026-08-12
+CO-0055,NormAI,Total funding,$136M,$260M,CORRECTED,"PR Newswire (company press release, primary)",2026-08-12
+CO-0055,NormAI,Latest round,Private Equity $50M 2025-11-01,Series C $120M 2026-07-07,CORRECTED,"PR Newswire (company press release, primary)",2026-08-12
+CO-0016,Candid Health,HQ city,NY,"San Francisco, CA (315 Montgomery St, 9th Floor; offices also in New York and Denver)",CORRECTED,"Sixth Street (lead investor, primary)",2026-08-12
+CO-0016,Candid Health,Total funding,$100M,$220M,CORRECTED,"Sixth Street (lead investor, primary)",2026-08-12
+CO-0016,Candid Health,Latest round,Series C $52M 2025-02-01,Series D $120M 2026-07-22,CORRECTED,"Sixth Street (lead investor, primary)",2026-08-12
+CO-0036,Garner Health,Total funding,$219M,$319M,CORRECTED,PR Newswire (company release),2026-08-12
+CO-0036,Garner Health,Latest round,Series D $118M 2026-02-01,Series E $100M 2026-05-29,CORRECTED,PR Newswire (company release),2026-08-12
+CO-0057,Nourish,HQ city,Austin,New York City,CORRECTED,Business Wire (company PR),2026-08-12
+CO-0057,Nourish,Total funding,$115M,$215M,CORRECTED,Business Wire (company PR),2026-08-12
+CO-0057,Nourish,Latest round,Series B $70M 2025-04-01,Series C $100M 2026-05-12,CORRECTED,Business Wire (company PR),2026-08-12
+CO-0078,Sigma Computing,Total funding,$632M,$712M,CORRECTED,Sigma Computing (company announcement),2026-08-12
+CO-0078,Sigma Computing,Latest round,Series D $200M 2024-05-01,Series E $80M 2026-05-18,CORRECTED,Sigma Computing (company announcement),2026-08-12
+CO-0052,Moment,Total funding,$56M,$134M,CORRECTED,"GlobeNewswire (company press release, primary)",2026-08-12
+CO-0052,Moment,Latest round,Series B $36M 2025-07-01,Series C $78M 2026-05-19,CORRECTED,"GlobeNewswire (company press release, primary)",2026-08-12
+CO-0056,Notion,Total funding,$418M,$343M,CORRECTED,SiliconANGLE,2026-08-12
+CO-0056,Notion,Latest round,Late Stage Venture $275M 2021-09-01,Series C $275M 2021-10-08,CORRECTED,SiliconANGLE,2026-08-12
+CO-0089,Verkada,Total funding,$814M,$745M,CORRECTED,CNBC,2026-08-12
+CO-0089,Verkada,Latest round,Venture - Series Unknown $20M 2025-12-01,Venture round (Series E extension / unlabeled) $100M 2025-12-03,CORRECTED,CNBC,2026-08-12
+CO-0026,Current Bank,Total funding,$600M,$668M,CORRECTED,PR Newswire (company release),2026-08-12
+CO-0026,Current Bank,Latest round,Late Stage Venture $220M 2022-04-01,Series E $80M 2026-06-11,CORRECTED,PR Newswire (company release),2026-08-12
+CO-0024,Courier Health,Total funding,$20M,$70M,CORRECTED,PR Newswire (company press release),2026-08-12
+CO-0024,Courier Health,Latest round,Series A $16M 2024-07-01,Series B $50M 2026-04-22,CORRECTED,PR Newswire (company press release),2026-08-12
+CO-0047,Legora,Total funding,$816M,$866M,CORRECTED,Legora (company newsroom),2026-08-12
+CO-0047,Legora,Latest round,Series D $550M 2026-03-01,Series D extension $50M 2026-04-30,CORRECTED,Legora (company newsroom),2026-08-12
+CO-0002,Actively AI,Total funding,$22M,$68M,CORRECTED,Business Wire (company release),2026-08-12
+CO-0002,Actively AI,Latest round,Series A $18M 2025-04-01,Series B $45M 2026-04-28,CORRECTED,Business Wire (company release),2026-08-12
+CO-0014,Bluefish AI,Total funding,$24M,$68M,CORRECTED,PR Newswire (company release),2026-08-12
+CO-0014,Bluefish AI,Latest round,Series A $20M 2025-08-01,Series B $43M 2026-04-14,CORRECTED,PR Newswire (company release),2026-08-12
+CO-0035,Fireblocks,Latest round,Late Stage Venture 2024-06-01,Series E $550M 2022-01,CORRECTED,Fireblocks (company press release),2026-08-12
+CO-0070,Radar Labs,Total funding,$103M,$86M,CORRECTED,GlobeNewswire (company release),2026-08-12
+CO-0082,Tempo Labs,HQ city,(blank),"Toronto, Canada",CORRECTED,EIN Presswire (company press release),2026-08-12
+CO-0082,Tempo Labs,Total funding,(blank),$6M,CORRECTED,EIN Presswire (company press release),2026-08-12
+CO-0082,Tempo Labs,Latest round,—,Seed $5M 2025-10-22,CORRECTED,EIN Presswire (company press release),2026-08-12
+CO-0010,Auctor AI,HQ city,SF,"New York, NY",CORRECTED,GlobeNewswire (company release),2026-08-12
+CO-0019,Clay,Latest round,Series C $100M 2025-06-01,Series C $100M 2025-08-05,CORRECTED,Business Wire (company press release),2026-08-12
+CO-0039,Grammarly,Latest round,Late Stage Venture $145M 2024-03-01,Growth equity (latest primary) $200M 2021-11,CORRECTED,Grammarly (company blog),2026-08-12
+CO-0048,Maven Clinic,Latest round,Late Stage Venture $125M 2024-09-01,Series F $125M 2024-10-08,CORRECTED,PR Newswire (company press release),2026-08-12
+CO-0050,Mirage,HQ city,SF,"New York, NY (169 Madison Ave)",CORRECTED,TechCrunch,2026-08-12
+CO-0065,Perplexity,Latest round,Late Stage Venture $200M 2025-09-01,Series E-6 2026-01-09,CORRECTED,Tracxn,2026-08-12
+CO-0067,Polymarket,Latest round,Late Stage Venture $150M 2025-07-01,"Series E $1,000M 2026-04-01",CORRECTED,ICE Investor Relations,2026-08-12
+CO-0080,Synthesia,Latest round,Series E $200M 2025-10-01,Series E $200M 2026-01-26,CORRECTED,Synthesia (company announcement),2026-08-12
+CO-0087,Traversal,Latest round,Series A $5M 2026-03-01,"Series A (led by Kleiner Perkins; part of $48M combined seed + Series A, Sequoia led seed; per-round split not fully disclosed) 2025-06-18",CORRECTED,Fortune via Yahoo Finance,2026-08-12
+CO-0017,Charlie Health,Total funding,$1M,—,DISCLOSURE-ARTIFACT,CB Insights,2026-08-12
+CO-0017,Charlie Health,Latest round,Debt $1M 2020-06-01,Convertible note (seed) $1M 2020-06 [only disclosed event; later capital undisclosed],DISCLOSURE-ARTIFACT,CB Insights,2026-08-12
+CO-0094,One Pay,Total funding,$550M,—,DISCLOSURE-ARTIFACT,Crowdfund Insider,2026-08-12
+CO-0033,Fay Health,HQ city,NY,UNCLEAR - sheet says NY; one search digest characterized Fay as San Francisco-based; could not open a source to adjudicate (news-site fetches blocked by network egress policy),UNVERIFIABLE,Business Wire (company release),2026-08-12
+CO-0046,LangChain,Total funding,$260M,—,UNVERIFIABLE,LangChain (company blog),2026-08-12
+CO-0053,NextDoor,Total funding,$522M,—,UNVERIFIABLE,Nextdoor newsroom (primary),2026-08-12
