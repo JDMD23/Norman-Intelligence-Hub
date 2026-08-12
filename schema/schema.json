@@ -1,0 +1,853 @@
+{
+  "workbook": "Norman AI Intelligence Hub",
+  "version": "V3.0.0",
+  "source": "https://docs.google.com/spreadsheets/d/1qZlc8BUZRObyoeygAToWicor-UFFLmO_aCjk3axBhdE",
+  "contract": "Unknown values stay BLANK, never 0. IDs are immutable and never reused. Input tabs hold no formulas in input columns; calc columns hold no typed values. All cross-tab references go through named ranges. Vocabulary lives in Reference; add new values there first. Every automation appends a Changelog row.",
+  "tabs": {
+    "Lease Comps": {
+      "columns": [
+        {
+          "column": "A",
+          "header": "Comp ID",
+          "key": "comp_id",
+          "type": "id",
+          "role": "input",
+          "required": true,
+          "description": "AUTO-ASSIGNED by onEdit trigger when Tenant is entered (company auto-created if unknown). API writers must supply IDs themselves. Immutable, never reused."
+        },
+        {
+          "column": "B",
+          "header": "Date Signed",
+          "key": "date",
+          "type": "date",
+          "role": "input",
+          "required": true,
+          "description": "Lease execution date."
+        },
+        {
+          "column": "C",
+          "header": "Tenant",
+          "key": "tenant",
+          "type": "text",
+          "role": "input",
+          "required": true,
+          "description": "Tenant display name as signed. Variants map to a company in Reference!VariantMap."
+        },
+        {
+          "column": "D",
+          "header": "Company ID",
+          "key": "company_id",
+          "type": "id",
+          "role": "input",
+          "required": true,
+          "enum_named_range": "CompanyIds",
+          "description": "AUTO-ASSIGNED by onEdit trigger when Tenant is entered (company auto-created if unknown). API writers must supply IDs themselves. Immutable, never reused."
+        },
+        {
+          "column": "E",
+          "header": "Address",
+          "key": "address",
+          "type": "text",
+          "role": "input",
+          "required": true,
+          "description": "Building street address."
+        },
+        {
+          "column": "F",
+          "header": "Submarket",
+          "key": "submarket",
+          "type": "text",
+          "role": "input",
+          "required": true,
+          "enum_named_range": "Submarkets",
+          "description": "Canonical submarket."
+        },
+        {
+          "column": "G",
+          "header": "Building Class",
+          "key": "bclass",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "enum_named_range": "BuildingClasses",
+          "description": "Building class."
+        },
+        {
+          "column": "H",
+          "header": "Floor(s)",
+          "key": "floors",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Floor(s) leased."
+        },
+        {
+          "column": "I",
+          "header": "Condition",
+          "key": "condition",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "enum_named_range": "Conditions",
+          "description": "Space condition at signing."
+        },
+        {
+          "column": "J",
+          "header": "Deal Type",
+          "key": "deal_type",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "enum_named_range": "DealTypes",
+          "description": "Deal structure."
+        },
+        {
+          "column": "K",
+          "header": "Delivery Condition",
+          "key": "delivery",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "enum_named_range": "DeliveryConditions",
+          "description": "Landlord delivery condition."
+        },
+        {
+          "column": "L",
+          "header": "RSF",
+          "key": "rsf",
+          "type": "int",
+          "role": "input",
+          "required": true,
+          "description": "Rentable square feet."
+        },
+        {
+          "column": "M",
+          "header": "Seats",
+          "key": "seats",
+          "type": "int",
+          "role": "input",
+          "required": false,
+          "description": "Seat count / density input. Blank = unknown (never 0)."
+        },
+        {
+          "column": "N",
+          "header": "Term (Years)",
+          "key": "term",
+          "type": "num",
+          "role": "input",
+          "required": true,
+          "description": "Lease term in years. Fractional allowed."
+        },
+        {
+          "column": "O",
+          "header": "Starting Rent ($/RSF)",
+          "key": "start_rent",
+          "type": "rent",
+          "role": "input",
+          "required": true,
+          "description": "Year-1 base rent per RSF."
+        },
+        {
+          "column": "P",
+          "header": "Escalated Rent Yr 6 ($/RSF)",
+          "key": "rent_y6",
+          "type": "rent",
+          "role": "input",
+          "required": false,
+          "description": "Explicit year-6 step rent. Blank = continuous 3% escalation assumed."
+        },
+        {
+          "column": "Q",
+          "header": "Escalated Rent Yr 11 ($/RSF)",
+          "key": "rent_y11",
+          "type": "rent",
+          "role": "input",
+          "required": false,
+          "description": "Explicit year-11 step rent. Blank = continuous 3% escalation assumed."
+        },
+        {
+          "column": "R",
+          "header": "Free Rent (months)",
+          "key": "free_mo",
+          "type": "num",
+          "role": "input",
+          "required": false,
+          "description": "Free rent concession in months."
+        },
+        {
+          "column": "S",
+          "header": "TI $/SF",
+          "key": "ti_psf",
+          "type": "rent",
+          "role": "input",
+          "required": false,
+          "description": "Tenant improvement allowance per SF. Blank = unknown (NER stays blank)."
+        },
+        {
+          "column": "T",
+          "header": "Latest Round Date",
+          "key": "lr_date",
+          "type": "date",
+          "role": "input",
+          "required": false,
+          "description": "Latest known funding round date. Policy (JD 7/28/2026): these funding columns hold CURRENT/latest known funding, refreshed over time -- not frozen at signing."
+        },
+        {
+          "column": "U",
+          "header": "Last Funding Round",
+          "key": "lr_type",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "enum_named_range": "RoundTypes",
+          "description": "Latest known round type."
+        },
+        {
+          "column": "V",
+          "header": "Latest Round Amt ($M)",
+          "key": "lr_amt",
+          "type": "num",
+          "role": "input",
+          "required": false,
+          "description": "Latest known round size in $M. Blank for public cos."
+        },
+        {
+          "column": "W",
+          "header": "Total Funding ($M)",
+          "key": "total_fund",
+          "type": "num",
+          "role": "input",
+          "required": false,
+          "description": "Latest known cumulative funding in $M."
+        },
+        {
+          "column": "X",
+          "header": "Top 5 Investors",
+          "key": "investors",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Top investors, comma-separated."
+        },
+        {
+          "column": "Y",
+          "header": "Crunchbase URL",
+          "key": "cb_url",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Crunchbase profile URL."
+        },
+        {
+          "column": "Z",
+          "header": "Founded Year",
+          "key": "founded",
+          "type": "int",
+          "role": "input",
+          "required": false,
+          "description": "Company founding year."
+        },
+        {
+          "column": "AA",
+          "header": "HQ City",
+          "key": "hq",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Headquarters city."
+        },
+        {
+          "column": "AB",
+          "header": "Notes",
+          "key": "notes",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Free-form deal notes."
+        },
+        {
+          "column": "AC",
+          "header": "Year 1 Rent ($)",
+          "key": "y1_rent",
+          "type": "usd",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(L{r}=\"\",O{r}=\"\"),\"\",L{r}*O{r})",
+          "description": "RSF x Starting Rent."
+        },
+        {
+          "column": "AD",
+          "header": "Year 6 Rent ($)",
+          "key": "y6_rent",
+          "type": "usd",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(L{r}=\"\",P{r}=\"\"),\"\",L{r}*P{r})",
+          "description": "RSF x explicit Yr-6 rent; blank when no explicit step."
+        },
+        {
+          "column": "AE",
+          "header": "Free Rent $ Value",
+          "key": "free_val",
+          "type": "usd",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(R{r}=\"\",O{r}=\"\",L{r}=\"\"),\"\",R{r}/12*O{r}*L{r})",
+          "description": "(Free months / 12) x Starting Rent x RSF."
+        },
+        {
+          "column": "AF",
+          "header": "TI Allowance Total ($)",
+          "key": "ti_total",
+          "type": "usd",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(S{r}=\"\",L{r}=\"\"),\"\",S{r}*L{r})",
+          "description": "TI $/SF x RSF."
+        },
+        {
+          "column": "AG",
+          "header": "Projected Gross Rent (Term)",
+          "key": "pgr",
+          "type": "usd",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR($L{r}=\"\",$N{r}=\"\",$O{r}=\"\"),\"\",LET(rsfv,$L{r},nyr,$N{r},rzero,$O{r},rsix,IF($P{r}=\"\",rzero*1.03^5,$P{r}),relev,IF($Q{r}=\"\",IF($P{r}=\"\",rzero*1.03^10,$P{r}*1.03^5),$Q{r}),grw,0.03,trA,MIN(nyr,5),trB,MIN(MAX(nyr-5,0),5),trC,MAX(nyr-10,0),rsfv*(rzero*(((1+grw)^trA-1)/grw)+rsix*(((1+grw)^trB-1)/grw)+relev*(((1+grw)^trC-1)/grw))))",
+          "description": "Three-tranche rent total with 3% annual escalation inside each tranche. Tranche rates: Starting / Yr-6 / Yr-11 (blank steps fall back to continuous 3%)."
+        },
+        {
+          "column": "AH",
+          "header": "Avg Rate ($/RSF/Yr)",
+          "key": "avg_rate",
+          "type": "rent",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(AG{r}=\"\",L{r}=\"\",N{r}=\"\"),\"\",AG{r}/L{r}/N{r})",
+          "description": "Projected Gross Rent / RSF / Term."
+        },
+        {
+          "column": "AI",
+          "header": "NER Annuity ($/RSF/Yr) @ 6%",
+          "key": "ner",
+          "type": "rent",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR($L{r}=\"\",$N{r}=\"\",$O{r}=\"\",$S{r}=\"\"),\"\",LET(nyr,$N{r},rzero,$O{r},rsix,IF($P{r}=\"\",rzero*1.03^5,$P{r}),relev,IF($Q{r}=\"\",IF($P{r}=\"\",rzero*1.03^10,$P{r}*1.03^5),$Q{r}),freem,IF($R{r}=\"\",0,$R{r}),tiv,$S{r},disc,0.06,grw,0.03,yrs,SEQUENCE(ROUNDUP(nyr)),pvrent,SUM(MAP(yrs,LAMBDA(kk,LET(wt,MIN(1,nyr-(kk-1)),rt,IF(kk<=5,rzero*(1+grw)^(kk-1),IF(kk<=10,rsix*(1+grw)^(kk-6),relev*(1+grw)^(kk-11))),wt*rt/(1+disc)^kk)))),anf,(1-(1+disc)^-nyr)/disc,(pvrent-freem/12*rzero-tiv)/anf))",
+          "description": "DCF net effective rent: yearly escalated rents discounted at 6%, minus free rent + TI (upfront), levelized by annuity factor, per SF. Blank when TI unknown."
+        },
+        {
+          "column": "AJ",
+          "header": "Cost/Seat (Year 1)",
+          "key": "cost_seat",
+          "type": "usd",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(AC{r}=\"\",M{r}=\"\",M{r}=0),\"\",AC{r}/M{r})",
+          "description": "Year 1 Rent / Seats. Blank until Seats entered."
+        },
+        {
+          "column": "AK",
+          "header": "RSF / Seat",
+          "key": "rsf_seat",
+          "type": "num1",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(L{r}=\"\",M{r}=\"\",M{r}=0),\"\",L{r}/M{r})",
+          "description": "Density: RSF / Seats. Blank until Seats entered."
+        },
+        {
+          "column": "AL",
+          "header": "Rent-to-Raise (Yr 1) %",
+          "key": "rent_raise",
+          "type": "pct",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(AC{r}=\"\",V{r}=\"\"),\"\",AC{r}/(V{r}*1000000))",
+          "description": "Year 1 Rent / latest round ($M->$)."
+        },
+        {
+          "column": "AM",
+          "header": "Lease-to-Latest-Round %",
+          "key": "l2lr",
+          "type": "pct",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(AG{r}=\"\",V{r}=\"\"),\"\",AG{r}/(V{r}*1000000))",
+          "description": "Projected Gross Rent / latest round."
+        },
+        {
+          "column": "AN",
+          "header": "Lease-to-Total-Funding %",
+          "key": "l2tf",
+          "type": "pct",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(AG{r}=\"\",W{r}=\"\"),\"\",AG{r}/(W{r}*1000000))",
+          "description": "Projected Gross Rent / total funding."
+        },
+        {
+          "column": "AO",
+          "header": "Year 1 Rent / Total Funding %",
+          "key": "y12tf",
+          "type": "pct",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(AC{r}=\"\",W{r}=\"\"),\"\",AC{r}/(W{r}*1000000))",
+          "description": "Year 1 Rent / total funding."
+        },
+        {
+          "column": "AP",
+          "header": "Months of Rent Covered",
+          "key": "mo_cover",
+          "type": "num1",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(W{r}=\"\",AC{r}=\"\",AC{r}=0),\"\",(W{r}*1000000)/(AC{r}/12))",
+          "description": "Total funding / monthly Year-1 rent."
+        },
+        {
+          "column": "AQ",
+          "header": "NER Term Cost / Latest Round %",
+          "key": "nertc",
+          "type": "pct",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(AI{r}=\"\",L{r}=\"\",N{r}=\"\",V{r}=\"\"),\"\",AI{r}*L{r}*N{r}/(V{r}*1000000))",
+          "description": "NER x RSF x Term / latest round."
+        },
+        {
+          "column": "AR",
+          "header": "Tenant Tenure at Signing",
+          "key": "tenure",
+          "type": "int",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(B{r}=\"\",Z{r}=\"\"),\"\",YEAR(B{r})-Z{r})",
+          "description": "YEAR(signed) - founded year."
+        },
+        {
+          "column": "AS",
+          "header": "Record Status",
+          "key": "status",
+          "type": "text",
+          "role": "qa",
+          "required": false,
+          "formula_pattern": "=IF(C{r}=\"\",\"\",IF(OR(A{r}=\"\",L{r}=\"\",N{r}=\"\",O{r}=\"\",B{r}=\"\",F{r}=\"\"),\"MISSING INPUTS\",IF(OR(M{r}=\"\",S{r}=\"\"),\"NEEDS REVIEW\",\"READY\")))",
+          "description": "READY / NEEDS REVIEW / MISSING INPUTS -- computed, never typed."
+        },
+        {
+          "column": "AT",
+          "header": "QA Notes",
+          "key": "qa",
+          "type": "text",
+          "role": "qa",
+          "required": false,
+          "formula_pattern": "=IF(C{r}=\"\",\"\",TEXTJOIN(\"; \",TRUE,IF(A{r}=\"\",\"MISSING COMP ID\",\"\"),IF(L{r}=\"\",\"MISSING RSF\",\"\"),IF(N{r}=\"\",\"MISSING TERM\",\"\"),IF(O{r}=\"\",\"MISSING STARTING RENT\",\"\"),IF(B{r}=\"\",\"MISSING DATE\",\"\"),IF(F{r}=\"\",\"MISSING SUBMARKET\",\"\"),IF(M{r}=\"\",\"SEATS UNKNOWN\",\"\"),IF(S{r}=\"\",\"TI UNKNOWN -- NER BLANK\",\"\")))",
+          "description": "Auto list of missing fields."
+        }
+      ]
+    },
+    "Companies": {
+      "columns": [
+        {
+          "column": "A",
+          "header": "Company ID",
+          "key": "company_id",
+          "type": "id",
+          "role": "input",
+          "required": true,
+          "description": "AUTO-ASSIGNED by onEdit trigger when Canonical Name is entered. Immutable, never reused. FK target for Lease Comps + Funding Rounds."
+        },
+        {
+          "column": "B",
+          "header": "Canonical Name",
+          "key": "name",
+          "type": "text",
+          "role": "input",
+          "required": true,
+          "description": "One row per real company. Tenant-name variants map here via Reference!VariantMap."
+        },
+        {
+          "column": "C",
+          "header": "Crunchbase URL",
+          "key": "cb_url",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Verified Crunchbase profile."
+        },
+        {
+          "column": "D",
+          "header": "Website",
+          "key": "website",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Company website."
+        },
+        {
+          "column": "E",
+          "header": "Industry",
+          "key": "industry",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Industry label."
+        },
+        {
+          "column": "F",
+          "header": "Founded Year",
+          "key": "founded",
+          "type": "int",
+          "role": "input",
+          "required": false,
+          "description": "Founding year."
+        },
+        {
+          "column": "G",
+          "header": "HQ City",
+          "key": "hq",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Headquarters city."
+        },
+        {
+          "column": "H",
+          "header": "Funding History (text)",
+          "key": "fund_hist",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Narrative funding history (research output)."
+        },
+        {
+          "column": "I",
+          "header": "Funding Velocity Detail",
+          "key": "velocity",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Narrative velocity summary (research output)."
+        },
+        {
+          "column": "J",
+          "header": "Funding Accel/Decel Note",
+          "key": "accel",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Acceleration/deceleration read."
+        },
+        {
+          "column": "K",
+          "header": "Sources",
+          "key": "sources",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Research source list."
+        },
+        {
+          "column": "L",
+          "header": "Notes",
+          "key": "notes",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Identity caveats (e.g. Mirage<->Captions), review flags."
+        }
+      ]
+    },
+    "Funding Rounds": {
+      "columns": [
+        {
+          "column": "A",
+          "header": "Round ID",
+          "key": "round_id",
+          "type": "id",
+          "role": "input",
+          "required": true,
+          "description": "AUTO-ASSIGNED by onEdit trigger when row data is entered. API writers must supply IDs. Immutable, never reused."
+        },
+        {
+          "column": "B",
+          "header": "Company ID",
+          "key": "company_id",
+          "type": "id",
+          "role": "input",
+          "required": true,
+          "enum_named_range": "CompanyIds",
+          "description": "FK to Companies."
+        },
+        {
+          "column": "C",
+          "header": "Company",
+          "key": "company",
+          "type": "text",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(B{r}=\"\",\"\",IFERROR(INDEX(Companies!B:B,MATCH(B{r},Companies!A:A,0)),\"UNKNOWN ID\"))",
+          "description": "Looked up from Companies by ID."
+        },
+        {
+          "column": "D",
+          "header": "Round Number",
+          "key": "round_no",
+          "type": "int",
+          "role": "input",
+          "required": false,
+          "description": "Sequence number within company."
+        },
+        {
+          "column": "E",
+          "header": "Round Type",
+          "key": "round_type",
+          "type": "text",
+          "role": "input",
+          "required": true,
+          "enum_named_range": "RoundTypes",
+          "description": "Round type."
+        },
+        {
+          "column": "F",
+          "header": "Round Date",
+          "key": "date",
+          "type": "date",
+          "role": "input",
+          "required": true,
+          "description": "Round announcement date."
+        },
+        {
+          "column": "G",
+          "header": "Round Amount ($M)",
+          "key": "amount",
+          "type": "num",
+          "role": "input",
+          "required": false,
+          "description": "Round size in $M."
+        },
+        {
+          "column": "H",
+          "header": "Lead Investors",
+          "key": "investors",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Lead investors."
+        },
+        {
+          "column": "I",
+          "header": "Cumulative After Round ($M)",
+          "key": "cumulative",
+          "type": "num",
+          "role": "input",
+          "required": false,
+          "description": "Reported cumulative funding (may include undisclosed prior base). QA cross-checks vs running sum."
+        },
+        {
+          "column": "J",
+          "header": "Months Since Prior Round",
+          "key": "mo_prior",
+          "type": "int",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(B{r}=\"\",F{r}=\"\"),\"\",LET(pd,MAXIFS(F$2:F$3000,B$2:B${MAX},B{r},F$2:F${MAX},\"<\"&F{r}),IF(pd=0,\"\",DATEDIF(pd,F{r},\"M\"))))",
+          "description": "Computed from previous round of same company."
+        },
+        {
+          "column": "K",
+          "header": "Source",
+          "key": "source",
+          "type": "text",
+          "role": "input",
+          "required": true,
+          "description": "Source name."
+        },
+        {
+          "column": "L",
+          "header": "Source URL",
+          "key": "source_url",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Source link."
+        },
+        {
+          "column": "M",
+          "header": "Confidence",
+          "key": "confidence",
+          "type": "text",
+          "role": "input",
+          "required": true,
+          "enum_named_range": "ConfidenceLevels",
+          "description": "HIGH / MEDIUM / LOW / REVIEW."
+        },
+        {
+          "column": "N",
+          "header": "Notes",
+          "key": "notes",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Disclosed prior-base notes, dedupe decisions, intentional-duplicate markers."
+        }
+      ]
+    },
+    "Company Metrics": {
+      "columns": [
+        {
+          "column": "A",
+          "header": "Company ID",
+          "key": "company_id",
+          "type": "id",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(Companies!A{r}=\"\",\"\",Companies!A{r})",
+          "description": "Mirror of Companies!A."
+        },
+        {
+          "column": "B",
+          "header": "Company",
+          "key": "name",
+          "type": "text",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(Companies!A{r}=\"\",\"\",Companies!B{r})",
+          "description": "Mirror of Companies!B."
+        },
+        {
+          "column": "C",
+          "header": "Signed Lease Count",
+          "key": "comps",
+          "type": "int",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(A{r}=\"\",\"\",COUNTIF(LeaseComps_CompanyIds,A{r}))",
+          "description": "Count of lease comps for this company."
+        },
+        {
+          "column": "D",
+          "header": "Latest Signed Lease",
+          "key": "latest_lease",
+          "type": "date",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",C{r}=0),\"\",MAXIFS(LeaseComps_Dates,LeaseComps_CompanyIds,A{r}))",
+          "description": "Most recent signing date."
+        },
+        {
+          "column": "E",
+          "header": "Avg RSF",
+          "key": "avg_rsf",
+          "type": "num1",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",C{r}=0),\"\",AVERAGEIFS(LeaseComps_RSF,LeaseComps_CompanyIds,A{r}))",
+          "description": "Average comp RSF."
+        },
+        {
+          "column": "F",
+          "header": "Avg Starting Rent",
+          "key": "avg_rent",
+          "type": "rent",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",C{r}=0),\"\",AVERAGEIFS(LeaseComps_StartRent,LeaseComps_CompanyIds,A{r}))",
+          "description": "Average starting rent."
+        },
+        {
+          "column": "G",
+          "header": "Avg NER",
+          "key": "avg_ner",
+          "type": "rent",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",C{r}=0),\"\",IFERROR(AVERAGE(FILTER(LeaseComps_NER,LeaseComps_CompanyIds=A{r},LeaseComps_NER<>\"\")),\"\"))",
+          "description": "Average NER (blank-safe)."
+        },
+        {
+          "column": "H",
+          "header": "Avg Cost/Seat",
+          "key": "avg_seat",
+          "type": "usd",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",C{r}=0),\"\",IFERROR(AVERAGE(FILTER(LeaseComps_CostSeat,LeaseComps_CompanyIds=A{r},LeaseComps_CostSeat<>\"\")),\"\"))",
+          "description": "Average Year-1 cost per seat."
+        },
+        {
+          "column": "I",
+          "header": "Avg Term",
+          "key": "avg_term",
+          "type": "num1",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",C{r}=0),\"\",AVERAGEIFS(LeaseComps_Terms,LeaseComps_CompanyIds,A{r}))",
+          "description": "Average lease term."
+        },
+        {
+          "column": "J",
+          "header": "Funding Rounds Tracked",
+          "key": "rounds",
+          "type": "int",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(A{r}=\"\",\"\",COUNTIF(FundingRounds_CompanyIds,A{r}))",
+          "description": "Rows in Funding Rounds."
+        },
+        {
+          "column": "K",
+          "header": "Last Round Date",
+          "key": "last_rd_date",
+          "type": "date",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",J{r}=0),\"\",MAXIFS(FundingRounds_Dates,FundingRounds_CompanyIds,A{r}))",
+          "description": "Most recent tracked round."
+        },
+        {
+          "column": "L",
+          "header": "Last Round Type",
+          "key": "last_rd_type",
+          "type": "text",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",J{r}=0),\"\",IFERROR(INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Types},FundingRounds_CompanyIds=A{r}),1,FALSE),1,2),\"\"))",
+          "description": "Type of most recent round."
+        },
+        {
+          "column": "M",
+          "header": "Tracked Total Raised ($M)",
+          "key": "tracked_total",
+          "type": "num",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",J{r}=0),\"\",SUMIFS(FundingRounds_Amounts,FundingRounds_CompanyIds,A{r}))",
+          "description": "Sum of tracked round amounts."
+        },
+        {
+          "column": "N",
+          "header": "Avg Months Between Rounds",
+          "key": "avg_cadence",
+          "type": "num1",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR(A{r}=\"\",J{r}<2),\"\",IFERROR(AVERAGE(FILTER(FundingRounds_MoPrior,FundingRounds_CompanyIds=A{r},FundingRounds_MoPrior<>\"\")),\"\"))",
+          "description": "Average of computed inter-round gaps."
+        },
+        {
+          "column": "O",
+          "header": "Benchmark Band",
+          "key": "benchmark",
+          "type": "text",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(A{r}=\"\",\"\",IF(C{r}=0,\"NO SIGNED COMP\",IF(OR(L{r}=\"Series A\",L{r}=\"Series B\",L{r}=\"Series C\",L{r}=\"Series D\"),L{r},IF(N(M{r})>=1000,\"LATE STAGE / SCALED\",IF(N(E{r})>=50000,\"LARGE FOOTPRINT\",\"MARKET COMP\")))))",
+          "description": "Cohort label for benchmarking."
+        }
+      ]
+    }
+  },
+  "version_note": "V3.0.0 -- built from V2 1L8H4pwnpZI-Tijr5EkdAG-a3x33bJq1WWSabtoKa13o"
+}

@@ -1,0 +1,76 @@
+{
+  "vocabularies": {
+    "Submarkets": [
+      "Chelsea",
+      "Chelsea/Meatpacking",
+      "Financial District",
+      "Flatiron",
+      "Grand Central",
+      "Hudson Square",
+      "Hudson Yards / Penn Station",
+      "Meatpacking",
+      "Midtown",
+      "NoMad",
+      "PAS / Mad. Square Park",
+      "Penn Station",
+      "SoHo",
+      "Soho/Noho",
+      "Union Square",
+      "World Trade Center"
+    ],
+    "BuildingClasses": [
+      "Trophy",
+      "Glass & Steel",
+      "Class A",
+      "Class B",
+      "Commodity"
+    ],
+    "DealTypes": [
+      "Expansion",
+      "Extension/Expansion",
+      "New Lease",
+      "Renewal",
+      "Renewal + Expansion",
+      "Sublease"
+    ],
+    "Conditions": [
+      "Raw",
+      "New prebuilt",
+      "Second Gen"
+    ],
+    "DeliveryConditions": [
+      "LL Turnkey",
+      "As-Is",
+      "Custom TIA"
+    ],
+    "RoundTypes": [
+      "Debt",
+      "IPO",
+      "Late Stage Venture",
+      "Private Equity",
+      "Public Listing / Reverse Merger",
+      "Seed",
+      "Series A",
+      "Series B",
+      "Series C",
+      "Series D",
+      "Series E",
+      "Series F",
+      "Venture - Series Unknown"
+    ],
+    "ConfidenceLevels": [
+      "HIGH",
+      "MEDIUM",
+      "LOW",
+      "REVIEW"
+    ],
+    "RecordStatuses": [
+      "READY",
+      "NEEDS REVIEW",
+      "MISSING INPUTS"
+    ]
+  },
+  "tenant_variant_map": {
+    "HARVEY AI (E6)": "HARVEY AI"
+  }
+}
