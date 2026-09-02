@@ -57,7 +57,12 @@ for c1, c2, color in [('A', 'U', '#FFFFFF'), ('AB', 'AB', '#FFFFFF'),
         'backgroundColor': hx(color)}}, 'fields': 'userEnteredFormat.backgroundColor'}})
 
 # --- number formats
-FMT = {('B', 'B'): ('DATE', 'yyyy-mm-dd'), ('U', 'V'): ('DATE', 'yyyy-mm-dd'),
+# Date Signed and Latest Round Date show as "July 2026": every Date Signed lands on
+# the 1st (the day was always a placeholder) and ~half the wired round dates are
+# month-level backfills, so month precision is what the data actually supports.
+# Verified Date keeps day precision — it is an operational audit date you set.
+FMT = {('B', 'B'): ('DATE', 'mmmm yyyy'), ('V', 'V'): ('DATE', 'mmmm yyyy'),
+       ('U', 'U'): ('DATE', 'yyyy-mm-dd'),
        ('L', 'M'): ('NUMBER', '#,##0'), ('N', 'N'): ('NUMBER', '0.0'),
        ('O', 'Q'): ('CURRENCY', '$#,##0.00'), ('R', 'R'): ('NUMBER', '0.0'),
        ('S', 'S'): ('CURRENCY', '$#,##0'), ('X', 'Y'): ('NUMBER', '#,##0.0'),
