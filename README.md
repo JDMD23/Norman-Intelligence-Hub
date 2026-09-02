@@ -29,6 +29,13 @@ schema/
 docs/
   DATA_DICTIONARY.md   Human-readable data dictionary (generated from schema.json)
   QA_CHECKS.md         Catalog of the workbook's QA health checks
+  LEASE_COMPS_DESIGN.md  Lease Comps v4 tab design + as-built layout
+  NER_MODEL.md         Baseline NER model (reference implementation in scripts/ner.py)
+scripts/
+  ner.py             Python reference for the workbook's NER formula
+tools/sheet_ops/     Receipted, QA-gated workbook operations (Sheets API; needs GOOGLE_SA_KEY)
+  run_all.py         Lease Comps v4 migration pipeline (re-runnable)
+  sync_schema.py     Pull _Schema + Reference into schema/ and regenerate the data dictionary
 CLAUDE.md          Contract for AI agents working on the hub
 ```
 
@@ -39,7 +46,7 @@ CLAUDE.md          Contract for AI agents working on the hub
 3. **Unknown = blank** — never type `0` for an unknown value. Blank propagates correctly; `0` corrupts averages. (A confirmed-zero TI on an as-is deal is the one legitimate `0`.)
 4. **IDs are immutable** — `LC-####` / `CO-####` / `FR-####` are auto-assigned in the sheet by onEdit triggers and never reused. Agents writing via API must assign IDs themselves per `_Schema`.
 5. **Controlled vocabulary** — dropdown fields are fed from the Reference tab. New submarket/class/type? Add it in Reference first.
-6. **Computed status** — every record's status (`READY` / `NEEDS REVIEW` / `MISSING INPUTS`) is a formula, never static text.
+6. **Computed status** — every record's status (`READY` / `NEEDS REVIEW` / `MISSING INPUTS` / `STALE - REVERIFY`) is a formula, never static text.
 7. **Receipts** — every automation appends a Changelog row: timestamp, actor, action, detail.
 
 ## For agents

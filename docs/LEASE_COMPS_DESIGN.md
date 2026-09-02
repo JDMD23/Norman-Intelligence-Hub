@@ -49,3 +49,38 @@ never creates confusion or questions; not overdone.
 
 Constraint: onEdit auto-ID triggers (Apps Script, not reachable from this environment) reference Zones 1–3
 column positions — those zones keep today's column order exactly; only columns T+ restructure.
+
+## As built (2026-09-02)
+
+Executed by `tools/sheet_ops/run_all.py`; receipts in Changelog (STRUCTURE MIGRATION, FORMULA PATCH,
+FUNDING ROUNDS BACKFILL, MIGRATION VERIFIED, STYLE, SCHEMA UPDATE, DASHBOARD LAYOUT). QA 19/19 PASS.
+Pre-migration copy: tab `LC_BACKUP_2026-09-02` (delete once the v4 tab has been used in anger).
+
+Final column map (41 columns; Zones 1–3 unchanged so the onEdit auto-ID triggers keep working):
+
+| Cols | Zone | Fields |
+| --- | --- | --- |
+| A–D | Identity (input) | Comp ID, Date Signed, Tenant, Company ID |
+| E–K | Premises (input) | Address, Submarket, Building Class, Floor(s), Condition, Deal Type, Delivery Condition |
+| L–U | Deal terms (input) | RSF, Seats, Term, Rent P1 / P2 / P3, Free Rent, TI $/SF, Comp Source, Verified Date |
+| V–AA | Company wire (calc) | Latest Round Date, Latest Round Type, Latest Round Amt, Total Tracked Funding, Company (canonical), HQ City |
+| AB | Notes (input) | Free-form deal notes |
+| AC–AJ | Economics (calc) | Year 1 Rent, Free Rent $, TI Total, Projected Gross (flat tranches), Avg Rate, NER, Cost/Seat, RSF/Seat |
+| AK–AM | Ratios (calc) | Rent-to-Raise, Lease-to-Total-Funding, Months of Rent Covered |
+| AN–AO | Governance (qa) | Record Status, QA Notes |
+
+Wire semantics: Latest Round = most recent row in Funding Rounds for the company; Total Tracked Funding =
+Company Metrics tracked sum, blank (never 0) when tracked rounds carry no amounts. Total Tracked is a
+*receipts* number, not the researched narrative total that used to be typed — expect it to be lower
+wherever early rounds are not yet tracked (41 companies at cut-over).
+
+Backfill: 39 audited latest rounds that Funding Rounds lacked were added as FR-0246..FR-0284 with
+month-level dates (day recorded as the 1st, flagged in Notes) so the wire reproduces the audit.
+
+Open REVIEW items for the owner (not auto-fixed):
+
+- LC-0001 (CO-0001): Funding Rounds has Seed $5M in the same month the audit recorded Series A $15M.
+- LC-0012 / LC-0083 (CO-0080): same Series E $200M round dated 2025-10 in Funding Rounds vs 2026-01 in the audit.
+- Funding Rounds round types outside the Reference `RoundTypes` vocabulary (e.g. "Growth", "Direct Listing",
+  "Series B / Strategic", "Common Stock Financing", "Series E-2") now surface on the Dashboard stage table.
+  Either add them to Reference or normalise the rows.

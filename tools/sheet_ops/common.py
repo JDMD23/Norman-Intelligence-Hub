@@ -86,3 +86,19 @@ def qa_status(s):
     summary = next((r for r in rows if r and r[0] == 'SUMMARY'), None)
     fails = [r for r in rows if len(r) > 5 and r[5] not in ('PASS', 'INFO', 'Status', '')]
     return summary, fails
+
+
+def typed_rows(s, a1_range):
+    """1-based row numbers in a1_range that hold user-entered content (formulas or typed
+    values). Cells filled by a spilled array formula have no userEnteredValue, so this is
+    the right test for 'where does the next block of the sheet start'."""
+    r = s.get(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}',
+              params={'ranges': a1_range, 'includeGridData': 'true',
+                      'fields': 'sheets.data(startRow,rowData.values.userEnteredValue)'}).json()
+    out = set()
+    for block in r['sheets'][0].get('data', []):
+        start = block.get('startRow', 0)
+        for i, row in enumerate(block.get('rowData', [])):
+            if any('userEnteredValue' in c for c in row.get('values', [])):
+                out.add(start + i + 1)
+    return out
