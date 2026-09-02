@@ -25,7 +25,7 @@ never creates confusion or questions; not overdone.
 | 4 Company wire | V–AA | calc | Canonical Company, HQ, Last Round Type, Last Round Date, Last Round Amt ($M), Total Tracked Funding ($M) — INDEX/MATCH via named ranges from Companies + Company Metrics |
 | 5 Economics | AB–AI | calc | Year-1 Rent $, Free Rent Value, TI Total, Projected Gross (flat tranches), Avg Rate, NER (baseline, docs/NER_MODEL.md), Cost/Seat, RSF/Seat |
 | 6 Ratios | AJ–AL | calc | Rent-to-Raise (Yr 1), Lease-to-Total-Funding, Months of Rent Covered. (Trimmed from 6: lease-to-latest-round, Yr1-to-total-funding, NER-term-cost/latest-round dropped as unread permutations.) |
-| 7 Governance | AM–AN | qa | Record Status (READY / NEEDS REVIEW / MISSING INPUTS + new `STALE — REVERIFY` when Verified Date > 6 months old), QA Notes |
+| 7 Governance | AN–AO | qa | Record Status (READY / NEEDS REVIEW / MISSING INPUTS + new `STALE — REVERIFY` when Verified Date > 6 months old), QA Notes |
 
 ~41 columns (from 46): 10 typed columns removed (8 funding + CB URL + HQ), 2 added (Comp Source, Verified Date).
 
@@ -87,3 +87,25 @@ Open REVIEW items for the owner (not auto-fixed):
 - Off-vocabulary round types: "Growth", "Direct Listing", "Series B / Strategic", "Common Stock Financing"
   RESOLVED 2026-09-02 via apply_judgments.py (normalised to Reference RoundTypes, originals kept in Notes).
   Still off-vocabulary: "Series E-2", "Debt / Venture Unknown".
+
+## Benchmark cohorts (added 2026-09-02)
+
+Column **AP `Benchmark Cohort`** (calc) maps the wired round type through
+`Reference!CohortTypes` → `CohortLabels`, and the Dashboard groups on it. Thin stages are
+merged so each cohort has enough n to mean something:
+
+| Cohort | Source round types | n |
+| --- | --- | --- |
+| Seed / Series A / Series B / Series C | themselves | 1 / 11 / 25 / 11 |
+| **Late Stage (D+)** | Series D, E, F, G, Late Stage Venture, Private Equity | **40** |
+| Public | IPO, Public Listing / Reverse Merger | 7 |
+| Debt | Debt — a financing type, not a stage; deliberately not merged | 2 |
+| Stage Unknown | Venture - Series Unknown, plus anything unmapped | 5 |
+| No Funding Data | comps whose company has no tracked rounds | 1 |
+
+Add new round types to the Reference map, never to the formula. Display order is
+`Reference!CohortOrder`.
+
+**The Dashboard shows median RSF next to average.** RSF is right-skewed in every cohort
+(Series C averages 41,108 but medians 26,427), which is what made Series D read as a dip
+below Series C. Rent and NER are per-SF rates and far less skewed, so mean is fine there.

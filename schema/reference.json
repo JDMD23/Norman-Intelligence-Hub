@@ -77,6 +77,49 @@
       "Broker Intel",
       "Press",
       "Direct/Landlord"
+    ],
+    "CohortTypes": [
+      "Seed",
+      "Series A",
+      "Series B",
+      "Series C",
+      "Series D",
+      "Series E",
+      "Series F",
+      "Series G",
+      "Late Stage Venture",
+      "Private Equity",
+      "IPO",
+      "Public Listing / Reverse Merger",
+      "Debt",
+      "Venture - Series Unknown"
+    ],
+    "CohortLabels": [
+      "Seed",
+      "Series A",
+      "Series B",
+      "Series C",
+      "Late Stage (D+)",
+      "Late Stage (D+)",
+      "Late Stage (D+)",
+      "Late Stage (D+)",
+      "Late Stage (D+)",
+      "Late Stage (D+)",
+      "Public",
+      "Public",
+      "Debt",
+      "Stage Unknown"
+    ],
+    "CohortOrder": [
+      "Seed",
+      "Series A",
+      "Series B",
+      "Series C",
+      "Late Stage (D+)",
+      "Public",
+      "Debt",
+      "Stage Unknown",
+      "No Funding Data"
     ]
   },
   "tenant_variant_map": {

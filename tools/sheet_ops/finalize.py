@@ -1,5 +1,5 @@
 """Finalize Lease Comps v4: rewrite the _Schema block to match the new layout, make sure
-the Dashboard stage table has room for the wired round-type vocabulary, then gate on QA
+verify the Dashboard benchmark table is the cohort-driven one, then gate on QA
 (exit non-zero unless every check is PASS). Run after migrate_structure.py and verify_wire.py."""
 import re
 import sys
@@ -62,9 +62,10 @@ SPEC = [
     ('AM', 'Months of Rent Covered', 'mo_cover', 'num1', 'calc', 'no', '', '=IF(OR($Y{r}="",$AC{r}="",$AC{r}=0),"",($Y{r}*1000000)/($AC{r}/12))', 'Total tracked funding / monthly Year-1 rent.'),
     ('AN', 'Record Status', 'status', 'text', 'qa', 'no', 'RecordStatuses', '=IF($C{r}="","",IF(OR($A{r}="",$L{r}="",$N{r}="",$O{r}="",$B{r}="",$F{r}=""),"MISSING INPUTS",IF(OR($M{r}="",$S{r}=""),"NEEDS REVIEW",IF(AND($U{r}<>"",$U{r}<TODAY()-180),"STALE - REVERIFY","READY"))))', 'READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed.'),
     ('AO', 'QA Notes', 'qa', 'text', 'qa', 'no', '', '(auto list incl. staleness)', 'Auto list of missing fields + staleness flag.'),
+    ('AP', 'Benchmark Cohort', 'cohort', 'text', 'calc', 'no', '', '=IF($C{r}="","",IF($W{r}="","No Funding Data",IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),"Stage Unknown")))', f'Benchmark cohort used to group the Dashboard table {W} -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here.'),
 ]
 new_rows = [['Lease Comps'] + list(x) for x in SPEC]
-assert len(new_rows) == 41
+assert len(new_rows) == 42
 
 # overwrite block (only if it differs), then delete surplus rows
 current = [[str(c) for c in r] + [''] * (10 - len(r)) for r in rows[start:end]]
@@ -82,41 +83,19 @@ else:
             'startIndex': start + len(new_rows), 'endIndex': start + old_n}}}])
     print(f'_Schema rewritten: {len(new_rows)} entries (removed {max(surplus,0)} surplus rows)')
     changelog(s, 'SCHEMA UPDATE', 'Rewrote _Schema Lease Comps block for v4 layout '
-              '(41 columns: zones identity/premises/deal-terms/wired/economics/governance).', 41)
+              '(42 columns: zones identity/premises/deal-terms/wired/economics/governance/cohort).', 42)
 
-# --- Dashboard: the "benchmarks by last funding round" table. Column A spills one row per
-#     distinct round type wired from Funding Rounds; columns B..G carry a per-row formula.
-#     Keep STAGE_ROOM table rows (spill room) and make sure every row has the B..G formulas.
-STAGE_ROOM = 30
-d = [r[0] if r else '' for r in get_values(s, "'Dashboard'!A1:A300", render='FORMATTED_VALUE')]
-hdr_row = d.index('Stage') + 1                                        # 1-based header row
-anchor = hdr_row + 1                                                  # spill anchor row
-typed_a = typed_rows(s, "'Dashboard'!A1:A300")                        # typed in column A only
-nxt = min(r for r in typed_a if r > anchor)                           # next block (banner)
-room = nxt - anchor
-if room < STAGE_ROOM:
-    batch_update(s, [{'insertDimension': {'range': {
-        'sheetId': dash_id, 'dimension': 'ROWS', 'startIndex': nxt - 1,
-        'endIndex': nxt - 1 + STAGE_ROOM - room}, 'inheritFromBefore': True}}])
-    changelog(s, 'DASHBOARD LAYOUT', f'Inserted {STAGE_ROOM - room} rows under the stage '
-              f'benchmark table (had {room}) so the wired round-type list can spill.', '')
-    print(f'Dashboard: inserted {STAGE_ROOM - room} rows under the stage table')
-    room = STAGE_ROOM
-tmpl = get_values(s, f"'Dashboard'!B{anchor}:G{anchor}", render='FORMULA')[0]
-assert len(tmpl) == 6 and all(str(t).startswith('=') for t in tmpl), tmpl
-pat = re.compile(r'(\$?[A-G])' + str(anchor) + r'(?![0-9])')
-want = [[pat.sub(lambda m: m.group(1) + str(r), t) for t in tmpl] for r in range(anchor, anchor + room)]
-have = get_values(s, f"'Dashboard'!B{anchor}:G{anchor + room - 1}", render='FORMULA')
-have = [list(r) + [''] * (6 - len(r)) for r in have] + [[''] * 6] * (room - len(have))
-fix = [i for i in range(room) if have[i] != want[i]]
-if fix:
-    values_batch(s, [{'range': f"'Dashboard'!B{anchor + i}:G{anchor + i}", 'values': [want[i]]}
-                     for i in fix])
-    changelog(s, 'DASHBOARD LAYOUT', f'Filled stage-table row formulas (B..G) on {len(fix)} of '
-              f'{room} table rows so every wired round type shows its benchmarks.', len(fix))
-    print(f'Dashboard: stage table {room} rows; row formulas written on {len(fix)}')
-else:
-    print(f'Dashboard: stage table has {room} rows, all row formulas present — OK')
+# --- Dashboard: the benchmark table is owned by cohorts.py (fixed cohort list from
+#     Reference!CohortOrder, columns A..H including Med RSF). Verify, do not manage.
+hdr = get_values(s, "'Dashboard'!A13:H13", render='FORMATTED_VALUE')
+hdr = hdr[0] if hdr else []
+anchor_f = get_values(s, "'Dashboard'!A14", render='FORMULA')
+anchor_f = anchor_f[0][0] if anchor_f and anchor_f[0] else ''
+ok = 'Med RSF' in hdr and 'CohortOrder' in str(anchor_f)
+print('Dashboard benchmark table:', 'cohort-driven, headers current — OK' if ok else
+      'UNEXPECTED — run cohorts.py (headers=%r, A14=%r)' % (hdr, str(anchor_f)[:60]))
+if not ok:
+    sys.exit(1)
 
 summary, fails = qa_status(s)
 print('QA:', summary, '| failing:', fails or 'none')

@@ -401,20 +401,21 @@
           "required": false,
           "formula_pattern": "(auto list incl. staleness)",
           "description": "Auto list of missing fields + staleness flag."
+        },
+        {
+          "column": "AP",
+          "header": "Benchmark Cohort",
+          "key": "cohort",
+          "type": "text",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF($C{r}=\"\",\"\",IF($W{r}=\"\",\"No Funding Data\",IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),\"Stage Unknown\")))",
+          "description": "Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> \"Late Stage (D+)\", IPO + reverse merger -> \"Public\". Add new round types to the Reference map, never here."
         }
       ]
     },
     "Companies": {
       "columns": [
-        {
-          "column": "A",
-          "header": "Company ID",
-          "key": "company_id",
-          "type": "id",
-          "role": "input",
-          "required": true,
-          "description": "AUTO-ASSIGNED by onEdit trigger when Canonical Name is entered. Immutable, never reused. FK target for Lease Comps + Funding Rounds."
-        },
         {
           "column": "B",
           "header": "Canonical Name",

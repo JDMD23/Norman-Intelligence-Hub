@@ -51,12 +51,12 @@ reqs.append({'updateSheetProperties': {'properties': {
     'fields': 'gridProperties.hideGridlines'}})
 
 # title + subtitle bands (text overflows across the band; no merges to keep it simple)
-reqs.append(fmt('A', 'G', 0, 1, {
+reqs.append(fmt('A', 'H', 0, 1, {
     'backgroundColor': hx(TITLE),
     'textFormat': {'foregroundColor': hx('#FFFFFF'), 'bold': True, 'fontSize': 14},
     'verticalAlignment': 'MIDDLE'},
     'userEnteredFormat(backgroundColor,textFormat,verticalAlignment)'))
-reqs.append(fmt('A', 'G', 1, 2, {
+reqs.append(fmt('A', 'H', 1, 2, {
     'backgroundColor': hx(SUB),
     'textFormat': {'foregroundColor': hx('#CBD5E1'), 'bold': False, 'fontSize': 9},
     'verticalAlignment': 'MIDDLE'},
@@ -89,10 +89,10 @@ for c1, c2, r1, r2, pat in [('B', 'B', 3, 8, '#,##0'), ('B', 'B', 7, 9, '$#,##0.
         'userEnteredFormat.numberFormat'))
 
 # section heading + benchmark table header band
-reqs.append(fmt('A', 'G', 11, 12, {
+reqs.append(fmt('A', 'H', 11, 12, {
     'textFormat': {'foregroundColor': hx(TITLE), 'bold': True, 'fontSize': 11}},
     'userEnteredFormat.textFormat'))
-reqs.append(fmt('A', 'G', 12, 13, {
+reqs.append(fmt('A', 'H', 12, 13, {
     'backgroundColor': hx(HEAD),
     'textFormat': {'foregroundColor': hx('#FFFFFF'), 'bold': True, 'fontSize': 9},
     'horizontalAlignment': 'CENTER', 'verticalAlignment': 'MIDDLE'},
@@ -100,21 +100,25 @@ reqs.append(fmt('A', 'G', 12, 13, {
 reqs.append(fmt('A', 'A', 12, 13, {'horizontalAlignment': 'LEFT'},
                 'userEnteredFormat.horizontalAlignment'))
 
-# benchmark body: number formats + alignment
-for c1, c2, typ, pat in [('B', 'C', 'NUMBER', '#,##0'), ('D', 'F', 'CURRENCY', '$#,##0')]:
-    reqs.append(fmt(c1, c2, 13, 43, {'numberFormat': {'type': typ, 'pattern': pat}},
-                    'userEnteredFormat.numberFormat'))
-reqs.append(fmt('D', 'E', 13, 43, {'numberFormat': {'type': 'CURRENCY', 'pattern': '$#,##0.00'}},
+# benchmark body: Comps / Avg RSF / Med RSF integer, rent + NER 2dp, cost/seat 0dp
+reqs.append(fmt('B', 'D', 13, 23, {'numberFormat': {'type': 'NUMBER', 'pattern': '#,##0'}},
                 'userEnteredFormat.numberFormat'))
-reqs.append(fmt('G', 'G', 13, 43, {
+reqs.append(fmt('E', 'F', 13, 23, {'numberFormat': {'type': 'CURRENCY', 'pattern': '$#,##0.00'}},
+                'userEnteredFormat.numberFormat'))
+reqs.append(fmt('G', 'G', 13, 23, {'numberFormat': {'type': 'CURRENCY', 'pattern': '$#,##0'}},
+                'userEnteredFormat.numberFormat'))
+reqs.append(fmt('H', 'H', 13, 23, {
     'textFormat': {'foregroundColor': hx('#64748B'), 'fontSize': 9},
     'horizontalAlignment': 'LEFT'}, 'userEnteredFormat(textFormat,horizontalAlignment)'))
+reqs.append(fmt('A', 'A', 13, 23, {
+    'textFormat': {'foregroundColor': hx('#0F172A'), 'bold': True, 'fontSize': 10}},
+    'userEnteredFormat.textFormat'))
 
 # banded rows over the populated + reserved table area (blank tail is invisible w/o gridlines)
 for b in sh.get('bandedRanges', []):
     reqs.append({'deleteBanding': {'bandedRangeId': b['bandedRangeId']}})
 reqs.append({'addBanding': {'bandedRange': {
-    'range': rng('A', 'G', 13, 43),
+    'range': rng('A', 'H', 13, 22),
     'rowProperties': {'firstBandColor': hx('#FFFFFF'), 'secondBandColor': hx('#F8FAFC')}}}})
 
 # QA badge in A44: green when the workbook is client-safe, red when it is not
@@ -134,7 +138,7 @@ reqs.append({'addConditionalFormatRule': {'index': 1, 'rule': {
                                'textFormat': {'foregroundColor': hx('#991B1B'), 'bold': True}}}}}})
 
 # column widths — column A was truncating every label and stage name
-for c, w in {'A': 236, 'B': 104, 'C': 104, 'D': 128, 'E': 104, 'F': 124, 'G': 196}.items():
+for c, w in {'A': 236, 'B': 74, 'C': 104, 'D': 104, 'E': 124, 'F': 104, 'G': 122, 'H': 188}.items():
     reqs.append({'updateDimensionProperties': {
         'range': {'sheetId': d, 'dimension': 'COLUMNS', 'startIndex': ci(c), 'endIndex': ci(c) + 1},
         'properties': {'pixelSize': w}, 'fields': 'pixelSize'}})

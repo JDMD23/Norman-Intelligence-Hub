@@ -49,12 +49,12 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | AM | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total tracked funding / monthly Year-1 rent. |
 | AN | Record Status | `status` | text | qa |  | RecordStatuses | READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed. |
 | AO | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields + staleness flag. |
+| AP | Benchmark Cohort | `cohort` | text | calc |  |  | Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here. |
 
 ## Companies
 
 | Col | Header | Key | Type | Role | Req | Enum | Description |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| A | Company ID | `company_id` | id | input | yes |  | AUTO-ASSIGNED by onEdit trigger when Canonical Name is entered. Immutable, never reused. FK target for Lease Comps + Funding Rounds. |
 | B | Canonical Name | `name` | text | input | yes |  | One row per real company. Tenant-name variants map here via Reference!VariantMap. |
 | C | Crunchbase URL | `cb_url` | text | input |  |  | Verified Crunchbase profile. |
 | D | Website | `website` | text | input |  |  | Company website. |
@@ -117,6 +117,9 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 - **ConfidenceLevels**: HIGH, MEDIUM, LOW, REVIEW
 - **RecordStatuses**: READY, NEEDS REVIEW, MISSING INPUTS, STALE - REVERIFY
 - **CompSources**: CoStar, CBRE, Broker Intel, Press, Direct/Landlord
+- **CohortTypes**: Seed, Series A, Series B, Series C, Series D, Series E, Series F, Series G, Late Stage Venture, Private Equity, IPO, Public Listing / Reverse Merger, Debt, Venture - Series Unknown
+- **CohortLabels**: Seed, Series A, Series B, Series C, Late Stage (D+), Late Stage (D+), Late Stage (D+), Late Stage (D+), Late Stage (D+), Late Stage (D+), Public, Public, Debt, Stage Unknown
+- **CohortOrder**: Seed, Series A, Series B, Series C, Late Stage (D+), Public, Debt, Stage Unknown, No Funding Data
 
 ### Tenant variant map
 
