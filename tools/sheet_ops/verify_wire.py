@@ -140,3 +140,4 @@ if not mismatch and not bad:
     print('VERIFICATION PASSED — receipt appended')
 else:
     print('VERIFICATION INCOMPLETE — fix mismatches above before styling/finalize')
+    raise SystemExit(1)
