@@ -1,0 +1,723 @@
+{
+ "LC-0103": {
+  "company_id": "CO-0052",
+  "lr_date": "May 2026",
+  "lr_type": "Series C",
+  "lr_amt": 78,
+  "total": 134
+ },
+ "LC-0102": {
+  "company_id": "CO-0096",
+  "lr_date": "October 2025",
+  "lr_type": "Series C",
+  "lr_amt": 350,
+  "total": 483.6
+ },
+ "LC-0101": {
+  "company_id": "CO-0095",
+  "lr_date": "May 2026",
+  "lr_type": "Series B",
+  "lr_amt": 123,
+  "total": 160
+ },
+ "LC-0099": {
+  "company_id": "CO-0074",
+  "lr_date": "April 2026",
+  "lr_type": "Series D",
+  "lr_amt": 160,
+  "total": 311
+ },
+ "LC-0097": {
+  "company_id": "CO-0093",
+  "lr_date": "March 2026",
+  "lr_type": "Series D",
+  "lr_amt": 400,
+  "total": 873.2
+ },
+ "LC-0100": {
+  "company_id": "CO-0094",
+  "lr_date": "December 2024",
+  "lr_type": "Venture - Series Unknown",
+  "lr_amt": 300,
+  "total": 550
+ },
+ "LC-0098": {
+  "company_id": "CO-0090",
+  "lr_date": "June 2025",
+  "lr_type": "Series A",
+  "lr_amt": 18,
+  "total": 24
+ },
+ "LC-0001": {
+  "company_id": "CO-0023",
+  "lr_date": "August 2025",
+  "lr_type": "Series A",
+  "lr_amt": 15,
+  "total": 20
+ },
+ "LC-0002": {
+  "company_id": "CO-0037",
+  "lr_date": "July 2026",
+  "lr_type": "Series D",
+  "lr_amt": 44,
+  "total": 125
+ },
+ "LC-0003": {
+  "company_id": "CO-0084",
+  "lr_date": "",
+  "lr_type": "",
+  "lr_amt": "",
+  "total": ""
+ },
+ "LC-0004": {
+  "company_id": "CO-0053",
+  "lr_date": "November 2021",
+  "lr_type": "Public Listing / Reverse Merger",
+  "lr_amt": "",
+  "total": 521.6
+ },
+ "LC-0005": {
+  "company_id": "CO-0038",
+  "lr_date": "May 2026",
+  "lr_type": "Series A",
+  "lr_amt": 25,
+  "total": 34.5
+ },
+ "LC-0006": {
+  "company_id": "CO-0059",
+  "lr_date": "May 2026",
+  "lr_type": "Series B",
+  "lr_amt": 46,
+  "total": 56
+ },
+ "LC-0007": {
+  "company_id": "CO-0082",
+  "lr_date": "October 2025",
+  "lr_type": "Seed",
+  "lr_amt": 5,
+  "total": 5.5
+ },
+ "LC-0008": {
+  "company_id": "CO-0049",
+  "lr_date": "July 2022",
+  "lr_type": "Series A",
+  "lr_amt": 22,
+  "total": 28.1
+ },
+ "LC-0009": {
+  "company_id": "CO-0010",
+  "lr_date": "April 2026",
+  "lr_type": "Series A",
+  "lr_amt": 20,
+  "total": 20
+ },
+ "LC-0010": {
+  "company_id": "CO-0044",
+  "lr_date": "April 2026",
+  "lr_type": "Series A",
+  "lr_amt": 17,
+  "total": 22
+ },
+ "LC-0011": {
+  "company_id": "CO-0061",
+  "lr_date": "December 2025",
+  "lr_type": "Series B",
+  "lr_amt": 78,
+  "total": 281
+ },
+ "LC-0012": {
+  "company_id": "CO-0080",
+  "lr_date": "January 2026",
+  "lr_type": "Series E",
+  "lr_amt": 200,
+  "total": 536
+ },
+ "LC-0013": {
+  "company_id": "CO-0071",
+  "lr_date": "January 2026",
+  "lr_type": "Series C",
+  "lr_amt": 250,
+  "total": 338.5
+ },
+ "LC-0014": {
+  "company_id": "CO-0017",
+  "lr_date": "June 2020",
+  "lr_type": "Debt",
+  "lr_amt": 0.75,
+  "total": 0.75
+ },
+ "LC-0015": {
+  "company_id": "CO-0077",
+  "lr_date": "May 2026",
+  "lr_type": "Series E",
+  "lr_amt": 950,
+  "total": 1585
+ },
+ "LC-0016": {
+  "company_id": "CO-0055",
+  "lr_date": "July 2026",
+  "lr_type": "Series C",
+  "lr_amt": 120,
+  "total": 260
+ },
+ "LC-0017": {
+  "company_id": "CO-0058",
+  "lr_date": "February 2026",
+  "lr_type": "Series B",
+  "lr_amt": 75,
+  "total": 99.9
+ },
+ "LC-0018": {
+  "company_id": "CO-0089",
+  "lr_date": "December 2025",
+  "lr_type": "Series E",
+  "lr_amt": 100,
+  "total": 745
+ },
+ "LC-0019": {
+  "company_id": "CO-0072",
+  "lr_date": "June 2026",
+  "lr_type": "Series F",
+  "lr_amt": 750,
+  "total": 3000
+ },
+ "LC-0020": {
+  "company_id": "CO-0019",
+  "lr_date": "August 2025",
+  "lr_type": "Series C",
+  "lr_amt": 100,
+  "total": 204
+ },
+ "LC-0021": {
+  "company_id": "CO-0063",
+  "lr_date": "March 2024",
+  "lr_type": "Series C",
+  "lr_amt": 58,
+  "total": 151
+ },
+ "LC-0022": {
+  "company_id": "CO-0046",
+  "lr_date": "October 2025",
+  "lr_type": "Series B",
+  "lr_amt": 125,
+  "total": 260
+ },
+ "LC-0023": {
+  "company_id": "CO-0088",
+  "lr_date": "September 2025",
+  "lr_type": "Late Stage Venture",
+  "lr_amt": 300,
+  "total": 863
+ },
+ "LC-0024": {
+  "company_id": "CO-0003",
+  "lr_date": "December 2025",
+  "lr_type": "Series B",
+  "lr_amt": 81,
+  "total": 147
+ },
+ "LC-0025": {
+  "company_id": "CO-0006",
+  "lr_date": "November 2025",
+  "lr_type": "Series B",
+  "lr_amt": 40,
+  "total": 60
+ },
+ "LC-0026": {
+  "company_id": "CO-0014",
+  "lr_date": "April 2026",
+  "lr_type": "Series B",
+  "lr_amt": 43,
+  "total": 68
+ },
+ "LC-0027": {
+  "company_id": "CO-0025",
+  "lr_date": "March 2026",
+  "lr_type": "Series B",
+  "lr_amt": 60,
+  "total": 85.8
+ },
+ "LC-0028": {
+  "company_id": "CO-0092",
+  "lr_date": "April 2026",
+  "lr_type": "Series A",
+  "lr_amt": 35,
+  "total": 40
+ },
+ "LC-0029": {
+  "company_id": "CO-0091",
+  "lr_date": "August 2026",
+  "lr_type": "Series G",
+  "lr_amt": 545,
+  "total": 1520
+ },
+ "LC-0030": {
+  "company_id": "CO-0007",
+  "lr_date": "February 2026",
+  "lr_type": "Series B",
+  "lr_amt": 55,
+  "total": 73
+ },
+ "LC-0031": {
+  "company_id": "CO-0011",
+  "lr_date": "June 2026",
+  "lr_type": "Series F",
+  "lr_amt": 1500,
+  "total": 2085
+ },
+ "LC-0032": {
+  "company_id": "CO-0016",
+  "lr_date": "July 2026",
+  "lr_type": "Series D",
+  "lr_amt": 120,
+  "total": 219.5
+ },
+ "LC-0033": {
+  "company_id": "CO-0021",
+  "lr_date": "May 2026",
+  "lr_type": "Series D",
+  "lr_amt": 1000,
+  "total": 1900
+ },
+ "LC-0034": {
+  "company_id": "CO-0028",
+  "lr_date": "March 2026",
+  "lr_type": "Series A",
+  "lr_amt": 43,
+  "total": 46
+ },
+ "LC-0035": {
+  "company_id": "CO-0030",
+  "lr_date": "February 2026",
+  "lr_type": "Series D",
+  "lr_amt": 500,
+  "total": 811
+ },
+ "LC-0036": {
+  "company_id": "CO-0036",
+  "lr_date": "May 2026",
+  "lr_type": "Series E",
+  "lr_amt": 100,
+  "total": 319.3
+ },
+ "LC-0037": {
+  "company_id": "CO-0040",
+  "lr_date": "March 2025",
+  "lr_type": "Series B",
+  "lr_amt": 52,
+  "total": 81
+ },
+ "LC-0038": {
+  "company_id": "CO-0056",
+  "lr_date": "October 2021",
+  "lr_type": "Series C",
+  "lr_amt": 275,
+  "total": 343.2
+ },
+ "LC-0039": {
+  "company_id": "CO-0065",
+  "lr_date": "January 2026",
+  "lr_type": "Series E",
+  "lr_amt": "",
+  "total": 1720
+ },
+ "LC-0040": {
+  "company_id": "CO-0087",
+  "lr_date": "March 2026",
+  "lr_type": "Venture - Series Unknown",
+  "lr_amt": "",
+  "total": 53
+ },
+ "LC-0041": {
+  "company_id": "CO-0079",
+  "lr_date": "November 2025",
+  "lr_type": "Series A",
+  "lr_amt": 29.5,
+  "total": 35.4
+ },
+ "LC-0042": {
+  "company_id": "CO-0005",
+  "lr_date": "November 2025",
+  "lr_type": "Series B",
+  "lr_amt": 40,
+  "total": 56.3
+ },
+ "LC-0043": {
+  "company_id": "CO-0031",
+  "lr_date": "August 2025",
+  "lr_type": "Late Stage Venture",
+  "lr_amt": 250,
+  "total": 392
+ },
+ "LC-0044": {
+  "company_id": "CO-0047",
+  "lr_date": "April 2026",
+  "lr_type": "Series D",
+  "lr_amt": 50,
+  "total": 866
+ },
+ "LC-0045": {
+  "company_id": "CO-0052",
+  "lr_date": "May 2026",
+  "lr_type": "Series C",
+  "lr_amt": 78,
+  "total": 134
+ },
+ "LC-0046": {
+  "company_id": "CO-0067",
+  "lr_date": "April 2026",
+  "lr_type": "Series E",
+  "lr_amt": 1000,
+  "total": 2300
+ },
+ "LC-0047": {
+  "company_id": "CO-0073",
+  "lr_date": "May 2025",
+  "lr_type": "Late Stage Venture",
+  "lr_amt": 450,
+  "total": 1850
+ },
+ "LC-0048": {
+  "company_id": "CO-0086",
+  "lr_date": "March 2026",
+  "lr_type": "Series A",
+  "lr_amt": 27,
+  "total": 34
+ },
+ "LC-0049": {
+  "company_id": "CO-0013",
+  "lr_date": "July 2025",
+  "lr_type": "Late Stage Venture",
+  "lr_amt": 250,
+  "total": 958
+ },
+ "LC-0050": {
+  "company_id": "CO-0022",
+  "lr_date": "April 2021",
+  "lr_type": "IPO",
+  "lr_amt": "",
+  "total": 547
+ },
+ "LC-0051": {
+  "company_id": "CO-0026",
+  "lr_date": "June 2026",
+  "lr_type": "Series E",
+  "lr_amt": 80,
+  "total": 668
+ },
+ "LC-0052": {
+  "company_id": "CO-0041",
+  "lr_date": "July 2026",
+  "lr_type": "Venture - Series Unknown",
+  "lr_amt": "",
+  "total": 1200
+ },
+ "LC-0053": {
+  "company_id": "CO-0041",
+  "lr_date": "July 2026",
+  "lr_type": "Venture - Series Unknown",
+  "lr_amt": "",
+  "total": 1200
+ },
+ "LC-0054": {
+  "company_id": "CO-0076",
+  "lr_date": "May 2024",
+  "lr_type": "Series F",
+  "lr_amt": 1000,
+  "total": 1600
+ },
+ "LC-0055": {
+  "company_id": "CO-0081",
+  "lr_date": "September 2025",
+  "lr_type": "Series B",
+  "lr_amt": 55,
+  "total": 91
+ },
+ "LC-0056": {
+  "company_id": "CO-0009",
+  "lr_date": "September 2025",
+  "lr_type": "Series B",
+  "lr_amt": 52,
+  "total": 77.5
+ },
+ "LC-0057": {
+  "company_id": "CO-0029",
+  "lr_date": "September 2025",
+  "lr_type": "Series B",
+  "lr_amt": 175,
+  "total": 202
+ },
+ "LC-0058": {
+  "company_id": "CO-0051",
+  "lr_date": "May 2026",
+  "lr_type": "Series C",
+  "lr_amt": 355,
+  "total": 466
+ },
+ "LC-0059": {
+  "company_id": "CO-0062",
+  "lr_date": "January 2026",
+  "lr_type": "Series D",
+  "lr_amt": 350,
+  "total": 560
+ },
+ "LC-0060": {
+  "company_id": "CO-0074",
+  "lr_date": "April 2026",
+  "lr_type": "Series D",
+  "lr_amt": 160,
+  "total": 311
+ },
+ "LC-0061": {
+  "company_id": "CO-0024",
+  "lr_date": "April 2026",
+  "lr_type": "Series B",
+  "lr_amt": 50,
+  "total": 70.5
+ },
+ "LC-0062": {
+  "company_id": "CO-0039",
+  "lr_date": "November 2021",
+  "lr_type": "Late Stage Venture",
+  "lr_amt": 200,
+  "total": 545
+ },
+ "LC-0063": {
+  "company_id": "CO-0077",
+  "lr_date": "May 2026",
+  "lr_type": "Series E",
+  "lr_amt": 950,
+  "total": 1585
+ },
+ "LC-0064": {
+  "company_id": "CO-0083",
+  "lr_date": "June 2024",
+  "lr_type": "IPO",
+  "lr_amt": "",
+  "total": 1050
+ },
+ "LC-0065": {
+  "company_id": "CO-0085",
+  "lr_date": "June 2022",
+  "lr_type": "Series E",
+  "lr_amt": 100,
+  "total": 268
+ },
+ "LC-0066": {
+  "company_id": "CO-0045",
+  "lr_date": "May 2026",
+  "lr_type": "Series F",
+  "lr_amt": 1000,
+  "total": 2800
+ },
+ "LC-0067": {
+  "company_id": "CO-0035",
+  "lr_date": "January 2022",
+  "lr_type": "Series E",
+  "lr_amt": 550,
+  "total": 1000
+ },
+ "LC-0068": {
+  "company_id": "CO-0043",
+  "lr_date": "December 2025",
+  "lr_type": "Series D",
+  "lr_amt": 150,
+  "total": 352
+ },
+ "LC-0069": {
+  "company_id": "CO-0054",
+  "lr_date": "March 2026",
+  "lr_type": "Series B",
+  "lr_amt": 80,
+  "total": 182.5
+ },
+ "LC-0070": {
+  "company_id": "CO-0057",
+  "lr_date": "May 2026",
+  "lr_type": "Series C",
+  "lr_amt": 100,
+  "total": 215
+ },
+ "LC-0071": {
+  "company_id": "CO-0027",
+  "lr_date": "June 2026",
+  "lr_type": "Series G",
+  "lr_amt": 600,
+  "total": 2300
+ },
+ "LC-0072": {
+  "company_id": "CO-0020",
+  "lr_date": "September 2019",
+  "lr_type": "IPO",
+  "lr_amt": "",
+  "total": 332
+ },
+ "LC-0073": {
+  "company_id": "CO-0090",
+  "lr_date": "June 2025",
+  "lr_type": "Series A",
+  "lr_amt": 18,
+  "total": 24
+ },
+ "LC-0074": {
+  "company_id": "CO-0069",
+  "lr_date": "March 2025",
+  "lr_type": "Venture - Series Unknown",
+  "lr_amt": 15,
+  "total": 40
+ },
+ "LC-0075": {
+  "company_id": "CO-0033",
+  "lr_date": "February 2025",
+  "lr_type": "Series B",
+  "lr_amt": 50,
+  "total": 75
+ },
+ "LC-0076": {
+  "company_id": "CO-0042",
+  "lr_date": "July 2024",
+  "lr_type": "Series B",
+  "lr_amt": 130,
+  "total": 161
+ },
+ "LC-0077": {
+  "company_id": "CO-0048",
+  "lr_date": "October 2024",
+  "lr_type": "Series F",
+  "lr_amt": 125,
+  "total": 425
+ },
+ "LC-0078": {
+  "company_id": "CO-0002",
+  "lr_date": "April 2026",
+  "lr_type": "Series B",
+  "lr_amt": 45,
+  "total": 68
+ },
+ "LC-0079": {
+  "company_id": "CO-0018",
+  "lr_date": "June 2025",
+  "lr_type": "IPO",
+  "lr_amt": "",
+  "total": 2300
+ },
+ "LC-0080": {
+  "company_id": "CO-0060",
+  "lr_date": "December 2025",
+  "lr_type": "Series B",
+  "lr_amt": 78,
+  "total": 281
+ },
+ "LC-0081": {
+  "company_id": "CO-0008",
+  "lr_date": "June 2025",
+  "lr_type": "Series A",
+  "lr_amt": 20,
+  "total": 24
+ },
+ "LC-0082": {
+  "company_id": "CO-0034",
+  "lr_date": "July 2025",
+  "lr_type": "IPO",
+  "lr_amt": "",
+  "total": 333
+ },
+ "LC-0083": {
+  "company_id": "CO-0080",
+  "lr_date": "January 2026",
+  "lr_type": "Series E",
+  "lr_amt": 200,
+  "total": 530
+ },
+ "LC-0084": {
+  "company_id": "CO-0092",
+  "lr_date": "April 2026",
+  "lr_type": "Series A",
+  "lr_amt": 35,
+  "total": 40
+ },
+ "LC-0085": {
+  "company_id": "CO-0032",
+  "lr_date": "May 2022",
+  "lr_type": "Series G",
+  "lr_amt": 416,
+  "total": 1700
+ },
+ "LC-0086": {
+  "company_id": "CO-0066",
+  "lr_date": "April 2025",
+  "lr_type": "Series E",
+  "lr_amt": 575,
+  "total": 1320
+ },
+ "LC-0087": {
+  "company_id": "CO-0064",
+  "lr_date": "June 2026",
+  "lr_type": "Series D",
+  "lr_amt": 250,
+  "total": 470
+ },
+ "LC-0088": {
+  "company_id": "CO-0070",
+  "lr_date": "February 2022",
+  "lr_type": "Series C",
+  "lr_amt": 55,
+  "total": 85.5
+ },
+ "LC-0089": {
+  "company_id": "CO-0004",
+  "lr_date": "January 2021",
+  "lr_type": "IPO",
+  "lr_amt": "",
+  "total": 1500
+ },
+ "LC-0090": {
+  "company_id": "CO-0001",
+  "lr_date": "April 2026",
+  "lr_type": "Series E",
+  "lr_amt": 316,
+  "total": 1073.5
+ },
+ "LC-0091": {
+  "company_id": "CO-0012",
+  "lr_date": "February 2026",
+  "lr_type": "Series B",
+  "lr_amt": 100,
+  "total": 137.6
+ },
+ "LC-0092": {
+  "company_id": "CO-0068",
+  "lr_date": "June 2024",
+  "lr_type": "Series B",
+  "lr_amt": 15,
+  "total": 45
+ },
+ "LC-0093": {
+  "company_id": "CO-0078",
+  "lr_date": "May 2026",
+  "lr_type": "Series E",
+  "lr_amt": 80,
+  "total": 712
+ },
+ "LC-0094": {
+  "company_id": "CO-0015",
+  "lr_date": "January 2025",
+  "lr_type": "Debt",
+  "lr_amt": 235,
+  "total": 1200
+ },
+ "LC-0095": {
+  "company_id": "CO-0075",
+  "lr_date": "February 2026",
+  "lr_type": "Late Stage Venture",
+  "lr_amt": 315,
+  "total": 860
+ },
+ "LC-0096": {
+  "company_id": "CO-0050",
+  "lr_date": "March 2026",
+  "lr_type": "Late Stage Venture",
+  "lr_amt": 75,
+  "total": 175
+ }
+}
