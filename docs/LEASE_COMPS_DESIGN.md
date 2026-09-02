@@ -79,8 +79,11 @@ month-level dates (day recorded as the 1st, flagged in Notes) so the wire reprod
 
 Open REVIEW items for the owner (not auto-fixed):
 
-- LC-0001 (CO-0001): Funding Rounds has Seed $5M in the same month the audit recorded Series A $15M.
-- LC-0012 / LC-0083 (CO-0080): same Series E $200M round dated 2025-10 in Funding Rounds vs 2026-01 in the audit.
-- Funding Rounds round types outside the Reference `RoundTypes` vocabulary (e.g. "Growth", "Direct Listing",
-  "Series B / Strategic", "Common Stock Financing", "Series E-2") now surface on the Dashboard stage table.
-  Either add them to Reference or normalise the rows.
+- LC-0001 (Confido, CO-0023 — earlier drafts of this note wrongly said CO-0001/Abridge): Funding Rounds holds
+  both a Seed $5M and a Series A $15M dated 2025-08-11. The wire's latest-round lookup tie-breaks same-day
+  rounds by row order and surfaces the Seed; the audit recorded the Series A. Fix belongs in the W/X wire
+  formulas (secondary sort on amount, descending), not in the Funding Rounds data.
+- LC-0012 / LC-0083 (CO-0080): RESOLVED 2026-09-02 via apply_judgments.py (date -> 2026-01-26).
+- Off-vocabulary round types: "Growth", "Direct Listing", "Series B / Strategic", "Common Stock Financing"
+  RESOLVED 2026-09-02 via apply_judgments.py (normalised to Reference RoundTypes, originals kept in Notes).
+  Still off-vocabulary: "Series E-2", "Debt / Venture Unknown".
