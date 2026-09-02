@@ -8,10 +8,10 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 
 | Col | Header | Key | Type | Role | Req | Enum | Description |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| A | Comp ID | `comp_id` | id | input | yes |  | AUTO-ASSIGNED by onEdit trigger when Tenant is entered (company auto-created if unknown). API writers must supply IDs themselves. Immutable, never reused. |
+| A | Comp ID | `comp_id` | id | input | yes |  | AUTO-ASSIGNED by onEdit trigger when Tenant is entered. API writers must supply IDs. Immutable, never reused. |
 | B | Date Signed | `date` | date | input | yes |  | Lease execution date. |
-| C | Tenant | `tenant` | text | input | yes |  | Tenant display name as signed. Variants map to a company in Reference!VariantMap. |
-| D | Company ID | `company_id` | id | input | yes | CompanyIds | AUTO-ASSIGNED by onEdit trigger when Tenant is entered (company auto-created if unknown). API writers must supply IDs themselves. Immutable, never reused. |
+| C | Tenant | `tenant` | text | input | yes |  | Tenant display name as signed. Variants map via Reference!VariantMap. |
+| D | Company ID | `company_id` | id | input | yes | CompanyIds | FK to Companies. AUTO-ASSIGNED with Comp ID. |
 | E | Address | `address` | text | input | yes |  | Building street address. |
 | F | Submarket | `submarket` | text | input | yes | Submarkets | Canonical submarket. |
 | G | Building Class | `bclass` | text | input |  | BuildingClasses | Building class. |
@@ -20,40 +20,35 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | J | Deal Type | `deal_type` | text | input |  | DealTypes | Deal structure. |
 | K | Delivery Condition | `delivery` | text | input |  | DeliveryConditions | Landlord delivery condition. |
 | L | RSF | `rsf` | int | input | yes |  | Rentable square feet. |
-| M | Seats | `seats` | int | input |  |  | Seat count / density input. Blank = unknown (never 0). |
+| M | Seats | `seats` | int | input |  |  | Seat count. Blank = unknown (never 0). |
 | N | Term (Years) | `term` | num | input | yes |  | Lease term in years. Fractional allowed. |
-| O | Starting Rent ($/RSF) | `start_rent` | rent | input | yes |  | Year-1 base rent per RSF. |
-| P | Escalated Rent Yr 6 ($/RSF) | `rent_y6` | rent | input |  |  | Explicit year-6 step rent. Blank = continuous 3% escalation assumed. |
-| Q | Escalated Rent Yr 11 ($/RSF) | `rent_y11` | rent | input |  |  | Explicit year-11 step rent. Blank = continuous 3% escalation assumed. |
+| O | Rent P1 ($/RSF, mo 1-60) | `rent_p1` | rent | input | yes |  | Tranche-1 rent, flat through month 60 (or term end if shorter). |
+| P | Rent P2 ($/RSF, mo 61-120) | `rent_p2` | rent | input |  |  | Tranche-2 rent, months 61-120. BLANK = carries P1 flat (no assumed escalation). |
+| Q | Rent P3 ($/RSF, mo 121+) | `rent_p3` | rent | input |  |  | Tranche-3 rent, months 121+. BLANK = carries P2 flat. |
 | R | Free Rent (months) | `free_mo` | num | input |  |  | Free rent concession in months. |
-| S | TI $/SF | `ti_psf` | rent | input |  |  | Tenant improvement allowance per SF. Blank = unknown (NER stays blank). |
-| T | Latest Round Date | `lr_date` | date | input |  |  | Latest known funding round date. Policy (JD 7/28/2026): these funding columns hold CURRENT/latest known funding, refreshed over time -- not frozen at signing. |
-| U | Last Funding Round | `lr_type` | text | input |  | RoundTypes | Latest known round type. |
-| V | Latest Round Amt ($M) | `lr_amt` | num | input |  |  | Latest known round size in $M. Blank for public cos. |
-| W | Total Funding ($M) | `total_fund` | num | input |  |  | Latest known cumulative funding in $M. |
-| X | Top 5 Investors | `investors` | text | input |  |  | Top investors, comma-separated. |
-| Y | Crunchbase URL | `cb_url` | text | input |  |  | Crunchbase profile URL. |
-| Z | Founded Year | `founded` | int | input |  |  | Company founding year. |
-| AA | HQ City | `hq` | text | input |  |  | Headquarters city. |
+| S | TI $/SF | `ti_psf` | rent | input |  |  | TI allowance per SF. Blank = unknown (NER stays blank). Confirmed-zero on as-is deals is a real 0. |
+| T | Comp Source | `source` | text | input |  | CompSources | Where this comp came from. |
+| U | Verified Date | `verified` | date | input |  |  | When this comp was last verified. >6 months old flips status to STALE - REVERIFY. |
+| V | Latest Round Date | `lr_date` | date | calc |  |  | Most recent round date (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
+| W | Latest Round Type | `lr_type` | text | calc |  |  | Type of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
+| X | Latest Round Amt ($M) | `lr_amt` | num | calc |  |  | Amount of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
+| Y | Total Tracked Funding ($M) | `total_fund` | num | calc |  |  | Sum of tracked rounds (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. Blank (never 0) when tracked rounds have no amounts. Semantic: tracked receipts, not researched narrative totals. |
+| Z | Company (canonical) | `company` | text | calc |  |  | Canonical company name (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
+| AA | HQ City | `hq` | text | calc |  |  | HQ city (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
 | AB | Notes | `notes` | text | input |  |  | Free-form deal notes. |
-| AC | Year 1 Rent ($) | `y1_rent` | usd | calc |  |  | RSF x Starting Rent. |
-| AD | Year 6 Rent ($) | `y6_rent` | usd | calc |  |  | RSF x explicit Yr-6 rent; blank when no explicit step. |
-| AE | Free Rent $ Value | `free_val` | usd | calc |  |  | (Free months / 12) x Starting Rent x RSF. |
-| AF | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
-| AG | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Three-tranche rent total with 3% annual escalation inside each tranche. Tranche rates: Starting / Yr-6 / Yr-11 (blank steps fall back to continuous 3%). |
-| AH | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross Rent / RSF / Term. |
-| AI | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER (per NER.xls model, owner-approved 2026-09-02): flat rent tranches (start rent to mo 60, Yr-6 rate to mo 120, Yr-11 rate after; blank bump carries prior rate), monthly discounting at 6%/12, beginning-of-month annuity, free rent at starting rate + TI charged nominal upfront, levelized to $/RSF/yr. No commissions/downtime. Blank when TI unknown. |
-| AJ | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. Blank until Seats entered. |
-| AK | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. Blank until Seats entered. |
-| AL | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / latest round ($M->$). |
-| AM | Lease-to-Latest-Round % | `l2lr` | pct | calc |  |  | Projected Gross Rent / latest round. |
-| AN | Lease-to-Total-Funding % | `l2tf` | pct | calc |  |  | Projected Gross Rent / total funding. |
-| AO | Year 1 Rent / Total Funding % | `y12tf` | pct | calc |  |  | Year 1 Rent / total funding. |
-| AP | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total funding / monthly Year-1 rent. |
-| AQ | NER Term Cost / Latest Round % | `nertc` | pct | calc |  |  | NER x RSF x Term / latest round. |
-| AR | Tenant Tenure at Signing | `tenure` | int | calc |  |  | YEAR(signed) - founded year. |
-| AS | Record Status | `status` | text | qa |  |  | READY / NEEDS REVIEW / MISSING INPUTS -- computed, never typed. |
-| AT | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields. |
+| AC | Year 1 Rent ($) | `y1_rent` | usd | calc |  |  | RSF x P1 rent. |
+| AD | Free Rent $ Value | `free_val` | usd | calc |  |  | (Free months / 12) x P1 rent x RSF. |
+| AE | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
+| AF | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Nominal rent over the term on FLAT tranches (no assumed escalation). |
+| AG | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross / RSF / Term. |
+| AH | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown. |
+| AI | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. |
+| AJ | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. |
+| AK | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / wired latest round. |
+| AL | Lease-to-Total-Funding % | `l2tf` | pct | calc |  |  | Projected Gross / wired total tracked funding. |
+| AM | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total tracked funding / monthly Year-1 rent. |
+| AN | Record Status | `status` | text | qa |  | RecordStatuses | READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed. |
+| AO | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields + staleness flag. |
 
 ## Companies
 
@@ -120,7 +115,8 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 - **DeliveryConditions**: LL Turnkey, As-Is, Custom TIA
 - **RoundTypes**: Debt, IPO, Late Stage Venture, Private Equity, Public Listing / Reverse Merger, Seed, Series A, Series B, Series C, Series D, Series E, Series F, Series G, Venture - Series Unknown
 - **ConfidenceLevels**: HIGH, MEDIUM, LOW, REVIEW
-- **RecordStatuses**: READY, NEEDS REVIEW, MISSING INPUTS
+- **RecordStatuses**: READY, NEEDS REVIEW, MISSING INPUTS, STALE - REVERIFY
+- **CompSources**: CoStar, CBRE, Broker Intel, Press, Direct/Landlord
 
 ### Tenant variant map
 

@@ -68,7 +68,15 @@
     "RecordStatuses": [
       "READY",
       "NEEDS REVIEW",
-      "MISSING INPUTS"
+      "MISSING INPUTS",
+      "STALE - REVERIFY"
+    ],
+    "CompSources": [
+      "CoStar",
+      "CBRE",
+      "Broker Intel",
+      "Press",
+      "Direct/Landlord"
     ]
   },
   "tenant_variant_map": {

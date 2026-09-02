@@ -4,11 +4,17 @@ Zone-colored header band, tinted data zones (white = type here, cyan = wired fro
 other tabs, green = computed here, amber = governance), zone-boundary rules,
 per-column number formats, frozen header + identity columns, sized columns.
 """
-from common import session, sheet_ids, batch_update, changelog
+from common import session, sheet_ids, batch_update, changelog, SID
 
 s = session()
 lc = sheet_ids(s)['Lease Comps']
 NROWS = 1207
+meta = s.get(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}',
+             params={'fields': 'sheets(properties.sheetId,protectedRanges(protectedRangeId,'
+                               'description))'}).json()
+existing = next((sh.get('protectedRanges', []) for sh in meta['sheets']
+                 if sh['properties']['sheetId'] == lc), [])
+have = {p['description'] for p in existing}
 
 
 def hx(h):
@@ -91,14 +97,28 @@ for c, w in WIDTHS.items():
         'range': {'sheetId': lc, 'dimension': 'COLUMNS', 'startIndex': ci(c), 'endIndex': ci(c) + 1},
         'properties': {'pixelSize': w}, 'fields': 'pixelSize'}})
 
-# --- warning-only protection on wired + computed zones (edit inputs, not results)
+# --- warning-only protection on wired + computed zones (edit inputs, not results);
+#     the pre-v4 per-column "Calculated" warnings are superseded and removed.
+LEGACY = 'Calculated -- edit the inputs, not this column'
+added, removed = [], []
 for c1, c2, desc in [('V', 'AA', 'Wired from Companies/Funding Rounds — edit those tabs instead'),
                      ('AC', 'AO', 'Computed — edit inputs, not results')]:
-    reqs.append({'addProtectedRange': {'protectedRange': {
-        'range': rng(c1, c2, 1), 'description': desc, 'warningOnly': True}}})
+    if desc not in have:
+        reqs.append({'addProtectedRange': {'protectedRange': {
+            'range': rng(c1, c2, 1), 'description': desc, 'warningOnly': True}}})
+        added.append(desc)
+for p in existing:
+    if p['description'] == LEGACY:
+        reqs.append({'deleteProtectedRange': {'protectedRangeId': p['protectedRangeId']}})
+        removed.append(p['protectedRangeId'])
 
 batch_update(s, reqs)
-print(f'styling applied ({len(reqs)} format requests)')
-changelog(s, 'STYLE', 'Lease Comps v4 visual design: zone-colored headers, input/wired/'
-          'computed/governance tints, zone rules, number formats, frozen panes, '
-          'column sizing, warning-only protection on non-input zones.', '')
+print(f'styling applied ({len(reqs)} requests; protections added {len(added)}, '
+      f'legacy removed {len(removed)})')
+if added or removed:
+    changelog(s, 'STYLE', 'Lease Comps v4 visual design: zone-colored headers, input/wired/'
+              'computed/governance tints, zone rules, number formats, frozen panes, '
+              f'column sizing, warning-only protection on non-input zones ({len(added)} zone '
+              f'protections added, {len(removed)} legacy per-column warnings removed).', '')
+else:
+    print('protections already in place — no receipt needed (formatting re-applied only)')

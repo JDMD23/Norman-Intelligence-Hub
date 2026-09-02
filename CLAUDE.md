@@ -19,7 +19,7 @@ https://docs.google.com/spreadsheets/d/1qZlc8BUZRObyoeygAToWicor-UFFLmO_aCjk3axB
 
 ## Data model
 
-- `Lease Comps` (input): signed leases. FK `company_id` → Companies. Funding columns (T–AA) hold *current/latest known* funding, refreshed over time — not frozen at signing.
+- `Lease Comps` (input): signed leases. FK `company_id` → Companies. Since v4 (2026-09-02) the funding/company columns (V–AA) are **wired lookups** from Funding Rounds, Company Metrics and Companies — never typed; update those tabs instead. Rent is a flat three-tranche schedule (P1 months 1–60, P2 61–120, P3 121+; blank carries the prior tranche). See `docs/LEASE_COMPS_DESIGN.md`.
 - `Companies` (input): one row per real company; canonical name. Tenant name variants map via `Reference!VariantMap`.
 - `Funding Rounds` (input): one row per round. FK `company_id` → Companies. Requires source + confidence (`HIGH`/`MEDIUM`/`LOW`/`REVIEW`).
 - `Company Metrics` (computed): per-company rollup. Never edit.
@@ -27,9 +27,10 @@ https://docs.google.com/spreadsheets/d/1qZlc8BUZRObyoeygAToWicor-UFFLmO_aCjk3axB
 
 ## Record status semantics
 
-Computed, never typed: `MISSING INPUTS` (missing any of comp ID, date, submarket, RSF, term, starting rent) → `NEEDS REVIEW` (seats or TI unknown) → `READY`.
+Computed, never typed: `MISSING INPUTS` (missing any of comp ID, date, submarket, RSF, term, starting rent) → `NEEDS REVIEW` (seats or TI unknown) → `STALE - REVERIFY` (Verified Date older than 6 months) → `READY`.
 
 ## In this repo
 
 - Keep `schema/schema.json` and `schema/reference.json` in sync with the workbook's `_Schema` and `Reference` tabs when they change; regenerate `docs/DATA_DICTIONARY.md` from the schema at the same time.
+- Workbook operations live in `tools/sheet_ops/` (Sheets API via the `GOOGLE_SA_KEY` service account). Every script is re-runnable, appends Changelog receipts, and gates on QA. Run `python3 tools/sheet_ops/sync_schema.py` after any `_Schema` or Reference change to refresh the mirrors and the data dictionary.
 - Data snapshots, scripts, or an API layer added later must obey the contract above.
