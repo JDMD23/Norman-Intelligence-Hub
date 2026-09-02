@@ -2435,9 +2435,10 @@
         "source": "Commercial Observer / TechFundingNews via search",
         "url": "https://commercialobserver.com/2025/11/swedish-ai-legora-lease-838-broadway/"
       },
-      "final": null,
+      "final": "Stockholm",
       "other_offices": "Stockholm (founding office, engineering center), London (engineering hub), Bangalore, Sydney, Mexico City opening; ~16 cities total",
-      "verdict": "HQ_CONFLICT"
+      "verdict": "HQ_CONFIRMED",
+      "resolution": "Owner decision 2026-09-02: record Stockholm (formal HQ per trackers); 838 Broadway NYC noted as major office (Commercial Observer called it 'NYC HQ')."
     },
     "latest_round": {
       "type_cb_style": "Series D (extension) \u2014 CB-style the event remains labeled Series D",
@@ -2537,9 +2538,10 @@
         "source": "Meow's own Terms of Service (meow.com/legal/terms-of-service) states the service is offered by Meow Technologies, Inc. at 113 Spring St, 3rd Floor, New York, NY 10012; Built In NYC lists a Meow NYC office; Indeed lists HQ as New York. HOWEVER Meow's own Privacy Policy lists 1504 Bay Rd Apt 2503, Miami Beach, FL 33139, and a 2022 SEC Form D filing gives business address 1504 Bay Rd Apt 2303, Miami Beach (a residential apartment).",
         "url": "https://www.meow.com/legal/terms-of-service"
       },
-      "final": "CONFLICT: Miami Beach, FL (aggregators + company privacy policy + SEC filing, but the Bay Rd address is an apartment) vs New York, NY (company terms of service street address + Built In NYC + Indeed). Not adjudicated per instructions.",
+      "final": "New York",
       "other_offices": "Whichever city is not HQ is an office/legal address: NYC operating office at 113 Spring St (consistent with the sheet's NYC lease comp); Miami Beach 1504 Bay Rd is an apartment-number address used in legal/SEC docs",
-      "verdict": "HQ_CONFLICT"
+      "verdict": "HQ_CORRECTED",
+      "resolution": "Owner decision 2026-09-02: record New York (113 Spring St per company ToS, Built In NYC, job listings); Miami Beach filings noted (address is an apartment)."
     },
     "latest_round": {
       "type_cb_style": "Series A",
