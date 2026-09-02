@@ -19,7 +19,10 @@ TYPE_MAP = {
     'Direct Listing': 'Public Listing / Reverse Merger',
     'Common Stock Financing': 'Late Stage Venture',
     'Series B / Strategic': 'Series B',
+    'Series E-2': 'Series E',
 }
+# Ambiguous label — normalized but flagged for research (was it debt or equity?)
+AMBIGUOUS = {'Debt / Venture Unknown': 'Venture - Series Unknown'}
 
 s = session()
 rows = get_values(s, "'Funding Rounds'!A2:N3000", render='FORMATTED_VALUE')
@@ -48,6 +51,16 @@ for i, r in enumerate(rows):
             (note + ' | ' if note else '') + '2019 disclosure was $15M combined across seed + '
             'Series A; per-round split not public. Verify split before treating amounts as exact.']]})
         receipts.append(f'{frid} Abridge {rtype} -> confidence REVIEW (undisclosed split)')
+
+    # 3b. Ambiguous labels: normalize + flag REVIEW (can't tell debt from equity)
+    if rtype in AMBIGUOUS:
+        data.append({'range': f"'Funding Rounds'!E{rownum}", 'values': [[AMBIGUOUS[rtype]]]})
+        data.append({'range': f"'Funding Rounds'!M{rownum}", 'values': [['REVIEW']]})
+        data.append({'range': f"'Funding Rounds'!N{rownum}", 'values': [[
+            (note + ' | ' if note else '') + f'Normalized from ambiguous label "{rtype}"; '
+            'flagged REVIEW — verify whether this was a debt facility or an equity round.']]})
+        receipts.append(f'{frid} type "{rtype}" -> "{AMBIGUOUS[rtype]}" + REVIEW')
+        continue
 
     # 3. Vocabulary normalization
     if rtype in TYPE_MAP:

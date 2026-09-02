@@ -28,10 +28,14 @@ def cols(a, b):
 F_SPEC = {
     'V': '=IF($D{r}="","",IF(COUNTIF(FundingRounds_CompanyIds,$D{r})=0,"",'
          'MAXIFS(FundingRounds_Dates,FundingRounds_CompanyIds,$D{r})))',
+    # Sort: date desc, then amount desc — same-day rounds (e.g. a seed + Series A
+    # disclosed together) surface the larger primary, matching the audit convention.
     'W': '=IF(OR($D{r}="",$V{r}=""),"",IFERROR(INDEX(SORT(FILTER({{FundingRounds_Dates,'
-         'FundingRounds_Types}},FundingRounds_CompanyIds=$D{r}),1,FALSE),1,2),""))',
+         'FundingRounds_Types,FundingRounds_Amounts}},FundingRounds_CompanyIds=$D{r}),'
+         '1,FALSE,3,FALSE),1,2),""))',
     'X': '=IF(OR($D{r}="",$V{r}=""),"",IFERROR(LET(a,INDEX(SORT(FILTER({{FundingRounds_Dates,'
-         'FundingRounds_Amounts}},FundingRounds_CompanyIds=$D{r}),1,FALSE),1,2),IF(a=0,"",a)),""))',
+         'FundingRounds_Amounts}},FundingRounds_CompanyIds=$D{r}),1,FALSE,2,FALSE),1,2),'
+         'IF(a=0,"",a)),""))',
     'Y': '=IF($D{r}="","",IFERROR(LET(t,INDEX(\'Company Metrics\'!$M:$M,'
          'MATCH($D{r},\'Company Metrics\'!$A:$A,0)),IF(OR(t="",t=0),"",t)),""))',
     'Z': '=IF($D{r}="","",IFERROR(INDEX(Companies!$B:$B,'
