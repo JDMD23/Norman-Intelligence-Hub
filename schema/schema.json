@@ -219,8 +219,8 @@
           "type": "text",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($D{r}=\"\",$V{r}=\"\"),\"\",IFERROR(INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Types},FundingRounds_CompanyIds=$D{r}),1,FALSE),1,2),\"\"))",
-          "description": "Type of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds."
+          "formula_pattern": "=IF(OR($D{r}=\"\",$V{r}=\"\"),\"\",IFERROR(INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Types,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,3,FALSE),1,2),\"\"))",
+          "description": "Type of most recent round; same-day rounds resolve to the larger amount (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds."
         },
         {
           "column": "X",
@@ -229,7 +229,7 @@
           "type": "num",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($D{r}=\"\",$V{r}=\"\"),\"\",IFERROR(LET(a,INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE),1,2),IF(a=0,\"\",a)),\"\"))",
+          "formula_pattern": "=IF(OR($D{r}=\"\",$V{r}=\"\"),\"\",IFERROR(LET(a,INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,2,FALSE),1,2),IF(a=0,\"\",a)),\"\"))",
           "description": "Amount of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds."
         },
         {

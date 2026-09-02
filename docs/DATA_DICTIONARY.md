@@ -30,7 +30,7 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | T | Comp Source | `source` | text | input |  | CompSources | Where this comp came from. |
 | U | Verified Date | `verified` | date | input |  |  | When this comp was last verified. >6 months old flips status to STALE - REVERIFY. |
 | V | Latest Round Date | `lr_date` | date | calc |  |  | Most recent round date (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
-| W | Latest Round Type | `lr_type` | text | calc |  |  | Type of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
+| W | Latest Round Type | `lr_type` | text | calc |  |  | Type of most recent round; same-day rounds resolve to the larger amount (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
 | X | Latest Round Amt ($M) | `lr_amt` | num | calc |  |  | Amount of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
 | Y | Total Tracked Funding ($M) | `total_fund` | num | calc |  |  | Sum of tracked rounds (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. Blank (never 0) when tracked rounds have no amounts. Semantic: tracked receipts, not researched narrative totals. |
 | Z | Company (canonical) | `company` | text | calc |  |  | Canonical company name (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
