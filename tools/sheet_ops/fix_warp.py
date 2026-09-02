@@ -37,13 +37,16 @@ fr_ids = get_values(s, "'Funding Rounds'!A2:G3000")
 warp_rounds = [r for r in fr_ids if len(r) > 4 and r[1] == 'CO-0090']
 if not any('Series B' in str(r[4]) for r in warp_rounds):
     n = max(int(r[0][3:]) for r in fr_ids if r and str(r[0]).startswith('FR-')) + 1
-    r = s.post(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}/values/'
-               "'Funding Rounds'!A:N:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
-               json={'values': [[f'FR-{n:04d}', 'CO-0090', '', '3', 'Series B', '2026-06-25', 60.0,
-                                 'Battery Ventures', 85.0, '',
-                                 'SiliconANGLE 2026-06-25 + Dealroom + company PR (Barchart)',
-                                 'https://siliconangle.com/2026/06/25/warp-lands-60m-automate-payroll-compliance-hr-ai/',
-                                 'HIGH', 'Postdates 2026-08-12 audit; added on identity resolution.']]})
+    last_row = max(i + 2 for i, r in enumerate(fr_ids) if r and r[0] != '')
+    # Write the next empty row explicitly: C (Company) and J (Months Since Prior) are formula
+    # columns pre-filled to row 3000, so None leaves them untouched (append would blank them).
+    r = s.put(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}/values/'
+              f"'Funding Rounds'!A{last_row + 1}:N{last_row + 1}?valueInputOption=USER_ENTERED",
+              json={'values': [[f'FR-{n:04d}', 'CO-0090', None, 3, 'Series B', '2026-06-25', 60.0,
+                                'Battery Ventures', 85.0, None,
+                                'SiliconANGLE 2026-06-25 + Dealroom + company PR (Barchart)',
+                                'https://siliconangle.com/2026/06/25/warp-lands-60m-automate-payroll-compliance-hr-ai/',
+                                'HIGH', 'Postdates 2026-08-12 audit; added on identity resolution.']]})
     assert r.status_code == 200, r.json()
     print(f'appended FR-{n:04d}: Warp Series B $60M 2026-06-25')
 else:
