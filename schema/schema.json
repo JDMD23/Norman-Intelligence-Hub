@@ -332,8 +332,8 @@
           "type": "rent",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($L{r}=\"\",$N{r}=\"\",$O{r}=\"\",$S{r}=\"\"),\"\",LET(nyr,$N{r},rzero,$O{r},rsix,IF($P{r}=\"\",rzero*1.03^5,$P{r}),relev,IF($Q{r}=\"\",IF($P{r}=\"\",rzero*1.03^10,$P{r}*1.03^5),$Q{r}),freem,IF($R{r}=\"\",0,$R{r}),tiv,$S{r},disc,0.06,grw,0.03,yrs,SEQUENCE(ROUNDUP(nyr)),pvrent,SUM(MAP(yrs,LAMBDA(kk,LET(wt,MIN(1,nyr-(kk-1)),rt,IF(kk<=5,rzero*(1+grw)^(kk-1),IF(kk<=10,rsix*(1+grw)^(kk-6),relev*(1+grw)^(kk-11))),wt*rt/(1+disc)^kk)))),anf,(1-(1+disc)^-nyr)/disc,(pvrent-freem/12*rzero-tiv)/anf))",
-          "description": "DCF net effective rent: yearly escalated rents discounted at 6%, minus free rent + TI (upfront), levelized by annuity factor, per SF. Blank when TI unknown."
+          "formula_pattern": "=IF(OR($N{r}=\"\",$O{r}=\"\",$S{r}=\"\"),\"\",LET(nmo,ROUND($N{r}*12,0),im,0.06/12,rz,$O{r},rsix,IF($P{r}=\"\",rz,$P{r}),relev,IF($Q{r}=\"\",rsix,$Q{r}),mos,SEQUENCE(nmo),pvbeg,SUMPRODUCT(MAP(mos,LAMBDA(mm,IF(mm<=60,rz,IF(mm<=120,rsix,relev))/12*(1+im)^-(mm-1)))),afbeg,(1-(1+im)^-nmo)/im/12*(1+im),freemo,IF($R{r}=\"\",0,$R{r}),ROUND(pvbeg/afbeg,2)-(freemo/12*rz+$S{r})/afbeg))",
+          "description": "Baseline NER (per NER.xls model, owner-approved 2026-09-02): flat rent tranches (start rent to mo 60, Yr-6 rate to mo 120, Yr-11 rate after; blank bump carries prior rate), monthly discounting at 6%/12, beginning-of-month annuity, free rent at starting rate + TI charged nominal upfront, levelized to $/RSF/yr. No commissions/downtime. Blank when TI unknown."
         },
         {
           "column": "AJ",

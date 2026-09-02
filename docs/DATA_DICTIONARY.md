@@ -42,7 +42,7 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | AF | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
 | AG | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Three-tranche rent total with 3% annual escalation inside each tranche. Tranche rates: Starting / Yr-6 / Yr-11 (blank steps fall back to continuous 3%). |
 | AH | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross Rent / RSF / Term. |
-| AI | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | DCF net effective rent: yearly escalated rents discounted at 6%, minus free rent + TI (upfront), levelized by annuity factor, per SF. Blank when TI unknown. |
+| AI | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER (per NER.xls model, owner-approved 2026-09-02): flat rent tranches (start rent to mo 60, Yr-6 rate to mo 120, Yr-11 rate after; blank bump carries prior rate), monthly discounting at 6%/12, beginning-of-month annuity, free rent at starting rate + TI charged nominal upfront, levelized to $/RSF/yr. No commissions/downtime. Blank when TI unknown. |
 | AJ | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. Blank until Seats entered. |
 | AK | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. Blank until Seats entered. |
 | AL | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / latest round ($M->$). |
@@ -118,7 +118,7 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 - **DealTypes**: Expansion, Extension/Expansion, New Lease, Renewal, Renewal + Expansion, Sublease
 - **Conditions**: Raw, New prebuilt, Second Gen
 - **DeliveryConditions**: LL Turnkey, As-Is, Custom TIA
-- **RoundTypes**: Debt, IPO, Late Stage Venture, Private Equity, Public Listing / Reverse Merger, Seed, Series A, Series B, Series C, Series D, Series E, Series F, Venture - Series Unknown
+- **RoundTypes**: Debt, IPO, Late Stage Venture, Private Equity, Public Listing / Reverse Merger, Seed, Series A, Series B, Series C, Series D, Series E, Series F, Series G, Venture - Series Unknown
 - **ConfidenceLevels**: HIGH, MEDIUM, LOW, REVIEW
 - **RecordStatuses**: READY, NEEDS REVIEW, MISSING INPUTS
 
