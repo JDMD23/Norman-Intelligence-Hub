@@ -70,11 +70,29 @@ The hub's DCF NER shares the model's philosophy (free rent + TI charged nominall
 4. **Rounding.** The model rounds the levelized base rent to cents before subtracting concessions; the hub doesn't round.
 5. **Convention toggle.** The model supports beginning-of-month timing (used in all scenarios); the hub's annual formula has no timing convention.
 
-### Recommended hub change (pending owner approval)
+### Finalized hub baseline (owner-approved 2026-09-02)
 
-Replace the AI-column formula's annual machinery with the model's monthly machinery, keeping current hub inputs (starting rent, Yr-6/Yr-11 steps or 3% fallback, free months, TI):
+Owner decisions: **no commissions, no downtime** — NER = rent + free rent + TI only. Rent path is **flat tranches** matching real deal shapes (3–5 yr deals flat; 7–10+ yr deals bump at year 6 / year 11): starting rent holds through month 60, the Yr-6 rate through month 120, the Yr-11 rate after. **A blank bump carries the previous rate forward flat** (the old 3%-annual-escalation fallback is dropped for NER).
 
-- `i = 6%/12`, T = term×12
-- Build monthly tranches from the hub's three-tranche rent path (each year's rate held for 12 months)
-- `NER = PV_beg/AF_beg − (free/12×start_rent)/AF_beg − TI/AF_beg`
-- Optional new inputs, matching the model: downtime months, commission count + schedule (add a `CommissionSchedule` block to Reference).
+Inputs (existing Lease Comps columns): term `N`, starting rent `O`, Yr-6 rent `P`, Yr-11 rent `Q`, free months `R`, TI `S`. Blank-when-TI-unknown policy retained.
+
+```
+i        = 6%/12                       T = ROUND(term_years × 12)
+PV_beg   = Σ_{m=1..T} rate(m)/12 × (1+i)^−(m−1)     rate(m) = O | P | Q by tranche
+AF_beg   = [(1−(1+i)^−T)/i]/12 × (1+i)
+NER      = ROUND(PV_beg/AF_beg, 2) − (free/12 × O + TI)/AF_beg
+```
+
+Sheet formula for `Lease Comps!AI{r}` (verified equivalent to `scripts/ner.py hub_baseline_ner`, which matches the recovered engine exactly on flat/bumped/fractional-term shapes):
+
+```
+=IF(OR($N{r}="",$O{r}="",$S{r}=""),"",LET(nmo,ROUND($N{r}*12,0),im,0.06/12,
+ rz,$O{r},rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),
+ mos,SEQUENCE(nmo),
+ pvbeg,SUMPRODUCT(MAP(mos,LAMBDA(mm,IF(mm<=60,rz,IF(mm<=120,rsix,relev))/12*(1+im)^-(mm-1)))),
+ afbeg,(1-(1+im)^-nmo)/im/12*(1+im),
+ freemo,IF($R{r}="",0,$R{r}),
+ ROUND(pvbeg/afbeg,2)-(freemo/12*rz+$S{r})/afbeg))
+```
+
+**Impact note:** every existing NER value shifts when this is applied — a typical comp (10 yr, $89 start, $96 yr-6 bump, 12 mo free, $100 TI) moves from $71.67 (current annual formula with 3% intra-tranche escalation) to **$66.93**. The dominant effect is dropping the 3% escalation assumption, which the owner's deal shapes don't have; monthly discounting is a second-order effect. `Projected Gross Rent` (AG) still assumes 3% escalation — flagged for a follow-up decision on whether to align it.

@@ -78,6 +78,25 @@ class Lease:
         }
 
 
+def hub_baseline_ner(term_years, start_rent, rent_y6=None, rent_y11=None,
+                     free_months=0.0, ti_psf=None, annual_rate=0.06):
+    """The hub's finalized NER (owner-approved 2026-09-02): flat tranches
+    (start rent through month 60, Yr-6 rate through 120, Yr-11 rate after;
+    blank bump carries the prior rate), monthly discounting, beg-of-month,
+    free rent at the starting rate + TI nominal upfront, levelized.
+    Returns None when TI is unknown (hub blank-propagation policy)."""
+    if ti_psf is None or term_years is None or start_rent is None:
+        return None
+    T = round(term_years * 12)
+    r6 = start_rent if rent_y6 is None else rent_y6
+    r11 = r6 if rent_y11 is None else rent_y11
+    bumps = [(start_rent, min(T, 60))]
+    if T > 60: bumps.append((r6, min(T, 120) - 60))
+    if T > 120: bumps.append((r11, T - 120))
+    return Lease(bumps=bumps, annual_rate=annual_rate,
+                 free_months=free_months, ti_psf=ti_psf).ner()['ner']
+
+
 if __name__ == '__main__':
     # NER.xls scenario 1: expect base 91.62, NER 80.603
     s1 = Lease(bumps=[(89, 72), (96, 60)], free_months=12)
