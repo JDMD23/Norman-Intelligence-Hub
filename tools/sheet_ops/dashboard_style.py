@@ -138,7 +138,8 @@ reqs.append({'addConditionalFormatRule': {'index': 1, 'rule': {
                                'textFormat': {'foregroundColor': hx('#991B1B'), 'bold': True}}}}}})
 
 # column widths — column A was truncating every label and stage name
-for c, w in {'A': 236, 'B': 74, 'C': 104, 'D': 104, 'E': 124, 'F': 104, 'G': 122, 'H': 188}.items():
+# B carries the KPI values too: a bold 7-digit number at 12pt needs ~100px or Sheets shows ###
+for c, w in {'A': 236, 'B': 110, 'C': 104, 'D': 104, 'E': 124, 'F': 104, 'G': 122, 'H': 188}.items():
     reqs.append({'updateDimensionProperties': {
         'range': {'sheetId': d, 'dimension': 'COLUMNS', 'startIndex': ci(c), 'endIndex': ci(c) + 1},
         'properties': {'pixelSize': w}, 'fields': 'pixelSize'}})

@@ -35,6 +35,8 @@ scripts/
   ner.py             Python reference for the workbook's NER formula
 tools/sheet_ops/     Receipted, QA-gated workbook operations (Sheets API; needs GOOGLE_SA_KEY)
   run_all.py         Lease Comps v4 migration pipeline (re-runnable)
+  style.py / polish.py / dashboard_style.py / style_workbook.py
+                     Presentation passes (Lease Comps zones, tab tiering, Dashboard, supporting tabs)
   sync_schema.py     Pull _Schema + Reference into schema/ and regenerate the data dictionary
 CLAUDE.md          Contract for AI agents working on the hub
 ```

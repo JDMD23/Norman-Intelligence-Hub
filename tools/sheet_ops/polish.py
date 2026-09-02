@@ -93,11 +93,13 @@ reqs.append({'updateDimensionProperties': {
 notes.append('hid Company ID (col D) — join key, still wired to everything')
 
 # --- 3. collapsed column groups (reverse: click the +/- bar above the columns)
-have_groups = {(g['range']['startColumnIndex'], g['range']['endColumnIndex'])
+have_groups = {(g['range']['startIndex'], g['range']['endIndex'])   # DimensionRange keys
                for g in lc_sheet.get('columnGroups', [])}
 for c1, c2, why in GROUPS:
     key = (ci(c1), ci(c2) + 1)
-    if key in have_groups:
+    # already grouped if any existing group covers the span (a later column insert can
+    # widen a group, e.g. AO -> AO:AP once the cohort column landed)
+    if any(a <= key[0] and b >= key[1] for a, b in have_groups):
         continue
     grange = {'sheetId': lc, 'dimension': 'COLUMNS', 'startIndex': key[0], 'endIndex': key[1]}
     reqs.append({'addDimensionGroup': {'range': grange}})
