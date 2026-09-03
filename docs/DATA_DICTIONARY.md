@@ -66,6 +66,8 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | J | Funding Accel/Decel Note | `accel` | text | input |  |  | Acceleration/deceleration read. |
 | K | Sources | `sources` | text | input |  |  | Research source list. |
 | L | Notes | `notes` | text | input |  |  | Identity caveats (e.g. Mirage<->Captions), review flags. |
+| M | Latest Round | `latest_round` | text | calc |  |  | Latest tracked round type and month (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. |
+| N | Total Tracked Funding ($M) | `total_fund` | num | calc |  |  | Sum of tracked rounds, blank (never 0) when amounts are unknown (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. |
 
 ## Funding Rounds
 

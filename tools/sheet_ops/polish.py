@@ -10,11 +10,13 @@ is safe to re-run and easy to reverse (notes below each section say how).
   5. Banded rows      per zone, so row-scanning and the zone tint scheme coexist.
 """
 from common import session, batch_update, changelog, SID
+from theme import (WHITE, INPUT_ALT, WIRE, WIRE_ALT, CALC, CALC_ALT, GOV, GOV_ALT,
+                   OK_BG, OK_FG, WARN_BG, WARN_FG, BAD_BG, BAD_FG, NEUTRAL_BG, NEUTRAL_FG)
 
 # Machinery: load-bearing (Company Metrics alone feeds 199 wired cells) but never browsed.
 HIDE_TABS = ['Company Metrics', 'QA Harness', 'Changelog', '_Schema']
 # Front-to-back order for whatever stays visible.
-ORDER = ['Dashboard', 'Lease Comps', 'Companies', 'Funding Rounds', 'Start Here']
+ORDER = ['Start Here', 'Dashboard', 'Lease Comps', 'Companies', 'Funding Rounds']
 
 # Collapsed column groups: (first, last, why)
 GROUPS = [('V', 'Y', 'funding round detail'),
@@ -23,16 +25,16 @@ GROUPS = [('V', 'Y', 'funding round detail'),
           ('AO', 'AO', 'QA notes')]
 
 # Status pills: value -> (background, text)
-STATUS = [('READY', '#DCFCE7', '#166534'),
-          ('NEEDS REVIEW', '#FEF3C7', '#92400E'),
-          ('STALE - REVERIFY', '#FEE2E2', '#991B1B'),
-          ('MISSING INPUTS', '#E2E8F0', '#334155')]
+STATUS = [('READY', OK_BG, OK_FG),
+          ('NEEDS REVIEW', WARN_BG, WARN_FG),
+          ('STALE - REVERIFY', BAD_BG, BAD_FG),
+          ('MISSING INPUTS', NEUTRAL_BG, NEUTRAL_FG)]
 
 # Zone banding: (first, last, base color, alternate) — alternate is a touch deeper so
 # the eye can track a row across 30+ columns without losing the zone colour coding.
-BANDS = [('A', 'U', '#FFFFFF', '#F8FAFC'), ('V', 'AA', '#ECFEFF', '#DDF5F9'),
-         ('AB', 'AB', '#FFFFFF', '#F8FAFC'), ('AC', 'AM', '#F0FDF4', '#E2F7E9'),
-         ('AN', 'AO', '#FFFBEB', '#FCF2D9')]
+BANDS = [('A', 'U', WHITE, INPUT_ALT), ('V', 'AA', WIRE, WIRE_ALT),
+         ('AB', 'AB', WHITE, INPUT_ALT), ('AC', 'AM', CALC, CALC_ALT),
+         ('AN', 'AO', GOV, GOV_ALT), ('AP', 'AP', WIRE, WIRE_ALT)]
 
 NROWS = 1207
 
@@ -136,7 +138,7 @@ for n in notes:
 changelog(s, 'POLISH',
           'Presentation pass (no data/formula change): machinery tabs hidden (Company Metrics, '
           'QA Harness, Changelog, _Schema) and visible tabs ordered Dashboard > Lease Comps > '
-          'Companies > Funding Rounds; Company ID column hidden; funding detail, concession '
+          'Companies > Funding Rounds (Start Here opens the workbook); Company ID column hidden; funding detail, concession '
           'restatements, ratios and QA notes put in collapsed column groups; Record Status shown '
           'as colour; per-zone banded rows. Date Signed and Latest Round Date now display as '
           '"July 2026" (day was always a placeholder).', '')

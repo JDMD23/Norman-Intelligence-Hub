@@ -514,6 +514,26 @@
           "role": "input",
           "required": false,
           "description": "Identity caveats (e.g. Mirage<->Captions), review flags."
+        },
+        {
+          "column": "M",
+          "header": "Latest Round",
+          "key": "latest_round",
+          "type": "text",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF($A{r}=\"\",\"\",IFERROR(LET(t,INDEX('Company Metrics'!$L:$L,MATCH($A{r},'Company Metrics'!$A:$A,0)),d,INDEX('Company Metrics'!$K:$K,MATCH($A{r},'Company Metrics'!$A:$A,0)),IF(t=\"\",\"\",t&IF(d=\"\",\"\",\" · \"&TEXT(d,\"mmm yyyy\")))),\"\"))",
+          "description": "Latest tracked round type and month (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics."
+        },
+        {
+          "column": "N",
+          "header": "Total Tracked Funding ($M)",
+          "key": "total_fund",
+          "type": "num",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF($A{r}=\"\",\"\",IFERROR(LET(t,INDEX('Company Metrics'!$M:$M,MATCH($A{r},'Company Metrics'!$A:$A,0)),IF(OR(t=\"\",t=0),\"\",t)),\"\"))",
+          "description": "Sum of tracked rounds, blank (never 0) when amounts are unknown (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics."
         }
       ]
     },

@@ -5,6 +5,8 @@ other tabs, green = computed here, amber = governance), zone-boundary rules,
 per-column number formats, frozen header + identity columns, sized columns.
 """
 from common import session, sheet_ids, batch_update, changelog, SID
+from theme import (CBRE_GREEN, SAGE, FOREST, OLIVE, WIRE, CALC, GOV, WHITE, LIGHT, FONT,
+                   TAB_PRIMARY)
 
 s = session()
 lc = sheet_ids(s)['Lease Comps']
@@ -38,21 +40,21 @@ def rng(c1, c2, r1=0, r2=NROWS):
 reqs = []
 
 # --- header band by zone (row 1): white bold, wrapped, centered
-ZONES = [('A', 'D', '#0F172A'), ('E', 'K', '#1E293B'), ('L', 'U', '#334155'),
-         ('V', 'AA', '#155E75'), ('AB', 'AB', '#334155'), ('AC', 'AM', '#166534'),
-         ('AN', 'AO', '#92400E')]
+ZONES = [('A', 'D', CBRE_GREEN), ('E', 'K', CBRE_GREEN), ('L', 'U', CBRE_GREEN),
+         ('V', 'AA', SAGE), ('AB', 'AB', CBRE_GREEN), ('AC', 'AM', FOREST),
+         ('AN', 'AO', OLIVE), ('AP', 'AP', SAGE)]
 for c1, c2, color in ZONES:
     reqs.append({'repeatCell': {'range': rng(c1, c2, 0, 1), 'cell': {'userEnteredFormat': {
         'backgroundColor': hx(color),
-        'textFormat': {'foregroundColor': hx('#FFFFFF'), 'bold': True, 'fontSize': 9},
+        'textFormat': {'foregroundColor': hx('#FFFFFF'), 'bold': True, 'fontSize': 9, 'fontFamily': FONT},
         'wrapStrategy': 'WRAP', 'horizontalAlignment': 'CENTER', 'verticalAlignment': 'MIDDLE',
     }}, 'fields': 'userEnteredFormat(backgroundColor,textFormat,wrapStrategy,'
                   'horizontalAlignment,verticalAlignment)'}})
 
 # --- data-zone tints (rows 2+): inputs white; wire cyan; calc green; governance amber
-for c1, c2, color in [('A', 'U', '#FFFFFF'), ('AB', 'AB', '#FFFFFF'),
-                      ('V', 'AA', '#ECFEFF'), ('AC', 'AM', '#F0FDF4'),
-                      ('AN', 'AO', '#FFFBEB')]:
+for c1, c2, color in [('A', 'U', WHITE), ('AB', 'AB', WHITE),
+                      ('V', 'AA', WIRE), ('AC', 'AM', CALC),
+                      ('AN', 'AO', GOV), ('AP', 'AP', WIRE)]:
     reqs.append({'repeatCell': {'range': rng(c1, c2, 1), 'cell': {'userEnteredFormat': {
         'backgroundColor': hx(color)}}, 'fields': 'userEnteredFormat.backgroundColor'}})
 
@@ -75,15 +77,15 @@ for (c1, c2), (t, p) in FMT.items():
         'fields': 'userEnteredFormat.numberFormat'}})
 
 # --- zone-boundary vertical rules + header underline
-EDGE = {'style': 'SOLID_MEDIUM', 'color': hx('#94A3B8')}
-for c in ['D', 'K', 'U', 'AA', 'AB', 'AM']:
+EDGE = {'style': 'SOLID_MEDIUM', 'color': hx(LIGHT)}
+for c in ['D', 'K', 'U', 'AA', 'AB', 'AM', 'AO']:
     reqs.append({'updateBorders': {'range': rng(c, c), 'right': EDGE}})
-reqs.append({'updateBorders': {'range': rng('A', 'AO', 0, 1),
-                               'bottom': {'style': 'SOLID_THICK', 'color': hx('#0F172A')}}})
+reqs.append({'updateBorders': {'range': rng('A', 'AP', 0, 1),
+                               'bottom': {'style': 'SOLID_THICK', 'color': hx(CBRE_GREEN)}}})
 
 # --- freeze header + identity, header height, tab color
 reqs.append({'updateSheetProperties': {'properties': {
-    'sheetId': lc, 'tabColorStyle': {'rgbColor': hx('#0F172A')},
+    'sheetId': lc, 'tabColorStyle': {'rgbColor': hx(TAB_PRIMARY)},
     'gridProperties': {'frozenRowCount': 1, 'frozenColumnCount': 3}},
     'fields': 'tabColorStyle,gridProperties.frozenRowCount,gridProperties.frozenColumnCount'}})
 reqs.append({'updateDimensionProperties': {
@@ -96,7 +98,7 @@ WIDTHS = {'A': 88, 'B': 96, 'C': 168, 'D': 92, 'E': 200, 'F': 148, 'G': 104, 'H'
           'Q': 96, 'R': 64, 'S': 76, 'T': 108, 'U': 100, 'V': 108, 'W': 140, 'X': 96,
           'Y': 116, 'Z': 168, 'AA': 100, 'AB': 260, 'AC': 108, 'AD': 100, 'AE': 104,
           'AF': 128, 'AG': 100, 'AH': 112, 'AI': 100, 'AJ': 78, 'AK': 96, 'AL': 118,
-          'AM': 104, 'AN': 128, 'AO': 240}
+          'AM': 104, 'AN': 128, 'AO': 240, 'AP': 130}
 for c, w in WIDTHS.items():
     reqs.append({'updateDimensionProperties': {
         'range': {'sheetId': lc, 'dimension': 'COLUMNS', 'startIndex': ci(c), 'endIndex': ci(c) + 1},

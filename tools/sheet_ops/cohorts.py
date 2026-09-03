@@ -90,14 +90,14 @@ COLS = {
     'E': per_row('LeaseComps_StartRent'),
     'F': per_row('LeaseComps_NER'),
     'G': per_row('LeaseComps_CostSeat'),
-    'H': ('=IF($A{r}="","",IF($B{r}=0,"NO COMPS",IF($B{r}<5,"LOW N (directional only)",'
-          'IF($B{r}<8,"THIN","OK"))))'),
+    'H': ('=IF($A{r}="","",IF($B{r}=0,"No comps",IF($B{r}<5,"Thin",'
+          'IF($B{r}<8,"Directional","Reliable"))))'),
 }
 first, nrows = 14, len(ORDER)
 data = [
-    {'range': 'Dashboard!A12', 'values': [['BENCHMARKS BY FUNDING STAGE (all comps)']]},
-    {'range': 'Dashboard!A13:H13', 'values': [['Stage', 'Comps', 'Avg RSF', 'Med RSF',
-                                              'Avg Start Rent', 'Avg NER', 'Avg Cost/Seat',
+    {'range': 'Dashboard!A12', 'values': [['Benchmarks by funding stage  ·  all signed leases']]},
+    {'range': 'Dashboard!A13:H13', 'values': [['Stage', 'Comps', 'Avg RSF', 'Median RSF',
+                                              'Avg start rent', 'Avg NER', 'Avg cost/seat',
                                               'Sample']]},
     {'range': 'Dashboard!A%d' % first, 'values': [['=IFERROR(FILTER(CohortOrder,CohortOrder<>""),"")']]},
 ]
@@ -107,7 +107,7 @@ for c, tpl in COLS.items():
 values_batch(s, data)
 # clear the old 30-row capacity tail (cohorts are a fixed list now)
 s.post(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}/values/'
-       f'Dashboard!A{first + nrows}:H43:clear', json={})
+       f'Dashboard!A{first + nrows}:H23:clear', json={})
 print('Dashboard: benchmark table rebuilt on %d cohorts, median RSF added' % nrows)
 
 # --- QA-006 scans the Dashboard for formula errors; widen it to the new column H

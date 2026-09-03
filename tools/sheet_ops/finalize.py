@@ -91,7 +91,7 @@ hdr = get_values(s, "'Dashboard'!A13:H13", render='FORMATTED_VALUE')
 hdr = hdr[0] if hdr else []
 anchor_f = get_values(s, "'Dashboard'!A14", render='FORMULA')
 anchor_f = anchor_f[0][0] if anchor_f and anchor_f[0] else ''
-ok = 'Med RSF' in hdr and 'CohortOrder' in str(anchor_f)
+ok = any(h in hdr for h in ('Median RSF', 'Med RSF')) and 'CohortOrder' in str(anchor_f)
 print('Dashboard benchmark table:', 'cohort-driven, headers current — OK' if ok else
       'UNEXPECTED — run cohorts.py (headers=%r, A14=%r)' % (hdr, str(anchor_f)[:60]))
 if not ok:
