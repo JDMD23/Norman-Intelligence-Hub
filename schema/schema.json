@@ -250,11 +250,61 @@
           "type": "text",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF($C{r}=\"\",\"\",IF($S{r}=\"\",\"No Funding Data\",IFERROR(INDEX(CohortLabels,MATCH($S{r},CohortTypes,0)),\"Stage Unknown\")))",
+          "formula_pattern": "=IF($C{r}=\"\",\"\",IF($U{r}=\"\",\"No Funding Data\",IFERROR(INDEX(CohortLabels,MATCH($U{r},CohortTypes,0)),\"Stage Unknown\")))",
           "description": "Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> \"Late Stage (D+)\", IPO + reverse merger -> \"Public\". Add new round types to the Reference map, never here."
         },
         {
           "column": "AA",
+          "header": "Floors on File",
+          "key": "floors_n",
+          "type": "int",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF($A{r}=\"\",\"\",LET(n,COUNTIF(FloorDetail_CompIds,$A{r}),IF(n=0,\"\",n)))",
+          "description": "How many Floor Detail rows exist for this comp. Blank = none; the comp is single-floor or its floors share one economic deal."
+        },
+        {
+          "column": "AB",
+          "header": "Detail RSF",
+          "key": "detail_rsf",
+          "type": "int",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR($A{r}=\"\",$AA{r}=\"\"),\"\",SUMIF(FloorDetail_CompIds,$A{r},FloorDetail_RSF))",
+          "description": "Sum of RSF across this comp’s Floor Detail rows. Must equal the typed RSF."
+        },
+        {
+          "column": "AC",
+          "header": "Detail Rent (wtd)",
+          "key": "detail_rent",
+          "type": "rent",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR($A{r}=\"\",$AA{r}=\"\"),\"\",LET(m,(FloorDetail_CompIds=$A{r})*(FloorDetail_Rents<>\"\"),d,SUMPRODUCT(m*N(FloorDetail_RSF)),IF(d=0,\"\",SUMPRODUCT(m*N(FloorDetail_RSF)*N(FloorDetail_Rents))/d)))",
+          "description": "RSF-weighted starting rent across the floors on file. Weighted, never a simple average."
+        },
+        {
+          "column": "AD",
+          "header": "Detail TI (wtd)",
+          "key": "detail_ti",
+          "type": "rent",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF(OR($A{r}=\"\",$AA{r}=\"\"),\"\",LET(m,(FloorDetail_CompIds=$A{r})*(FloorDetail_TIs<>\"\"),d,SUMPRODUCT(m*N(FloorDetail_RSF)),IF(d=0,\"\",SUMPRODUCT(m*N(FloorDetail_RSF)*N(FloorDetail_TIs))/d)))",
+          "description": "RSF-weighted TI across the floors on file, over floors that carry a TI. This is what catches a concession dropped during hand-blending."
+        },
+        {
+          "column": "AE",
+          "header": "Blend Check",
+          "key": "blend_check",
+          "type": "text",
+          "role": "qa",
+          "required": false,
+          "formula_pattern": "=IF(OR($A{r}=\"\",$AA{r}=\"\"),\"\",LET(t,TEXTJOIN(\"; \",TRUE,IF(AND($AB{r}<>\"\",$L{r}<>\"\",ABS($L{r}-$AB{r})>1),\"RSF MISMATCH\",\"\"),IF(AND($AC{r}<>\"\",$O{r}<>\"\",ABS($O{r}-$AC{r})>0.5),\"RENT MISMATCH\",\"\"),IF(AND($AD{r}<>\"\",$AD{r}>0,OR($S{r}=\"\",$S{r}=0)),\"TI MISSING\",IF(AND($AD{r}<>\"\",$S{r}<>\"\",ABS($S{r}-$AD{r})>1),\"TI MISMATCH\",\"\"))),IF(t=\"\",\"OK\",t)))",
+          "description": "OK, or the mismatches between the typed RSF/rent/TI and the Floor Detail blend (tolerances 1 SF, $0.50/RSF, $1/SF). A typed 0 or blank TI against a positive detail blend reads TI MISSING. Feeds Record Status and QA Notes."
+        },
+        {
+          "column": "AF",
           "header": "Notes",
           "key": "notes",
           "type": "text",
@@ -263,37 +313,37 @@
           "description": "Free-form deal notes."
         },
         {
-          "column": "AB",
+          "column": "AG",
           "header": "Year 1 Rent ($)",
           "key": "y1_rent",
           "type": "usd",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR(L{r}=\"\",O{r}=\"\"),\"\",L{r}*O{r})",
+          "formula_pattern": "=IF(OR($L{r}=\"\",$O{r}=\"\"),\"\",$L{r}*$O{r})",
           "description": "RSF x P1 rent."
         },
         {
-          "column": "AC",
+          "column": "AH",
           "header": "Free Rent $ Value",
           "key": "free_val",
           "type": "usd",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR(R{r}=\"\",O{r}=\"\",L{r}=\"\"),\"\",R{r}/12*O{r}*L{r})",
+          "formula_pattern": "=IF(OR($R{r}=\"\",$O{r}=\"\",$L{r}=\"\"),\"\",$R{r}/12*$O{r}*$L{r})",
           "description": "(Free months / 12) x P1 rent x RSF."
         },
         {
-          "column": "AD",
+          "column": "AI",
           "header": "TI Allowance Total ($)",
           "key": "ti_total",
           "type": "usd",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR(S{r}=\"\",L{r}=\"\"),\"\",S{r}*L{r})",
+          "formula_pattern": "=IF(OR($S{r}=\"\",$L{r}=\"\"),\"\",$S{r}*$L{r})",
           "description": "TI $/SF x RSF."
         },
         {
-          "column": "AE",
+          "column": "AJ",
           "header": "Projected Gross Rent (Term)",
           "key": "pgr",
           "type": "usd",
@@ -303,17 +353,17 @@
           "description": "Nominal rent over the term on FLAT tranches (no assumed escalation)."
         },
         {
-          "column": "AF",
+          "column": "AK",
           "header": "Avg Rate ($/RSF/Yr)",
           "key": "avg_rate",
           "type": "rent",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($AC{r}=\"\",$L{r}=\"\",$N{r}=\"\"),\"\",$AC{r}/$L{r}/$N{r})",
+          "formula_pattern": "=IF(OR($AJ{r}=\"\",$L{r}=\"\",$N{r}=\"\"),\"\",$AJ{r}/$L{r}/$N{r})",
           "description": "Projected Gross / RSF / Term."
         },
         {
-          "column": "AG",
+          "column": "AL",
           "header": "NER Annuity ($/RSF/Yr) @ 6%",
           "key": "ner",
           "type": "rent",
@@ -323,80 +373,89 @@
           "description": "Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown."
         },
         {
-          "column": "AH",
+          "column": "AM",
           "header": "Cost/Seat (Year 1)",
           "key": "cost_seat",
           "type": "usd",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR(AB{r}=\"\",M{r}=\"\",M{r}=0),\"\",AB{r}/M{r})",
+          "formula_pattern": "=IF(OR($AG{r}=\"\",$M{r}=\"\",$M{r}=0),\"\",$AG{r}/$M{r})",
           "description": "Year 1 Rent / Seats."
         },
         {
-          "column": "AI",
+          "column": "AN",
           "header": "RSF / Seat",
           "key": "rsf_seat",
           "type": "num1",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR(L{r}=\"\",M{r}=\"\",M{r}=0),\"\",L{r}/M{r})",
+          "formula_pattern": "=IF(OR($L{r}=\"\",$M{r}=\"\",$M{r}=0),\"\",$L{r}/$M{r})",
           "description": "Density: RSF / Seats."
         },
         {
-          "column": "AJ",
+          "column": "AO",
           "header": "Rent-to-Raise (Yr 1) %",
           "key": "rent_raise",
           "type": "pct",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($Z{r}=\"\",$V{r}=\"\"),\"\",$Z{r}/($V{r}*1000000))",
+          "formula_pattern": "=IF(OR($AG{r}=\"\",$V{r}=\"\"),\"\",$AG{r}/($V{r}*1000000))",
           "description": "Year 1 Rent / wired latest round."
         },
         {
-          "column": "AK",
+          "column": "AP",
           "header": "Lease-to-Total-Funding %",
           "key": "l2tf",
           "type": "pct",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($AC{r}=\"\",$W{r}=\"\",$W{r}=0),\"\",$AC{r}/($W{r}*1000000))",
+          "formula_pattern": "=IF(OR($AJ{r}=\"\",$W{r}=\"\",$W{r}=0),\"\",$AJ{r}/($W{r}*1000000))",
           "description": "Projected Gross / wired total tracked funding."
         },
         {
-          "column": "AL",
+          "column": "AQ",
           "header": "Months of Rent Covered",
           "key": "mo_cover",
           "type": "num1",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($W{r}=\"\",$Z{r}=\"\",$Z{r}=0),\"\",($W{r}*1000000)/($Z{r}/12))",
+          "formula_pattern": "=IF(OR($W{r}=\"\",$AG{r}=\"\",$AG{r}=0),\"\",($W{r}*1000000)/($AG{r}/12))",
           "description": "Total tracked funding / monthly Year-1 rent."
         },
         {
-          "column": "AM",
+          "column": "AR",
           "header": "Record Status",
           "key": "status",
           "type": "text",
           "role": "qa",
           "required": false,
           "enum_named_range": "RecordStatuses",
-          "formula_pattern": "=IF($C{r}=\"\",\"\",IF(OR($A{r}=\"\",$L{r}=\"\",$N{r}=\"\",$O{r}=\"\",$B{r}=\"\",$F{r}=\"\"),\"MISSING INPUTS\",IF(OR($M{r}=\"\",$S{r}=\"\"),\"NEEDS REVIEW\",\"READY\")))",
-          "description": "READY / NEEDS REVIEW / MISSING INPUTS — computed, never typed."
+          "formula_pattern": "=IF($C{r}=\"\",\"\",IF(OR($A{r}=\"\",$L{r}=\"\",$N{r}=\"\",$O{r}=\"\",$B{r}=\"\",$F{r}=\"\"),\"MISSING INPUTS\",IF(OR($M{r}=\"\",$S{r}=\"\",AND($AE{r}<>\"\",$AE{r}<>\"OK\")),\"NEEDS REVIEW\",\"READY\")))",
+          "description": "READY / NEEDS REVIEW / MISSING INPUTS — computed, never typed. NEEDS REVIEW also when Blend Check is not OK."
         },
         {
-          "column": "AN",
+          "column": "AS",
           "header": "QA Notes",
           "key": "qa",
           "type": "text",
           "role": "qa",
           "required": false,
-          "formula_pattern": "(auto list)",
-          "description": "Auto list of missing fields."
+          "formula_pattern": "=IF($C{r}=\"\",\"\",TEXTJOIN(\"; \",TRUE,IF($A{r}=\"\",\"MISSING COMP ID\",\"\"),IF($L{r}=\"\",\"MISSING RSF\",\"\"),IF($N{r}=\"\",\"MISSING TERM\",\"\"),IF($O{r}=\"\",\"MISSING STARTING RENT\",\"\"),IF($B{r}=\"\",\"MISSING DATE\",\"\"),IF($F{r}=\"\",\"MISSING SUBMARKET\",\"\"),IF($M{r}=\"\",\"SEATS UNKNOWN\",\"\"),IF($S{r}=\"\",\"TI UNKNOWN - NER BLANK\",\"\"),IF(AND($AE{r}<>\"\",$AE{r}<>\"OK\"),\"FLOOR DETAIL: \"&$AE{r},\"\")))",
+          "description": "Auto list of missing fields, plus any Floor Detail blend mismatch."
         }
       ]
     },
     "Companies": {
       "columns": [
+        {
+          "column": "A",
+          "header": "Company ID",
+          "key": "company_id",
+          "type": "id",
+          "role": "input",
+          "required": true,
+          "description": "AUTO-ASSIGNED by onEdit trigger when Canonical Name is entered. Immutable, never reused. FK target for Lease Comps + Funding Rounds."
+        },
         {
           "column": "B",
           "header": "Canonical Name",
@@ -804,6 +863,101 @@
           "required": false,
           "formula_pattern": "=IF(A{r}=\"\",\"\",IF(C{r}=0,\"NO SIGNED COMP\",IF(OR(L{r}=\"Series A\",L{r}=\"Series B\",L{r}=\"Series C\",L{r}=\"Series D\"),L{r},IF(N(M{r})>=1000,\"LATE STAGE / SCALED\",IF(N(E{r})>=50000,\"LARGE FOOTPRINT\",\"MARKET COMP\")))))",
           "description": "Cohort label for benchmarking."
+        }
+      ]
+    },
+    "Floor Detail": {
+      "columns": [
+        {
+          "column": "A",
+          "header": "Detail ID",
+          "key": "detail_id",
+          "type": "id",
+          "role": "input",
+          "required": true,
+          "description": "FD-#### . One row per floor (or per premises component) of a comp. Assign the next ID; immutable, never reused."
+        },
+        {
+          "column": "B",
+          "header": "Comp ID",
+          "key": "comp_id",
+          "type": "id",
+          "role": "input",
+          "required": true,
+          "enum_named_range": "LeaseComps_IDs",
+          "description": "FK to Lease Comps. Every floor row belongs to exactly one comp."
+        },
+        {
+          "column": "C",
+          "header": "Tenant",
+          "key": "tenant",
+          "type": "text",
+          "role": "calc",
+          "required": false,
+          "description": "Looked up from Lease Comps by Comp ID (wired — never type here)."
+        },
+        {
+          "column": "D",
+          "header": "Floor",
+          "key": "floor",
+          "type": "text",
+          "role": "input",
+          "required": true,
+          "description": "Floor or premises label as it appears on the lease, e.g. E3, P8, E7-8."
+        },
+        {
+          "column": "E",
+          "header": "RSF",
+          "key": "rsf",
+          "type": "int",
+          "role": "input",
+          "required": true,
+          "description": "Rentable square feet for this floor. The floors must sum to the comp’s typed RSF."
+        },
+        {
+          "column": "F",
+          "header": "Rent P1 ($/RSF)",
+          "key": "rent_p1",
+          "type": "rent",
+          "role": "input",
+          "required": false,
+          "description": "Starting rent for this floor. Blank = unknown, never 0."
+        },
+        {
+          "column": "G",
+          "header": "TI $/SF",
+          "key": "ti_psf",
+          "type": "rent",
+          "role": "input",
+          "required": false,
+          "description": "TI allowance for this floor. Blank = unknown; a confirmed-zero on an as-is floor is a real 0."
+        },
+        {
+          "column": "H",
+          "header": "Free Rent (months)",
+          "key": "free_mo",
+          "type": "num",
+          "role": "input",
+          "required": false,
+          "description": "Free rent on this floor, in months."
+        },
+        {
+          "column": "I",
+          "header": "Share of Comp RSF",
+          "key": "share",
+          "type": "pct",
+          "role": "calc",
+          "required": false,
+          "description": "This floor’s share of the comp’s detailed RSF."
+        },
+        {
+          "column": "J",
+          "header": "Notes",
+          "key": "notes",
+          "type": "text",
+          "role": "input",
+          "required": false,
+          "description": "Why this floor’s economics differ — condition, buildout, floor premium."
         }
       ]
     }

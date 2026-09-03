@@ -11,7 +11,7 @@ The map lives in Reference per the workbook contract; Lease Comps carries the co
 a calc column so the Dashboard can group on it cheaply.
 """
 from common import (session, sheet_ids, named_ranges, batch_update, values_batch,
-                    get_values, changelog, qa_status, SID)
+                    get_values, changelog, qa_status, headers, SID)
 
 MAP = [('Seed', 'Seed'), ('Series A', 'Series A'), ('Series B', 'Series B'),
        ('Series C', 'Series C'),
@@ -40,21 +40,23 @@ values_batch(s, [
 ])
 print('Reference: %d type->cohort mappings, %d ordered cohorts' % (len(MAP), len(ORDER)))
 
-# --- Lease Comps: Benchmark Cohort wired column at Z (wired zone T-Z)
-grid = s.get(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}', params={
-    'fields': 'sheets(properties(title,gridProperties(columnCount)))'}).json()
-ncols = next(x['properties']['gridProperties']['columnCount']
-             for x in grid['sheets'] if x['properties']['title'] == 'Lease Comps')
-assert ncols == 40, f'Lease Comps grid is {ncols} columns; expected 40'
+# --- Lease Comps: Benchmark Cohort, the last column of the wired funding zone
+# The cohort column is addressed by header text, so a column insert upstream needs no edit.
+H = headers(s, 'Lease Comps')
+COHORT_COL = H['Benchmark Cohort']
+ci = 0
+for ch in COHORT_COL:
+    ci = ci * 26 + ord(ch) - 64
+ci -= 1
+print(f'Benchmark Cohort lives at column {COHORT_COL} (index {ci})')
 
 COHORT_F = ('=IF($C{r}="","",IF($U{r}="","No Funding Data",'
             'IFERROR(INDEX(CohortLabels,MATCH($U{r},CohortTypes,0)),"Stage Unknown")))')
 values_batch(s, [
-    {'range': "'Lease Comps'!Z1", 'values': [['Benchmark Cohort']]},
-    {'range': "'Lease Comps'!Z2:Z%d" % last,
+    {'range': "'Lease Comps'!%s2:%s%d" % (COHORT_COL, COHORT_COL, last),
      'values': [[COHORT_F.format(r=r)] for r in range(2, last + 1)]},
 ])
-print('Lease Comps: Benchmark Cohort column (Z) written')
+print(f'Lease Comps: Benchmark Cohort column ({COHORT_COL}) written')
 
 # --- named ranges
 def add(name, sheet, c1, c2, r1, r2):
@@ -71,7 +73,7 @@ batch_update(s, [
     add('CohortTypes', ref, 14, 15, 1, len(MAP) + 1),
     add('CohortLabels', ref, 15, 16, 1, len(MAP) + 1),
     add('CohortOrder', ref, 17, 18, 1, len(ORDER) + 1),
-    add('LeaseComps_Cohorts', lc, 25, 26, 1, rows_end),
+    add('LeaseComps_Cohorts', lc, ci, ci + 1, 1, rows_end),
 ])
 print('named ranges: CohortTypes, CohortLabels, CohortOrder, LeaseComps_Cohorts')
 

@@ -56,7 +56,7 @@ Executed by `tools/sheet_ops/run_all.py`; receipts in Changelog (STRUCTURE MIGRA
 FUNDING ROUNDS BACKFILL, MIGRATION VERIFIED, STYLE, SCHEMA UPDATE, DASHBOARD LAYOUT). QA 19/19 PASS.
 Pre-migration copy: tab `LC_BACKUP_2026-09-02` (delete once the v4 tab has been used in anger).
 
-Final column map (40 columns after the 2026-09-03 moves: Benchmark Cohort into the wired zone; Comp Source and Verified Date removed — the owner is the provenance and comps are final once entered, so STALE - REVERIFY retired with them; Zones 1–3 unchanged so the onEdit auto-ID triggers keep working):
+Final column map (45 columns after the 2026-09-03 moves: Benchmark Cohort into the wired zone; Comp Source and Verified Date removed — the owner is the provenance and comps are final once entered, so STALE - REVERIFY retired with them; and the Floor Detail tab added with its four wired columns plus a blend check; Zones 1–3 unchanged so the onEdit auto-ID triggers keep working):
 
 | Cols | Zone | Fields |
 | --- | --- | --- |
@@ -64,10 +64,12 @@ Final column map (40 columns after the 2026-09-03 moves: Benchmark Cohort into t
 | E–K | Premises (input) | Address, Submarket, Building Class, Floor(s), Condition, Deal Type, Delivery Condition |
 | L–S | Deal terms (input) | RSF, Seats, Term, Rent P1 / P2 / P3, Free Rent, TI $/SF |
 | T–Z | Company wire (calc) | Latest Round Date, Latest Round Type, Latest Round Amt, Total Tracked Funding, Company (canonical), HQ City, Benchmark Cohort |
-| AA | Notes (input) | Free-form deal notes |
-| AB–AI | Economics (calc) | Year 1 Rent, Free Rent $, TI Total, Projected Gross (flat tranches), Avg Rate, NER, Cost/Seat, RSF/Seat |
-| AJ–AL | Ratios (calc) | Rent-to-Raise, Lease-to-Total-Funding, Months of Rent Covered |
-| AM–AN | Governance (qa) | Record Status, QA Notes |
+| AA–AD | Floor wire (calc) | Floors on File, Detail RSF, Detail Rent (wtd), Detail TI (wtd) — from the Floor Detail tab |
+| AE | Blend check (qa) | Where the typed RSF / rent / TI disagrees with the floor detail |
+| AF | Notes (input) | Free-form deal notes |
+| AG–AN | Economics (calc) | Year 1 Rent, Free Rent $, TI Total, Projected Gross (flat tranches), Avg Rate, NER, Cost/Seat, RSF/Seat |
+| AO–AQ | Ratios (calc) | Rent-to-Raise, Lease-to-Total-Funding, Months of Rent Covered |
+| AR–AS | Governance (qa) | Record Status, QA Notes |
 
 Wire semantics: Latest Round = most recent row in Funding Rounds for the company; Total Tracked Funding =
 Company Metrics tracked sum, blank (never 0) when tracked rounds carry no amounts. Total Tracked is a
@@ -109,3 +111,28 @@ Add new round types to the Reference map, never to the formula. Display order is
 **The Dashboard shows median RSF next to average.** RSF is right-skewed in every cohort
 (Series C averages 41,108 but medians 26,427), which is what made Series D read as a dip
 below Series C. Rent and NER are per-SF rates and far less skewed, so mean is fine there.
+
+## Multi-floor deals (2026-09-03)
+
+**One comp is still one row.** Benchmarks count transactions, so the grain does not move for a
+deal that happens to cover several floors.
+
+When a deal's floors carry *different* economics, the per-floor numbers go on the **Floor Detail**
+tab — one row per floor, linked by Comp ID, the same way Funding Rounds links to a company. The
+comp row then carries four wired columns showing what the floors add up to (count, RSF, RSF-weighted
+rent, RSF-weighted TI) and a **Blend Check** comparing them against what was typed. Tolerances are
+1 SF, $0.50/RSF and $1/SF; a typed 0 or blank TI against a positive detail blend reads `TI MISSING`.
+A mismatch flows into Record Status and QA Notes, so it reaches the Dashboard's needing-review
+count, and QA-073 counts it.
+
+Only deals whose floors differ need rows there. Single-floor comps — 79 of 103 — never touch it and
+their check columns stay blank.
+
+**Why the check is aimed at TI, not rent.** On LC-0103 (Moment, 325 Hudson, E3 + E10, 43,190 SF)
+a simple average of two floors' rents lands within about 20 cents of the RSF-weighted answer:
+immaterial. The TI, by contrast, was entered as $0 during hand-blending, which overstates that
+comp's NER by roughly $15/SF — about 26%, or ~$4M of concession value over the term.
+
+**Decision rule.** Same lease and same term across the floors: one comp, blend it, record the
+floors. Genuinely different terms per floor: those are two deals and belong in two comps, because
+differing terms cannot be blended honestly.

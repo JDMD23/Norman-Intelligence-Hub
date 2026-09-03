@@ -34,25 +34,31 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | X | Company (canonical) | `company` | text | calc |  |  | Canonical company name (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
 | Y | HQ City | `hq` | text | calc |  |  | HQ city (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
 | Z | Benchmark Cohort | `cohort` | text | calc |  |  | Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here. |
-| AA | Notes | `notes` | text | input |  |  | Free-form deal notes. |
-| AB | Year 1 Rent ($) | `y1_rent` | usd | calc |  |  | RSF x P1 rent. |
-| AC | Free Rent $ Value | `free_val` | usd | calc |  |  | (Free months / 12) x P1 rent x RSF. |
-| AD | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
-| AE | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Nominal rent over the term on FLAT tranches (no assumed escalation). |
-| AF | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross / RSF / Term. |
-| AG | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown. |
-| AH | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. |
-| AI | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. |
-| AJ | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / wired latest round. |
-| AK | Lease-to-Total-Funding % | `l2tf` | pct | calc |  |  | Projected Gross / wired total tracked funding. |
-| AL | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total tracked funding / monthly Year-1 rent. |
-| AM | Record Status | `status` | text | qa |  | RecordStatuses | READY / NEEDS REVIEW / MISSING INPUTS — computed, never typed. |
-| AN | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields. |
+| AA | Floors on File | `floors_n` | int | calc |  |  | How many Floor Detail rows exist for this comp. Blank = none; the comp is single-floor or its floors share one economic deal. |
+| AB | Detail RSF | `detail_rsf` | int | calc |  |  | Sum of RSF across this comp’s Floor Detail rows. Must equal the typed RSF. |
+| AC | Detail Rent (wtd) | `detail_rent` | rent | calc |  |  | RSF-weighted starting rent across the floors on file. Weighted, never a simple average. |
+| AD | Detail TI (wtd) | `detail_ti` | rent | calc |  |  | RSF-weighted TI across the floors on file, over floors that carry a TI. This is what catches a concession dropped during hand-blending. |
+| AE | Blend Check | `blend_check` | text | qa |  |  | OK, or the mismatches between the typed RSF/rent/TI and the Floor Detail blend (tolerances 1 SF, $0.50/RSF, $1/SF). A typed 0 or blank TI against a positive detail blend reads TI MISSING. Feeds Record Status and QA Notes. |
+| AF | Notes | `notes` | text | input |  |  | Free-form deal notes. |
+| AG | Year 1 Rent ($) | `y1_rent` | usd | calc |  |  | RSF x P1 rent. |
+| AH | Free Rent $ Value | `free_val` | usd | calc |  |  | (Free months / 12) x P1 rent x RSF. |
+| AI | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
+| AJ | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Nominal rent over the term on FLAT tranches (no assumed escalation). |
+| AK | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross / RSF / Term. |
+| AL | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown. |
+| AM | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. |
+| AN | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. |
+| AO | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / wired latest round. |
+| AP | Lease-to-Total-Funding % | `l2tf` | pct | calc |  |  | Projected Gross / wired total tracked funding. |
+| AQ | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total tracked funding / monthly Year-1 rent. |
+| AR | Record Status | `status` | text | qa |  | RecordStatuses | READY / NEEDS REVIEW / MISSING INPUTS — computed, never typed. NEEDS REVIEW also when Blend Check is not OK. |
+| AS | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields, plus any Floor Detail blend mismatch. |
 
 ## Companies
 
 | Col | Header | Key | Type | Role | Req | Enum | Description |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| A | Company ID | `company_id` | id | input | yes |  | AUTO-ASSIGNED by onEdit trigger when Canonical Name is entered. Immutable, never reused. FK target for Lease Comps + Funding Rounds. |
 | B | Canonical Name | `name` | text | input | yes |  | One row per real company. Tenant-name variants map here via Reference!VariantMap. |
 | C | Crunchbase URL | `cb_url` | text | input |  |  | Verified Crunchbase profile. |
 | D | Website | `website` | text | input |  |  | Company website. |
@@ -105,6 +111,21 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | M | Tracked Total Raised ($M) | `tracked_total` | num | calc |  |  | Sum of tracked round amounts. |
 | N | Avg Months Between Rounds | `avg_cadence` | num1 | calc |  |  | Average of computed inter-round gaps. |
 | O | Benchmark Band | `benchmark` | text | calc |  |  | Cohort label for benchmarking. |
+
+## Floor Detail
+
+| Col | Header | Key | Type | Role | Req | Enum | Description |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| A | Detail ID | `detail_id` | id | input | yes |  | FD-#### . One row per floor (or per premises component) of a comp. Assign the next ID; immutable, never reused. |
+| B | Comp ID | `comp_id` | id | input | yes | LeaseComps_IDs | FK to Lease Comps. Every floor row belongs to exactly one comp. |
+| C | Tenant | `tenant` | text | calc |  |  | Looked up from Lease Comps by Comp ID (wired — never type here). |
+| D | Floor | `floor` | text | input | yes |  | Floor or premises label as it appears on the lease, e.g. E3, P8, E7-8. |
+| E | RSF | `rsf` | int | input | yes |  | Rentable square feet for this floor. The floors must sum to the comp’s typed RSF. |
+| F | Rent P1 ($/RSF) | `rent_p1` | rent | input |  |  | Starting rent for this floor. Blank = unknown, never 0. |
+| G | TI $/SF | `ti_psf` | rent | input |  |  | TI allowance for this floor. Blank = unknown; a confirmed-zero on an as-is floor is a real 0. |
+| H | Free Rent (months) | `free_mo` | num | input |  |  | Free rent on this floor, in months. |
+| I | Share of Comp RSF | `share` | pct | calc |  |  | This floor’s share of the comp’s detailed RSF. |
+| J | Notes | `notes` | text | input |  |  | Why this floor’s economics differ — condition, buildout, floor premium. |
 
 ## Reference vocabularies
 

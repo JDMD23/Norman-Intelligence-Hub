@@ -97,7 +97,7 @@ def report(title, items):
 
 
 # ---- pass 1: classify and backfill genuinely missing rounds
-rows = get_values(s, "'Lease Comps'!A2:AN105")
+rows = get_values(s, "'Lease Comps'!A2:AS105")
 backfill, review, info = classify(rows)
 
 appended = []
@@ -154,7 +154,7 @@ else:
 
 # ---- pass 2: re-verify wire vs snapshot
 if not DRY:
-    rows = get_values(s, "'Lease Comps'!A2:AN105")
+    rows = get_values(s, "'Lease Comps'!A2:AS105")
 backfill2, review, info = classify(rows)
 remaining = [] if DRY else list(backfill2.values())
 report('latest-round wire: unresolved (older than audit)', remaining)
@@ -183,7 +183,7 @@ for row in rows:
     if not col(row, 'C'):
         continue
     L, N, O, P, Q, R, S_ = (col(row, c) for c in 'LNOPQRS')
-    y1, pgr, ner_v = col(row, 'AB'), col(row, 'AE'), col(row, 'AG')
+    y1, pgr, ner_v = col(row, 'AG'), col(row, 'AJ'), col(row, 'AL')
     if None not in (L, O) and abs((y1 or 0) - L * O) > 1:
         bad += 1; print('  Y1 MISMATCH', col(row, 'A'), y1, 'vs', L * O)
     if None not in (L, N, O):

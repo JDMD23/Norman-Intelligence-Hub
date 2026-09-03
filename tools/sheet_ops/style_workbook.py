@@ -144,7 +144,7 @@ PCT = ('PERCENT', '0.00%')
 # ---------- reset the layers this script owns (bands, our conditional formats, merges) ----------
 meta = s.get(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}', params={
     'fields': 'sheets(properties(sheetId,title),bandedRanges.bandedRangeId,conditionalFormats,merges)'}).json()
-OWNED = {'Companies', 'Funding Rounds', 'Company Metrics', 'QA Harness',
+OWNED = {'Companies', 'Funding Rounds', 'Floor Detail', 'Company Metrics', 'QA Harness',
          'Changelog', 'Start Here', 'Reference', '_Schema'}
 reset = []
 for sh in meta['sheets']:
@@ -214,6 +214,25 @@ R += widths(sid, {'A': 84, 'B': 88, 'C': 170, 'D': 56, 'E': 150, 'F': 100, 'G': 
                   'I': 110, 'J': 84, 'K': 220, 'L': 240, 'M': 88, 'N': 340})
 R += status_cf(sid, rng(sid, 'M', 'M', 2, 3000), {'REVIEW': (AMBER_BG, AMBER_FG), 'LOW': (GRAY_BG, GRAY_FG)})
 R += [sheet_props(sid, frozen_rows=1, frozen_cols=2, tab=TAB_INPUT)]
+
+# ---------- Floor Detail (input; one row per floor of a multi-floor comp) ----------
+sid = ids['Floor Detail']
+R += header(sid, 'A', 'J') + body(sid, 'A', 'J', 600)
+R += [fmt(rng(sid, 'C', 'C', 1, 1), bg=SAGE), fmt(rng(sid, 'C', 'C', 2, 600), bg=WIRE),
+      fmt(rng(sid, 'I', 'I', 1, 1), bg=FOREST), fmt(rng(sid, 'I', 'I', 2, 600), bg=CALC,
+                                                    num=('PERCENT', '0.0%'), h='CENTER'),
+      fmt(rng(sid, 'A', 'A', 2, 600), fg=MUTED, bold=True),
+      fmt(rng(sid, 'B', 'B', 2, 600), bold=True),
+      fmt(rng(sid, 'D', 'D', 2, 600), h='CENTER', bold=True),
+      fmt(rng(sid, 'E', 'E', 2, 600), num=INT),
+      fmt(rng(sid, 'F', 'F', 2, 600), num=('CURRENCY', '$#,##0.00')),
+      fmt(rng(sid, 'G', 'G', 2, 600), num=('CURRENCY', '$#,##0')),
+      fmt(rng(sid, 'H', 'H', 2, 600), num=('NUMBER', '0.0'), h='CENTER'),
+      fmt(rng(sid, 'J', 'J', 2, 600), wrap='CLIP')]
+R += zone_rule(sid, ['B', 'C', 'H', 'I'], 600)
+R += widths(sid, {'A': 88, 'B': 92, 'C': 168, 'D': 78, 'E': 88, 'F': 108, 'G': 84,
+                  'H': 92, 'I': 108, 'J': 300})
+R += [sheet_props(sid, frozen_rows=1, frozen_cols=3, tab=TAB_INPUT)]
 
 # ---------- Company Metrics (all computed) ----------
 sid = ids['Company Metrics']
@@ -288,7 +307,7 @@ print(f'applied {len(R)} formatting requests across {len(OWNED)} tabs')
 
 summary, fails = qa_status(s)
 print('QA:', summary, '| failing:', fails or 'none')
-changelog(s, 'STYLE', 'Supporting-tab visual system (Start Here, Companies, Funding Rounds, Company Metrics, QA Harness, Changelog, _Schema, Reference): unified type (Roboto 10), header bands, colour-by-meaning '
+changelog(s, 'STYLE', 'Supporting-tab visual system (Start Here, Companies, Funding Rounds, Floor Detail, Company Metrics, QA Harness, Changelog, _Schema, Reference): unified type (Roboto 10), header bands, colour-by-meaning '
           '(white input / cyan wired / green computed / amber governance), per-column number formats and widths, '
           'frozen panes, status colouring on QA/Funding Rounds/Start Here, tab colours; LC_BACKUP hidden.', '')
 print('receipt appended')

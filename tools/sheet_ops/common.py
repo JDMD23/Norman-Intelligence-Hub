@@ -102,3 +102,20 @@ def typed_rows(s, a1_range):
             if any('userEnteredValue' in c for c in row.get('values', [])):
                 out.add(start + i + 1)
     return out
+
+
+def col_letter(idx):
+    """0-based column index -> A1 letter."""
+    out, n = '', idx + 1
+    while n:
+        n, r = divmod(n - 1, 26)
+        out = chr(65 + r) + out
+    return out
+
+
+def headers(s, tab, width='BZ'):
+    """{header text: column letter} for a tab's row 1. Lets a script address columns by name,
+    so inserting a column upstream does not require editing every hard-coded letter map."""
+    row = get_values(s, f"'{tab}'!A1:{width}1", render='FORMATTED_VALUE')
+    row = row[0] if row else []
+    return {h: col_letter(i) for i, h in enumerate(row) if h}

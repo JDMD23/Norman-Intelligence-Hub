@@ -18,6 +18,7 @@ This repository is the code + contract home for the hub. The **live data lives i
 | **QA** | Self-auditing health checks (formula errors, duplicate/orphan IDs, freshness, capacity). |
 | **Changelog** | Append-only receipts for every automated change. |
 | **_Schema** | The machine-readable contract for every tab, column, and formula. Mirrored in this repo at [`schema/schema.json`](schema/schema.json). |
+| **Floor Detail** | Per-floor economics for multi-floor comps; the comp row checks its typed blend against it. |
 | **Reference** | Controlled vocabularies (submarkets, building classes, deal types, round types, …) and the tenant-variant → canonical-company map. Mirrored at [`schema/reference.json`](schema/reference.json). |
 
 ## Repository layout
@@ -36,7 +37,7 @@ scripts/
 tools/sheet_ops/     Receipted, QA-gated workbook operations (Sheets API; needs GOOGLE_SA_KEY)
   run_all.py         Lease Comps v4 migration pipeline (re-runnable)
   theme.py           The CBRE-green palette every presentation pass imports
-  migrate_cohort_column.py / remove_provenance_columns.py
+  migrate_cohort_column.py / remove_provenance_columns.py / migrate_floor_detail.py
                      Structural moves after v4 (idempotent, receipted)
   style.py / polish.py / dashboard_style.py / style_workbook.py / copy_pass.py
                      Presentation passes (Lease Comps zones, tab tiering, Dashboard v2, supporting tabs, copy)

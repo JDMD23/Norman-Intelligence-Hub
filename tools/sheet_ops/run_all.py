@@ -6,7 +6,8 @@ import sys
 import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-for step in ['migrate_cohort_column.py', 'remove_provenance_columns.py', 'migrate_structure.py', 'verify_wire.py', 'tidy_vocab.py', 'fix_backfill_confidence.py', 'companies_view.py',
+for step in ['migrate_cohort_column.py', 'remove_provenance_columns.py',
+             'migrate_floor_detail.py', 'migrate_structure.py', 'verify_wire.py', 'tidy_vocab.py', 'fix_backfill_confidence.py', 'companies_view.py',
              'copy_pass.py', 'style.py', 'polish.py', 'cohorts.py', 'dashboard_style.py',
              'style_workbook.py', 'finalize.py', 'sync_schema.py']:
     print(f'\n=== {step} ===')
