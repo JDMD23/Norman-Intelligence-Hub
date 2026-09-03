@@ -109,8 +109,12 @@ if backfill:
     for r in fr_rows:
         if len(r) > 3 and r[0] and num(r[3]) is not None:
             round_no[r[1]] = max(round_no.get(r[1], 0), int(r[3]))
+    # A backfilled row is reconstructed from the audit snapshot, not sourced at write time,
+    # so it is MEDIUM by default — a human upgrades it after checking the company research.
+    # (The original run stamped HIGH; fix_backfill_confidence.py corrects the rows that
+    # the Companies narrative contradicts.)
     conf = [r[0] for r in get_values(s, 'ConfidenceLevels', render='FORMATTED_VALUE') if r]
-    high = next((c for c in conf if c.upper() == 'HIGH'), 'High')
+    high = next((c for c in conf if c.upper() == 'MEDIUM'), 'MEDIUM')
     values, n = [], max_fr
     for cid, (comp_id, w) in sorted(backfill.items()):
         n += 1

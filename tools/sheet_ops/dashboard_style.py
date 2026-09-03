@@ -106,15 +106,17 @@ TILE_COLS = [('A', 'B'), ('C', 'D'), ('E', 'F'), ('G', 'H')]
 TILE_ROWS = [(4, 5), (7, 8)]          # (label row, value row)
 
 SUB_FIRST, SUB_N = 26, 10             # submarket table body rows
+MIN_N = 3                             # below this, show the count but no averages (see cohorts.py)
 def per_row(col_range, agg='AVERAGE'):
-    return ('=IF($A{r}="","",IFERROR(' + agg + '(FILTER(' + col_range +
+    return ('=IF(OR($A{r}="",$B{r}<' + str(MIN_N) + '),"",IFERROR(' + agg + '(FILTER(' + col_range +
             ',LeaseComps_Submarkets=$A{r},' + col_range + '<>"")),""))')
 SUB_COLS = {
     'B': '=IF($A{r}="","",COUNTIF(LeaseComps_Submarkets,$A{r}))',
     'C': per_row('LeaseComps_RSF'), 'D': per_row('LeaseComps_RSF', 'MEDIAN'),
     'E': per_row('LeaseComps_StartRent'), 'F': per_row('LeaseComps_NER'),
     'G': per_row('LeaseComps_CostSeat'),
-    'H': '=IF($A{r}="","",IF($B{r}<5,"Thin",IF($B{r}<8,"Directional","Reliable")))',
+    'H': ('=IF($A{r}="","",IF($B{r}<' + str(MIN_N) + ',"n too low",'
+          'IF($B{r}<5,"Thin",IF($B{r}<8,"Directional","Reliable"))))'),
 }
 
 data = [
@@ -130,8 +132,11 @@ data = [
         f'ARRAY_CONSTRAIN(SORT(u,COUNTIF(LeaseComps_Submarkets,u),FALSE),{SUB_N},1))']]},
     {'range': 'Dashboard!A37', 'values': [[
         'Methodology: NER is a 6% annuity on flat rent tranches with free rent and TI taken upfront (docs/NER_MODEL.md). '
-        'Blank means unknown, never zero. Sample: Reliable n ≥ 8, Directional 5–7, Thin < 5. '
-        'Funding figures are tracked receipts in Funding Rounds, not narrative totals.']]},
+        'Blank means unknown, never zero. Cohorts and submarkets with fewer than 3 comps show their count but no '
+        'averages — too few to benchmark. Sample: Reliable n ≥ 8, Directional 5–7, Thin 3–4. '
+        'Funding figures are tracked receipts in Funding Rounds, not narrative totals; a comp is staged by its latest '
+        'tracked round, so a company whose recent rounds are untracked can sit in an earlier stage — see '
+        'docs/DATA_RESEARCH_QUEUE.md.']]},
 ]
 for (lr, vr), row_tiles in zip(TILE_ROWS, (TILES[:4], TILES[4:])):
     for (c1, _), (label, formula, _) in zip(TILE_COLS, row_tiles):

@@ -76,8 +76,14 @@ batch_update(s, [
 print('named ranges: CohortTypes, CohortLabels, CohortOrder, LeaseComps_Cohorts')
 
 # --- Dashboard: rebuild the benchmark table on cohorts, with median RSF added
+# A cohort below MIN_N shows its comp count but no averages: two comps is not a benchmark,
+# and a blank is honest where a number would be quoted back at you. Same rule on the
+# submarket table in dashboard_style.py.
+MIN_N = 3
+
+
 def per_row(col_range, agg='AVERAGE'):
-    return ('=IF($A{r}="","",IFERROR(' + agg + '(FILTER(' + col_range +
+    return ('=IF(OR($A{r}="",$B{r}<' + str(MIN_N) + '),"",IFERROR(' + agg + '(FILTER(' + col_range +
             ',LeaseComps_Cohorts=$A{r},' + col_range + '<>"")),""))')
 
 COLS = {
@@ -87,8 +93,8 @@ COLS = {
     'E': per_row('LeaseComps_StartRent'),
     'F': per_row('LeaseComps_NER'),
     'G': per_row('LeaseComps_CostSeat'),
-    'H': ('=IF($A{r}="","",IF($B{r}=0,"No comps",IF($B{r}<5,"Thin",'
-          'IF($B{r}<8,"Directional","Reliable"))))'),
+    'H': ('=IF($A{r}="","",IF($B{r}=0,"No comps",IF($B{r}<' + str(MIN_N) + ',"n too low",'
+          'IF($B{r}<5,"Thin",IF($B{r}<8,"Directional","Reliable")))))'),
 }
 first, nrows = 14, len(ORDER)
 data = [
