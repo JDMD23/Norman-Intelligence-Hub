@@ -40,9 +40,9 @@ def rng(c1, c2, r1=0, r2=NROWS):
 reqs = []
 
 # --- header band by zone (row 1): white bold, wrapped, centered
-ZONES = [('A', 'D', CBRE_GREEN), ('E', 'K', CBRE_GREEN), ('L', 'U', CBRE_GREEN),
-         ('V', 'AB', SAGE), ('AC', 'AC', CBRE_GREEN), ('AD', 'AN', FOREST),
-         ('AO', 'AP', OLIVE)]
+ZONES = [('A', 'D', CBRE_GREEN), ('E', 'K', CBRE_GREEN), ('L', 'S', CBRE_GREEN),
+         ('T', 'Z', SAGE), ('AA', 'AA', CBRE_GREEN), ('AB', 'AL', FOREST),
+         ('AM', 'AN', OLIVE)]
 for c1, c2, color in ZONES:
     reqs.append({'repeatCell': {'range': rng(c1, c2, 0, 1), 'cell': {'userEnteredFormat': {
         'backgroundColor': hx(color),
@@ -52,9 +52,9 @@ for c1, c2, color in ZONES:
                   'horizontalAlignment,verticalAlignment)'}})
 
 # --- data-zone tints (rows 2+): inputs white; wire cyan; calc green; governance amber
-for c1, c2, color in [('A', 'U', WHITE), ('AC', 'AC', WHITE),
-                      ('V', 'AB', WIRE), ('AD', 'AN', CALC),
-                      ('AO', 'AP', GOV)]:
+for c1, c2, color in [('A', 'S', WHITE), ('AA', 'AA', WHITE),
+                      ('T', 'Z', WIRE), ('AB', 'AL', CALC),
+                      ('AM', 'AN', GOV)]:
     reqs.append({'repeatCell': {'range': rng(c1, c2, 1), 'cell': {'userEnteredFormat': {
         'backgroundColor': hx(color)}}, 'fields': 'userEnteredFormat.backgroundColor'}})
 
@@ -62,15 +62,13 @@ for c1, c2, color in [('A', 'U', WHITE), ('AC', 'AC', WHITE),
 # Date Signed and Latest Round Date show as "July 2026": every Date Signed lands on
 # the 1st (the day was always a placeholder) and ~half the wired round dates are
 # month-level backfills, so month precision is what the data actually supports.
-# Verified Date keeps day precision — it is an operational audit date you set.
-FMT = {('B', 'B'): ('DATE', 'mmmm yyyy'), ('V', 'V'): ('DATE', 'mmmm yyyy'),
-       ('U', 'U'): ('DATE', 'yyyy-mm-dd'),
+FMT = {('B', 'B'): ('DATE', 'mmmm yyyy'), ('T', 'T'): ('DATE', 'mmmm yyyy'),
        ('L', 'M'): ('NUMBER', '#,##0'), ('N', 'N'): ('NUMBER', '0.0'),
        ('O', 'Q'): ('CURRENCY', '$#,##0.00'), ('R', 'R'): ('NUMBER', '0.0'),
-       ('S', 'S'): ('CURRENCY', '$#,##0'), ('X', 'Y'): ('NUMBER', '#,##0.0'),
-       ('AD', 'AG'): ('CURRENCY', '$#,##0'), ('AH', 'AI'): ('CURRENCY', '$#,##0.00'),
-       ('AJ', 'AJ'): ('CURRENCY', '$#,##0'), ('AK', 'AK'): ('NUMBER', '0.0'),
-       ('AL', 'AM'): ('PERCENT', '0.00%'), ('AN', 'AN'): ('NUMBER', '#,##0')}
+       ('S', 'S'): ('CURRENCY', '$#,##0'), ('V', 'W'): ('NUMBER', '#,##0.0'),
+       ('AB', 'AE'): ('CURRENCY', '$#,##0'), ('AF', 'AG'): ('CURRENCY', '$#,##0.00'),
+       ('AH', 'AH'): ('CURRENCY', '$#,##0'), ('AI', 'AI'): ('NUMBER', '0.0'),
+       ('AJ', 'AK'): ('PERCENT', '0.00%'), ('AL', 'AL'): ('NUMBER', '#,##0')}
 for (c1, c2), (t, p) in FMT.items():
     reqs.append({'repeatCell': {'range': rng(c1, c2, 1), 'cell': {'userEnteredFormat': {
         'numberFormat': {'type': t, 'pattern': p}}},
@@ -78,9 +76,9 @@ for (c1, c2), (t, p) in FMT.items():
 
 # --- zone-boundary vertical rules + header underline
 EDGE = {'style': 'SOLID_MEDIUM', 'color': hx(LIGHT)}
-for c in ['D', 'K', 'U', 'AB', 'AC', 'AN']:
+for c in ['D', 'K', 'S', 'Z', 'AA', 'AL']:
     reqs.append({'updateBorders': {'range': rng(c, c), 'right': EDGE}})
-reqs.append({'updateBorders': {'range': rng('A', 'AP', 0, 1),
+reqs.append({'updateBorders': {'range': rng('A', 'AN', 0, 1),
                                'bottom': {'style': 'SOLID_THICK', 'color': hx(CBRE_GREEN)}}})
 
 # --- freeze header + identity, header height, tab color
@@ -95,10 +93,10 @@ reqs.append({'updateDimensionProperties': {
 # --- column widths
 WIDTHS = {'A': 88, 'B': 96, 'C': 168, 'D': 92, 'E': 200, 'F': 148, 'G': 104, 'H': 88,
           'I': 108, 'J': 128, 'K': 128, 'L': 78, 'M': 66, 'N': 72, 'O': 96, 'P': 96,
-          'Q': 96, 'R': 64, 'S': 76, 'T': 108, 'U': 100, 'V': 108, 'W': 140, 'X': 96,
-          'Y': 116, 'Z': 168, 'AA': 100, 'AB': 130, 'AC': 260, 'AD': 108, 'AE': 100, 'AF': 104,
-          'AG': 128, 'AH': 100, 'AI': 112, 'AJ': 100, 'AK': 78, 'AL': 96, 'AM': 118,
-          'AN': 104, 'AO': 128, 'AP': 240}
+          'Q': 96, 'R': 64, 'S': 76, 'T': 108, 'U': 140, 'V': 96,
+          'W': 116, 'X': 168, 'Y': 100, 'Z': 130, 'AA': 260, 'AB': 108, 'AC': 100, 'AD': 104,
+          'AE': 128, 'AF': 100, 'AG': 112, 'AH': 100, 'AI': 78, 'AJ': 96, 'AK': 118,
+          'AL': 104, 'AM': 128, 'AN': 240}
 for c, w in WIDTHS.items():
     reqs.append({'updateDimensionProperties': {
         'range': {'sheetId': lc, 'dimension': 'COLUMNS', 'startIndex': ci(c), 'endIndex': ci(c) + 1},
@@ -108,8 +106,8 @@ for c, w in WIDTHS.items():
 #     the pre-v4 per-column "Calculated" warnings are superseded and removed.
 LEGACY = 'Calculated -- edit the inputs, not this column'
 added, removed = [], []
-for c1, c2, desc in [('V', 'AB', 'Wired from Companies/Funding Rounds — edit those tabs instead'),
-                     ('AD', 'AP', 'Computed — edit inputs, not results')]:
+for c1, c2, desc in [('T', 'Z', 'Wired from Companies/Funding Rounds — edit those tabs instead'),
+                     ('AB', 'AN', 'Computed — edit inputs, not results')]:
     if desc not in have:
         reqs.append({'addProtectedRange': {'protectedRange': {
             'range': rng(c1, c2, 1), 'description': desc, 'warningOnly': True}}})

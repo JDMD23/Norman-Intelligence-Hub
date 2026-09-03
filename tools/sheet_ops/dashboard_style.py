@@ -100,7 +100,7 @@ TILES = [  # (label, formula, number format)
     ('Companies tracked', '=COUNTA(CompanyIds)', ('NUMBER', '#,##0')),
     ('Funding rounds tracked', '=COUNTA(FundingRounds_IDs)', ('NUMBER', '#,##0')),
     ('Comps ready', '=COUNTIF(LeaseComps_Status,"READY")', ('NUMBER', '#,##0')),
-    ('Comps needing review', '=COUNTIF(LeaseComps_Status,"NEEDS REVIEW")+COUNTIF(LeaseComps_Status,"MISSING INPUTS")+COUNTIF(LeaseComps_Status,"STALE - REVERIFY")', ('NUMBER', '#,##0')),
+    ('Comps needing review', '=COUNTIF(LeaseComps_Status,"NEEDS REVIEW")+COUNTIF(LeaseComps_Status,"MISSING INPUTS")', ('NUMBER', '#,##0')),
 ]
 TILE_COLS = [('A', 'B'), ('C', 'D'), ('E', 'F'), ('G', 'H')]
 TILE_ROWS = [(4, 5), (7, 8)]          # (label row, value row)

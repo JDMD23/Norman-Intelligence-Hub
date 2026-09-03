@@ -14,8 +14,8 @@ s = session()
 lc = sheet_ids(s)['Lease Comps']
 hdr = get_values(s, "'Lease Comps'!A1:AQ1", render='FORMATTED_VALUE')[0]
 hdr += [''] * (43 - len(hdr))
-if hdr[27] == 'Benchmark Cohort' and hdr[28] == 'Notes':
-    print('Benchmark Cohort already at AB — nothing to do')
+if 'Benchmark Cohort' in hdr and hdr.index('Benchmark Cohort') < hdr.index('Notes'):
+    print('Benchmark Cohort already in the wired zone — nothing to do')
     sys.exit(0)
 assert hdr[27] == 'Notes' and hdr[41] == 'Benchmark Cohort', f'unexpected layout: AB={hdr[27]!r} AP={hdr[41]!r}'
 last = named_ranges(s)['LeaseComps_RSF']['range']['endRowIndex']

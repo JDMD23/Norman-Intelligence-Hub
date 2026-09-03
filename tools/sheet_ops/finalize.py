@@ -40,32 +40,30 @@ SPEC = [
     ('Q', 'Rent P3 ($/RSF, mo 121+)', 'rent_p3', 'rent', 'input', 'no', '', '', 'Tranche-3 rent, months 121+. BLANK = carries P2 flat.'),
     ('R', 'Free Rent (months)', 'free_mo', 'num', 'input', 'no', '', '', 'Free rent concession in months.'),
     ('S', 'TI $/SF', 'ti_psf', 'rent', 'input', 'no', '', '', 'TI allowance per SF. Blank = unknown (NER stays blank). Confirmed-zero on as-is deals is a real 0.'),
-    ('T', 'Comp Source', 'source', 'text', 'input', 'no', 'CompSources', '', 'Where this comp came from.'),
-    ('U', 'Verified Date', 'verified', 'date', 'input', 'no', '', '', 'When this comp was last verified. >6 months old flips status to STALE - REVERIFY.'),
-    ('V', 'Latest Round Date', 'lr_date', 'date', 'calc', 'no', '', '=IF($D{r}="","",IF(COUNTIF(FundingRounds_CompanyIds,$D{r})=0,"",MAXIFS(FundingRounds_Dates,FundingRounds_CompanyIds,$D{r})))', f'Most recent round date {W} -> Funding Rounds.'),
-    ('W', 'Latest Round Type', 'lr_type', 'text', 'calc', 'no', '', '=IF(OR($D{r}="",$V{r}=""),"",IFERROR(INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Types,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,3,FALSE),1,2),""))', f'Type of most recent round; same-day rounds resolve to the larger amount {W} -> Funding Rounds.'),
-    ('X', 'Latest Round Amt ($M)', 'lr_amt', 'num', 'calc', 'no', '', '=IF(OR($D{r}="",$V{r}=""),"",IFERROR(LET(a,INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,2,FALSE),1,2),IF(a=0,"",a)),""))', f'Amount of most recent round {W} -> Funding Rounds.'),
-    ('Y', 'Total Tracked Funding ($M)', 'total_fund', 'num', 'calc', 'no', '', "=IF($D{r}=\"\",\"\",IFERROR(LET(t,INDEX('Company Metrics'!$M:$M,MATCH($D{r},'Company Metrics'!$A:$A,0)),IF(OR(t=\"\",t=0),\"\",t)),\"\"))", f'Sum of tracked rounds {W} -> Company Metrics. Blank (never 0) when tracked rounds have no amounts. Semantic: tracked receipts, not researched narrative totals.'),
-    ('Z', 'Company (canonical)', 'company', 'text', 'calc', 'no', '', '=IF($D{r}="","",IFERROR(INDEX(Companies!$B:$B,MATCH($D{r},Companies!$A:$A,0)),"UNKNOWN ID"))', f'Canonical company name {W} -> Companies.'),
-    ('AA', 'HQ City', 'hq', 'text', 'calc', 'no', '', '=IF($D{r}="","",IFERROR(LET(h,INDEX(Companies!$G:$G,MATCH($D{r},Companies!$A:$A,0)),IF(h=0,"",h)),""))', f'HQ city {W} -> Companies.'),
-    ('AB', 'Benchmark Cohort', 'cohort', 'text', 'calc', 'no', '', '=IF($C{r}="","",IF($W{r}="","No Funding Data",IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),"Stage Unknown")))', f'Benchmark cohort used to group the Dashboard table {W} -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here.'),
-    ('AC', 'Notes', 'notes', 'text', 'input', 'no', '', '', 'Free-form deal notes.'),
-    ('AD', 'Year 1 Rent ($)', 'y1_rent', 'usd', 'calc', 'no', '', '=IF(OR(L{r}="",O{r}=""),"",L{r}*O{r})', 'RSF x P1 rent.'),
-    ('AE', 'Free Rent $ Value', 'free_val', 'usd', 'calc', 'no', '', '=IF(OR(R{r}="",O{r}="",L{r}=""),"",R{r}/12*O{r}*L{r})', '(Free months / 12) x P1 rent x RSF.'),
-    ('AF', 'TI Allowance Total ($)', 'ti_total', 'usd', 'calc', 'no', '', '=IF(OR(S{r}="",L{r}=""),"",S{r}*L{r})', 'TI $/SF x RSF.'),
-    ('AG', 'Projected Gross Rent (Term)', 'pgr', 'usd', 'calc', 'no', '', '=IF(OR($L{r}="",$N{r}="",$O{r}=""),"",LET(nmo,ROUND($N{r}*12,0),rz,$O{r},rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mA,MIN(nmo,60),mB,MIN(MAX(nmo-60,0),60),mC,MAX(nmo-120,0),$L{r}*(rz*mA+rsix*mB+relev*mC)/12))', 'Nominal rent over the term on FLAT tranches (no assumed escalation).'),
-    ('AH', 'Avg Rate ($/RSF/Yr)', 'avg_rate', 'rent', 'calc', 'no', '', '=IF(OR($AG{r}="",$L{r}="",$N{r}=""),"",$AG{r}/$L{r}/$N{r})', 'Projected Gross / RSF / Term.'),
-    ('AI', 'NER Annuity ($/RSF/Yr) @ 6%', 'ner', 'rent', 'calc', 'no', '', '=IF(OR($N{r}="",$O{r}="",$S{r}=""),"",LET(nmo,ROUND($N{r}*12,0),im,0.06/12,rz,$O{r},rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mos,SEQUENCE(nmo),pvbeg,SUMPRODUCT(MAP(mos,LAMBDA(mm,IF(mm<=60,rz,IF(mm<=120,rsix,relev))/12*(1+im)^-(mm-1)))),afbeg,(1-(1+im)^-nmo)/im/12*(1+im),freemo,IF($R{r}="",0,$R{r}),ROUND(pvbeg/afbeg,2)-(freemo/12*rz+$S{r})/afbeg))', 'Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown.'),
-    ('AJ', 'Cost/Seat (Year 1)', 'cost_seat', 'usd', 'calc', 'no', '', '=IF(OR(AD{r}="",M{r}="",M{r}=0),"",AD{r}/M{r})', 'Year 1 Rent / Seats.'),
-    ('AK', 'RSF / Seat', 'rsf_seat', 'num1', 'calc', 'no', '', '=IF(OR(L{r}="",M{r}="",M{r}=0),"",L{r}/M{r})', 'Density: RSF / Seats.'),
-    ('AL', 'Rent-to-Raise (Yr 1) %', 'rent_raise', 'pct', 'calc', 'no', '', '=IF(OR($AD{r}="",$X{r}=""),"",$AD{r}/($X{r}*1000000))', 'Year 1 Rent / wired latest round.'),
-    ('AM', 'Lease-to-Total-Funding %', 'l2tf', 'pct', 'calc', 'no', '', '=IF(OR($AG{r}="",$Y{r}="",$Y{r}=0),"",$AG{r}/($Y{r}*1000000))', 'Projected Gross / wired total tracked funding.'),
-    ('AN', 'Months of Rent Covered', 'mo_cover', 'num1', 'calc', 'no', '', '=IF(OR($Y{r}="",$AD{r}="",$AD{r}=0),"",($Y{r}*1000000)/($AD{r}/12))', 'Total tracked funding / monthly Year-1 rent.'),
-    ('AO', 'Record Status', 'status', 'text', 'qa', 'no', 'RecordStatuses', '=IF($C{r}="","",IF(OR($A{r}="",$L{r}="",$N{r}="",$O{r}="",$B{r}="",$F{r}=""),"MISSING INPUTS",IF(OR($M{r}="",$S{r}=""),"NEEDS REVIEW",IF(AND($U{r}<>"",$U{r}<TODAY()-180),"STALE - REVERIFY","READY"))))', 'READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed.'),
-    ('AP', 'QA Notes', 'qa', 'text', 'qa', 'no', '', '(auto list incl. staleness)', 'Auto list of missing fields + staleness flag.'),
+    ('T', 'Latest Round Date', 'lr_date', 'date', 'calc', 'no', '', '=IF($D{r}="","",IF(COUNTIF(FundingRounds_CompanyIds,$D{r})=0,"",MAXIFS(FundingRounds_Dates,FundingRounds_CompanyIds,$D{r})))', f'Most recent round date {W} -> Funding Rounds.'),
+    ('U', 'Latest Round Type', 'lr_type', 'text', 'calc', 'no', '', '=IF(OR($D{r}="",$T{r}=""),"",IFERROR(INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Types,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,3,FALSE),1,2),""))', f'Type of most recent round; same-day rounds resolve to the larger amount {W} -> Funding Rounds.'),
+    ('V', 'Latest Round Amt ($M)', 'lr_amt', 'num', 'calc', 'no', '', '=IF(OR($D{r}="",$T{r}=""),"",IFERROR(LET(a,INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,2,FALSE),1,2),IF(a=0,"",a)),""))', f'Amount of most recent round {W} -> Funding Rounds.'),
+    ('W', 'Total Tracked Funding ($M)', 'total_fund', 'num', 'calc', 'no', '', "=IF($D{r}=\"\",\"\",IFERROR(LET(t,INDEX('Company Metrics'!$M:$M,MATCH($D{r},'Company Metrics'!$A:$A,0)),IF(OR(t=\"\",t=0),\"\",t)),\"\"))", f'Sum of tracked rounds {W} -> Company Metrics. Blank (never 0) when tracked rounds have no amounts. Semantic: tracked receipts, not researched narrative totals.'),
+    ('X', 'Company (canonical)', 'company', 'text', 'calc', 'no', '', '=IF($D{r}="","",IFERROR(INDEX(Companies!$B:$B,MATCH($D{r},Companies!$A:$A,0)),"UNKNOWN ID"))', f'Canonical company name {W} -> Companies.'),
+    ('Y', 'HQ City', 'hq', 'text', 'calc', 'no', '', '=IF($D{r}="","",IFERROR(LET(h,INDEX(Companies!$G:$G,MATCH($D{r},Companies!$A:$A,0)),IF(h=0,"",h)),""))', f'HQ city {W} -> Companies.'),
+    ('Z', 'Benchmark Cohort', 'cohort', 'text', 'calc', 'no', '', '=IF($C{r}="","",IF($S{r}="","No Funding Data",IFERROR(INDEX(CohortLabels,MATCH($S{r},CohortTypes,0)),"Stage Unknown")))', f'Benchmark cohort used to group the Dashboard table {W} -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here.'),
+    ('AA', 'Notes', 'notes', 'text', 'input', 'no', '', '', 'Free-form deal notes.'),
+    ('AB', 'Year 1 Rent ($)', 'y1_rent', 'usd', 'calc', 'no', '', '=IF(OR(L{r}="",O{r}=""),"",L{r}*O{r})', 'RSF x P1 rent.'),
+    ('AC', 'Free Rent $ Value', 'free_val', 'usd', 'calc', 'no', '', '=IF(OR(R{r}="",O{r}="",L{r}=""),"",R{r}/12*O{r}*L{r})', '(Free months / 12) x P1 rent x RSF.'),
+    ('AD', 'TI Allowance Total ($)', 'ti_total', 'usd', 'calc', 'no', '', '=IF(OR(S{r}="",L{r}=""),"",S{r}*L{r})', 'TI $/SF x RSF.'),
+    ('AE', 'Projected Gross Rent (Term)', 'pgr', 'usd', 'calc', 'no', '', '=IF(OR($L{r}="",$N{r}="",$O{r}=""),"",LET(nmo,ROUND($N{r}*12,0),rz,$O{r},rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mA,MIN(nmo,60),mB,MIN(MAX(nmo-60,0),60),mC,MAX(nmo-120,0),$L{r}*(rz*mA+rsix*mB+relev*mC)/12))', 'Nominal rent over the term on FLAT tranches (no assumed escalation).'),
+    ('AF', 'Avg Rate ($/RSF/Yr)', 'avg_rate', 'rent', 'calc', 'no', '', '=IF(OR($AC{r}="",$L{r}="",$N{r}=""),"",$AC{r}/$L{r}/$N{r})', 'Projected Gross / RSF / Term.'),
+    ('AG', 'NER Annuity ($/RSF/Yr) @ 6%', 'ner', 'rent', 'calc', 'no', '', '=IF(OR($N{r}="",$O{r}="",$S{r}=""),"",LET(nmo,ROUND($N{r}*12,0),im,0.06/12,rz,$O{r},rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mos,SEQUENCE(nmo),pvbeg,SUMPRODUCT(MAP(mos,LAMBDA(mm,IF(mm<=60,rz,IF(mm<=120,rsix,relev))/12*(1+im)^-(mm-1)))),afbeg,(1-(1+im)^-nmo)/im/12*(1+im),freemo,IF($R{r}="",0,$R{r}),ROUND(pvbeg/afbeg,2)-(freemo/12*rz+$S{r})/afbeg))', 'Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown.'),
+    ('AH', 'Cost/Seat (Year 1)', 'cost_seat', 'usd', 'calc', 'no', '', '=IF(OR(AB{r}="",M{r}="",M{r}=0),"",AB{r}/M{r})', 'Year 1 Rent / Seats.'),
+    ('AI', 'RSF / Seat', 'rsf_seat', 'num1', 'calc', 'no', '', '=IF(OR(L{r}="",M{r}="",M{r}=0),"",L{r}/M{r})', 'Density: RSF / Seats.'),
+    ('AJ', 'Rent-to-Raise (Yr 1) %', 'rent_raise', 'pct', 'calc', 'no', '', '=IF(OR($Z{r}="",$V{r}=""),"",$Z{r}/($V{r}*1000000))', 'Year 1 Rent / wired latest round.'),
+    ('AK', 'Lease-to-Total-Funding %', 'l2tf', 'pct', 'calc', 'no', '', '=IF(OR($AC{r}="",$W{r}="",$W{r}=0),"",$AC{r}/($W{r}*1000000))', 'Projected Gross / wired total tracked funding.'),
+    ('AL', 'Months of Rent Covered', 'mo_cover', 'num1', 'calc', 'no', '', '=IF(OR($W{r}="",$Z{r}="",$Z{r}=0),"",($W{r}*1000000)/($Z{r}/12))', 'Total tracked funding / monthly Year-1 rent.'),
+    ('AM', 'Record Status', 'status', 'text', 'qa', 'no', 'RecordStatuses', '=IF($C{r}="","",IF(OR($A{r}="",$L{r}="",$N{r}="",$O{r}="",$B{r}="",$F{r}=""),"MISSING INPUTS",IF(OR($M{r}="",$S{r}=""),"NEEDS REVIEW","READY")))', 'READY / NEEDS REVIEW / MISSING INPUTS — computed, never typed.'),
+    ('AN', 'QA Notes', 'qa', 'text', 'qa', 'no', '', '(auto list)', 'Auto list of missing fields.'),
 ]
 new_rows = [['Lease Comps'] + list(x) for x in SPEC]
-assert len(new_rows) == 42
+assert len(new_rows) == 40
 
 # overwrite block (only if it differs), then delete surplus rows
 current = [[str(c) for c in r] + [''] * (10 - len(r)) for r in rows[start:end]]
@@ -83,7 +81,7 @@ else:
             'startIndex': start + len(new_rows), 'endIndex': start + old_n}}}])
     print(f'_Schema rewritten: {len(new_rows)} entries (removed {max(surplus,0)} surplus rows)')
     changelog(s, 'SCHEMA UPDATE', 'Rewrote _Schema Lease Comps block for v4 layout '
-              '(42 columns: zones identity/premises/deal-terms/wired(+cohort)/notes/economics/governance).', 42)
+              '(40 columns: zones identity/premises/deal-terms/wired(+cohort)/notes/economics/governance).', 40)
 
 # --- Dashboard: the benchmark table is owned by cohorts.py (fixed cohort list from
 #     Reference!CohortOrder, columns A..H including Med RSF). Verify, do not manage.

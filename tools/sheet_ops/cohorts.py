@@ -40,24 +40,21 @@ values_batch(s, [
 ])
 print('Reference: %d type->cohort mappings, %d ordered cohorts' % (len(MAP), len(ORDER)))
 
-# --- Lease Comps: Benchmark Cohort wired column at AB (wired zone V-AB)
+# --- Lease Comps: Benchmark Cohort wired column at Z (wired zone T-Z)
 grid = s.get(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}', params={
     'fields': 'sheets(properties(title,gridProperties(columnCount)))'}).json()
 ncols = next(x['properties']['gridProperties']['columnCount']
              for x in grid['sheets'] if x['properties']['title'] == 'Lease Comps')
-if ncols < 42:
-    batch_update(s, [{'appendDimension': {'sheetId': lc, 'dimension': 'COLUMNS',
-                                          'length': 42 - ncols}}])
-    print('widened Lease Comps grid %d -> 42 columns' % ncols)
+assert ncols == 40, f'Lease Comps grid is {ncols} columns; expected 40'
 
-COHORT_F = ('=IF($C{r}="","",IF($W{r}="","No Funding Data",'
-            'IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),"Stage Unknown")))')
+COHORT_F = ('=IF($C{r}="","",IF($U{r}="","No Funding Data",'
+            'IFERROR(INDEX(CohortLabels,MATCH($U{r},CohortTypes,0)),"Stage Unknown")))')
 values_batch(s, [
-    {'range': "'Lease Comps'!AB1", 'values': [['Benchmark Cohort']]},
-    {'range': "'Lease Comps'!AB2:AB%d" % last,
+    {'range': "'Lease Comps'!Z1", 'values': [['Benchmark Cohort']]},
+    {'range': "'Lease Comps'!Z2:Z%d" % last,
      'values': [[COHORT_F.format(r=r)] for r in range(2, last + 1)]},
 ])
-print('Lease Comps: Benchmark Cohort column (AB) written')
+print('Lease Comps: Benchmark Cohort column (Z) written')
 
 # --- named ranges
 def add(name, sheet, c1, c2, r1, r2):
@@ -74,7 +71,7 @@ batch_update(s, [
     add('CohortTypes', ref, 14, 15, 1, len(MAP) + 1),
     add('CohortLabels', ref, 15, 16, 1, len(MAP) + 1),
     add('CohortOrder', ref, 17, 18, 1, len(ORDER) + 1),
-    add('LeaseComps_Cohorts', lc, 27, 28, 1, rows_end),
+    add('LeaseComps_Cohorts', lc, 25, 26, 1, rows_end),
 ])
 print('named ranges: CohortTypes, CohortLabels, CohortOrder, LeaseComps_Cohorts')
 

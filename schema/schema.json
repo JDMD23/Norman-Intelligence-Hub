@@ -185,25 +185,6 @@
         },
         {
           "column": "T",
-          "header": "Comp Source",
-          "key": "source",
-          "type": "text",
-          "role": "input",
-          "required": false,
-          "enum_named_range": "CompSources",
-          "description": "Where this comp came from."
-        },
-        {
-          "column": "U",
-          "header": "Verified Date",
-          "key": "verified",
-          "type": "date",
-          "role": "input",
-          "required": false,
-          "description": "When this comp was last verified. >6 months old flips status to STALE - REVERIFY."
-        },
-        {
-          "column": "V",
           "header": "Latest Round Date",
           "key": "lr_date",
           "type": "date",
@@ -213,27 +194,27 @@
           "description": "Most recent round date (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds."
         },
         {
-          "column": "W",
+          "column": "U",
           "header": "Latest Round Type",
           "key": "lr_type",
           "type": "text",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($D{r}=\"\",$V{r}=\"\"),\"\",IFERROR(INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Types,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,3,FALSE),1,2),\"\"))",
+          "formula_pattern": "=IF(OR($D{r}=\"\",$T{r}=\"\"),\"\",IFERROR(INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Types,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,3,FALSE),1,2),\"\"))",
           "description": "Type of most recent round; same-day rounds resolve to the larger amount (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds."
         },
         {
-          "column": "X",
+          "column": "V",
           "header": "Latest Round Amt ($M)",
           "key": "lr_amt",
           "type": "num",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($D{r}=\"\",$V{r}=\"\"),\"\",IFERROR(LET(a,INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,2,FALSE),1,2),IF(a=0,\"\",a)),\"\"))",
+          "formula_pattern": "=IF(OR($D{r}=\"\",$T{r}=\"\"),\"\",IFERROR(LET(a,INDEX(SORT(FILTER({FundingRounds_Dates,FundingRounds_Amounts},FundingRounds_CompanyIds=$D{r}),1,FALSE,2,FALSE),1,2),IF(a=0,\"\",a)),\"\"))",
           "description": "Amount of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds."
         },
         {
-          "column": "Y",
+          "column": "W",
           "header": "Total Tracked Funding ($M)",
           "key": "total_fund",
           "type": "num",
@@ -243,7 +224,7 @@
           "description": "Sum of tracked rounds (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. Blank (never 0) when tracked rounds have no amounts. Semantic: tracked receipts, not researched narrative totals."
         },
         {
-          "column": "Z",
+          "column": "X",
           "header": "Company (canonical)",
           "key": "company",
           "type": "text",
@@ -253,7 +234,7 @@
           "description": "Canonical company name (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies."
         },
         {
-          "column": "AA",
+          "column": "Y",
           "header": "HQ City",
           "key": "hq",
           "type": "text",
@@ -263,17 +244,17 @@
           "description": "HQ city (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies."
         },
         {
-          "column": "AB",
+          "column": "Z",
           "header": "Benchmark Cohort",
           "key": "cohort",
           "type": "text",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF($C{r}=\"\",\"\",IF($W{r}=\"\",\"No Funding Data\",IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),\"Stage Unknown\")))",
+          "formula_pattern": "=IF($C{r}=\"\",\"\",IF($S{r}=\"\",\"No Funding Data\",IFERROR(INDEX(CohortLabels,MATCH($S{r},CohortTypes,0)),\"Stage Unknown\")))",
           "description": "Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> \"Late Stage (D+)\", IPO + reverse merger -> \"Public\". Add new round types to the Reference map, never here."
         },
         {
-          "column": "AC",
+          "column": "AA",
           "header": "Notes",
           "key": "notes",
           "type": "text",
@@ -282,7 +263,7 @@
           "description": "Free-form deal notes."
         },
         {
-          "column": "AD",
+          "column": "AB",
           "header": "Year 1 Rent ($)",
           "key": "y1_rent",
           "type": "usd",
@@ -292,7 +273,7 @@
           "description": "RSF x P1 rent."
         },
         {
-          "column": "AE",
+          "column": "AC",
           "header": "Free Rent $ Value",
           "key": "free_val",
           "type": "usd",
@@ -302,7 +283,7 @@
           "description": "(Free months / 12) x P1 rent x RSF."
         },
         {
-          "column": "AF",
+          "column": "AD",
           "header": "TI Allowance Total ($)",
           "key": "ti_total",
           "type": "usd",
@@ -312,7 +293,7 @@
           "description": "TI $/SF x RSF."
         },
         {
-          "column": "AG",
+          "column": "AE",
           "header": "Projected Gross Rent (Term)",
           "key": "pgr",
           "type": "usd",
@@ -322,17 +303,17 @@
           "description": "Nominal rent over the term on FLAT tranches (no assumed escalation)."
         },
         {
-          "column": "AH",
+          "column": "AF",
           "header": "Avg Rate ($/RSF/Yr)",
           "key": "avg_rate",
           "type": "rent",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($AG{r}=\"\",$L{r}=\"\",$N{r}=\"\"),\"\",$AG{r}/$L{r}/$N{r})",
+          "formula_pattern": "=IF(OR($AC{r}=\"\",$L{r}=\"\",$N{r}=\"\"),\"\",$AC{r}/$L{r}/$N{r})",
           "description": "Projected Gross / RSF / Term."
         },
         {
-          "column": "AI",
+          "column": "AG",
           "header": "NER Annuity ($/RSF/Yr) @ 6%",
           "key": "ner",
           "type": "rent",
@@ -342,17 +323,17 @@
           "description": "Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown."
         },
         {
-          "column": "AJ",
+          "column": "AH",
           "header": "Cost/Seat (Year 1)",
           "key": "cost_seat",
           "type": "usd",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR(AD{r}=\"\",M{r}=\"\",M{r}=0),\"\",AD{r}/M{r})",
+          "formula_pattern": "=IF(OR(AB{r}=\"\",M{r}=\"\",M{r}=0),\"\",AB{r}/M{r})",
           "description": "Year 1 Rent / Seats."
         },
         {
-          "column": "AK",
+          "column": "AI",
           "header": "RSF / Seat",
           "key": "rsf_seat",
           "type": "num1",
@@ -362,55 +343,55 @@
           "description": "Density: RSF / Seats."
         },
         {
-          "column": "AL",
+          "column": "AJ",
           "header": "Rent-to-Raise (Yr 1) %",
           "key": "rent_raise",
           "type": "pct",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($AD{r}=\"\",$X{r}=\"\"),\"\",$AD{r}/($X{r}*1000000))",
+          "formula_pattern": "=IF(OR($Z{r}=\"\",$V{r}=\"\"),\"\",$Z{r}/($V{r}*1000000))",
           "description": "Year 1 Rent / wired latest round."
         },
         {
-          "column": "AM",
+          "column": "AK",
           "header": "Lease-to-Total-Funding %",
           "key": "l2tf",
           "type": "pct",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($AG{r}=\"\",$Y{r}=\"\",$Y{r}=0),\"\",$AG{r}/($Y{r}*1000000))",
+          "formula_pattern": "=IF(OR($AC{r}=\"\",$W{r}=\"\",$W{r}=0),\"\",$AC{r}/($W{r}*1000000))",
           "description": "Projected Gross / wired total tracked funding."
         },
         {
-          "column": "AN",
+          "column": "AL",
           "header": "Months of Rent Covered",
           "key": "mo_cover",
           "type": "num1",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($Y{r}=\"\",$AD{r}=\"\",$AD{r}=0),\"\",($Y{r}*1000000)/($AD{r}/12))",
+          "formula_pattern": "=IF(OR($W{r}=\"\",$Z{r}=\"\",$Z{r}=0),\"\",($W{r}*1000000)/($Z{r}/12))",
           "description": "Total tracked funding / monthly Year-1 rent."
         },
         {
-          "column": "AO",
+          "column": "AM",
           "header": "Record Status",
           "key": "status",
           "type": "text",
           "role": "qa",
           "required": false,
           "enum_named_range": "RecordStatuses",
-          "formula_pattern": "=IF($C{r}=\"\",\"\",IF(OR($A{r}=\"\",$L{r}=\"\",$N{r}=\"\",$O{r}=\"\",$B{r}=\"\",$F{r}=\"\"),\"MISSING INPUTS\",IF(OR($M{r}=\"\",$S{r}=\"\"),\"NEEDS REVIEW\",IF(AND($U{r}<>\"\",$U{r}<TODAY()-180),\"STALE - REVERIFY\",\"READY\"))))",
-          "description": "READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed."
+          "formula_pattern": "=IF($C{r}=\"\",\"\",IF(OR($A{r}=\"\",$L{r}=\"\",$N{r}=\"\",$O{r}=\"\",$B{r}=\"\",$F{r}=\"\"),\"MISSING INPUTS\",IF(OR($M{r}=\"\",$S{r}=\"\"),\"NEEDS REVIEW\",\"READY\")))",
+          "description": "READY / NEEDS REVIEW / MISSING INPUTS — computed, never typed."
         },
         {
-          "column": "AP",
+          "column": "AN",
           "header": "QA Notes",
           "key": "qa",
           "type": "text",
           "role": "qa",
           "required": false,
-          "formula_pattern": "(auto list incl. staleness)",
-          "description": "Auto list of missing fields + staleness flag."
+          "formula_pattern": "(auto list)",
+          "description": "Auto list of missing fields."
         }
       ]
     },

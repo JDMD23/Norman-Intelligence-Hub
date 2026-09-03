@@ -271,8 +271,8 @@ R += [sheet_props(sid, frozen_rows=1, tab=TAB_MACHINERY)]
 sid = ids['Reference']
 R += header(sid, 'A', 'R', bg=SAGE) + body(sid, 'A', 'R', 1000)
 R += [fmt(rng(sid, 'I', 'I', 1, 1), bg=WHITE), fmt(rng(sid, 'L', 'L', 1, 1), bg=WHITE)]
-R += [fmt(rng(sid, 'N', 'N', 1, 1), bg=WHITE), fmt(rng(sid, 'Q', 'Q', 1, 1), bg=WHITE)]
-R += widths(sid, {c: 170 for c in 'ABCDEFGHJKMOPR'}) + widths(sid, {'I': 24, 'L': 24, 'N': 24, 'Q': 24})
+R += [fmt(rng(sid, c, c, 1, 1), bg=WHITE) for c in ('I', 'L', 'M', 'N', 'Q')]
+R += widths(sid, {c: 170 for c in 'ABCDEFGHJKOPR'}) + widths(sid, {'I': 24, 'L': 24, 'M': 24, 'N': 24, 'Q': 24})
 R += [sheet_props(sid, frozen_rows=1, tab=TAB_MACHINERY)]
 
 # ---------- backup tab out of the way (tab order + tiering belong to polish.py) ----------

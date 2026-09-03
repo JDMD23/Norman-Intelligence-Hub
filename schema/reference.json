@@ -68,15 +68,7 @@
     "RecordStatuses": [
       "READY",
       "NEEDS REVIEW",
-      "MISSING INPUTS",
-      "STALE - REVERIFY"
-    ],
-    "CompSources": [
-      "CoStar",
-      "CBRE",
-      "Broker Intel",
-      "Press",
-      "Direct/Landlord"
+      "MISSING INPUTS"
     ],
     "CohortTypes": [
       "Seed",

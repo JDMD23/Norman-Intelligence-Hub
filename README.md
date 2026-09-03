@@ -36,6 +36,8 @@ scripts/
 tools/sheet_ops/     Receipted, QA-gated workbook operations (Sheets API; needs GOOGLE_SA_KEY)
   run_all.py         Lease Comps v4 migration pipeline (re-runnable)
   theme.py           The CBRE-green palette every presentation pass imports
+  migrate_cohort_column.py / remove_provenance_columns.py
+                     Structural moves after v4 (idempotent, receipted)
   style.py / polish.py / dashboard_style.py / style_workbook.py / copy_pass.py
                      Presentation passes (Lease Comps zones, tab tiering, Dashboard v2, supporting tabs, copy)
   cohorts.py / companies_view.py / tidy_vocab.py
@@ -51,7 +53,7 @@ CLAUDE.md          Contract for AI agents working on the hub
 3. **Unknown = blank** — never type `0` for an unknown value. Blank propagates correctly; `0` corrupts averages. (A confirmed-zero TI on an as-is deal is the one legitimate `0`.)
 4. **IDs are immutable** — `LC-####` / `CO-####` / `FR-####` are auto-assigned in the sheet by onEdit triggers and never reused. Agents writing via API must assign IDs themselves per `_Schema`.
 5. **Controlled vocabulary** — dropdown fields are fed from the Reference tab. New submarket/class/type? Add it in Reference first.
-6. **Computed status** — every record's status (`READY` / `NEEDS REVIEW` / `MISSING INPUTS` / `STALE - REVERIFY`) is a formula, never static text.
+6. **Computed status** — every record's status (`READY` / `NEEDS REVIEW` / `MISSING INPUTS`) is a formula, never static text.
 7. **Receipts** — every automation appends a Changelog row: timestamp, actor, action, detail.
 
 ## For agents

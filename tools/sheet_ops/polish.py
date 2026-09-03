@@ -6,12 +6,12 @@ is safe to re-run and easy to reverse (notes below each section say how).
   1. Tab tiering      hide the four pure-machinery tabs; order the rest front-to-back.
   2. Hide Company ID  column D is a join key, not something a human reads.
   3. Column groups    collapse funding detail, concession restatements, ratios, QA notes.
-  4. Status colors    READY / NEEDS REVIEW / STALE / MISSING INPUTS read as color.
+  4. Status colors    READY / NEEDS REVIEW / MISSING INPUTS read as color.
   5. Banded rows      per zone, so row-scanning and the zone tint scheme coexist.
 """
 from common import session, batch_update, changelog, SID
 from theme import (WHITE, INPUT_ALT, WIRE, WIRE_ALT, CALC, CALC_ALT, GOV, GOV_ALT,
-                   OK_BG, OK_FG, WARN_BG, WARN_FG, BAD_BG, BAD_FG, NEUTRAL_BG, NEUTRAL_FG)
+                   OK_BG, OK_FG, WARN_BG, WARN_FG, NEUTRAL_BG, NEUTRAL_FG)
 
 # Machinery: load-bearing (Company Metrics alone feeds 199 wired cells) but never browsed.
 HIDE_TABS = ['Company Metrics', 'QA Harness', 'Changelog', '_Schema']
@@ -19,22 +19,21 @@ HIDE_TABS = ['Company Metrics', 'QA Harness', 'Changelog', '_Schema']
 ORDER = ['Start Here', 'Dashboard', 'Lease Comps', 'Companies', 'Funding Rounds']
 
 # Collapsed column groups: (first, last, why)
-GROUPS = [('V', 'Y', 'funding round detail'),
-          ('AE', 'AF', 'concession $ restatements'),
-          ('AL', 'AN', 'funding ratios'),
-          ('AP', 'AP', 'QA notes')]
+GROUPS = [('T', 'W', 'funding round detail'),
+          ('AC', 'AD', 'concession $ restatements'),
+          ('AJ', 'AL', 'funding ratios'),
+          ('AN', 'AN', 'QA notes')]
 
 # Status pills: value -> (background, text)
 STATUS = [('READY', OK_BG, OK_FG),
           ('NEEDS REVIEW', WARN_BG, WARN_FG),
-          ('STALE - REVERIFY', BAD_BG, BAD_FG),
           ('MISSING INPUTS', NEUTRAL_BG, NEUTRAL_FG)]
 
 # Zone banding: (first, last, base color, alternate) — alternate is a touch deeper so
 # the eye can track a row across 30+ columns without losing the zone colour coding.
-BANDS = [('A', 'U', WHITE, INPUT_ALT), ('V', 'AB', WIRE, WIRE_ALT),
-         ('AC', 'AC', WHITE, INPUT_ALT), ('AD', 'AN', CALC, CALC_ALT),
-         ('AO', 'AP', GOV, GOV_ALT)]
+BANDS = [('A', 'S', WHITE, INPUT_ALT), ('T', 'Z', WIRE, WIRE_ALT),
+         ('AA', 'AA', WHITE, INPUT_ALT), ('AB', 'AL', CALC, CALC_ALT),
+         ('AM', 'AN', GOV, GOV_ALT)]
 
 NROWS = 1207
 
@@ -111,11 +110,11 @@ for c1, c2, why in GROUPS:
 
 # --- 4. status colors (replace any prior rules on the status column)
 for i, cf in reversed(list(enumerate(lc_sheet.get('conditionalFormats', [])))):
-    if any(r.get('startColumnIndex') == ci('AO') for r in cf.get('ranges', [])):
+    if any(r.get('startColumnIndex') == ci('AM') for r in cf.get('ranges', [])):
         reqs.append({'deleteConditionalFormatRule': {'sheetId': lc, 'index': i}})
 for i, (val, bg, fg) in enumerate(STATUS):
     reqs.append({'addConditionalFormatRule': {'index': i, 'rule': {
-        'ranges': [rng('AO', 'AO', 1)],
+        'ranges': [rng('AM', 'AM', 1)],
         'booleanRule': {
             'condition': {'type': 'TEXT_EQ', 'values': [{'userEnteredValue': val}]},
             'format': {'backgroundColor': hx(bg),

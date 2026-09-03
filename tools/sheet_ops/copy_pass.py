@@ -19,7 +19,7 @@ START_HERE = [
     ('A8', 'IDs'), ('B8', 'Assigned automatically the moment you type a tenant or company name. Leave the ID columns alone.'),
     ('A9', 'Vocabulary'), ('B9', 'Dropdown fields are fed from the Reference tab. New submarket, building class or round type? Add it there first.'),
     ('A10', 'Colour'), ('B10', 'White columns are inputs. Celadon columns are wired from another tab. Green columns are computed. Change inputs, never results.'),
-    ('A11', 'Status'), ('B11', 'Every record status is computed: Ready, Needs review, Missing inputs or Stale – reverify. Nothing here claims to be ready as static text.'),
+    ('A11', 'Status'), ('B11', 'Every record status is computed: Ready, Needs review or Missing inputs. Nothing here claims to be ready as static text.'),
     ('A12', 'Receipts'), ('B12', 'Every automated change leaves a row in the Changelog: timestamp, actor, action, detail.'),
     ('A14', 'Live health'),
     ('A15', 'QA status'), ('A16', 'QA detail'), ('A17', 'Signed leases'), ('A18', 'Companies'),
