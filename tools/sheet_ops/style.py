@@ -41,8 +41,8 @@ reqs = []
 
 # --- header band by zone (row 1): white bold, wrapped, centered
 ZONES = [('A', 'D', CBRE_GREEN), ('E', 'K', CBRE_GREEN), ('L', 'U', CBRE_GREEN),
-         ('V', 'AA', SAGE), ('AB', 'AB', CBRE_GREEN), ('AC', 'AM', FOREST),
-         ('AN', 'AO', OLIVE), ('AP', 'AP', SAGE)]
+         ('V', 'AB', SAGE), ('AC', 'AC', CBRE_GREEN), ('AD', 'AN', FOREST),
+         ('AO', 'AP', OLIVE)]
 for c1, c2, color in ZONES:
     reqs.append({'repeatCell': {'range': rng(c1, c2, 0, 1), 'cell': {'userEnteredFormat': {
         'backgroundColor': hx(color),
@@ -52,9 +52,9 @@ for c1, c2, color in ZONES:
                   'horizontalAlignment,verticalAlignment)'}})
 
 # --- data-zone tints (rows 2+): inputs white; wire cyan; calc green; governance amber
-for c1, c2, color in [('A', 'U', WHITE), ('AB', 'AB', WHITE),
-                      ('V', 'AA', WIRE), ('AC', 'AM', CALC),
-                      ('AN', 'AO', GOV), ('AP', 'AP', WIRE)]:
+for c1, c2, color in [('A', 'U', WHITE), ('AC', 'AC', WHITE),
+                      ('V', 'AB', WIRE), ('AD', 'AN', CALC),
+                      ('AO', 'AP', GOV)]:
     reqs.append({'repeatCell': {'range': rng(c1, c2, 1), 'cell': {'userEnteredFormat': {
         'backgroundColor': hx(color)}}, 'fields': 'userEnteredFormat.backgroundColor'}})
 
@@ -68,9 +68,9 @@ FMT = {('B', 'B'): ('DATE', 'mmmm yyyy'), ('V', 'V'): ('DATE', 'mmmm yyyy'),
        ('L', 'M'): ('NUMBER', '#,##0'), ('N', 'N'): ('NUMBER', '0.0'),
        ('O', 'Q'): ('CURRENCY', '$#,##0.00'), ('R', 'R'): ('NUMBER', '0.0'),
        ('S', 'S'): ('CURRENCY', '$#,##0'), ('X', 'Y'): ('NUMBER', '#,##0.0'),
-       ('AC', 'AF'): ('CURRENCY', '$#,##0'), ('AG', 'AH'): ('CURRENCY', '$#,##0.00'),
-       ('AI', 'AI'): ('CURRENCY', '$#,##0'), ('AJ', 'AJ'): ('NUMBER', '0.0'),
-       ('AK', 'AL'): ('PERCENT', '0.00%'), ('AM', 'AM'): ('NUMBER', '#,##0')}
+       ('AD', 'AG'): ('CURRENCY', '$#,##0'), ('AH', 'AI'): ('CURRENCY', '$#,##0.00'),
+       ('AJ', 'AJ'): ('CURRENCY', '$#,##0'), ('AK', 'AK'): ('NUMBER', '0.0'),
+       ('AL', 'AM'): ('PERCENT', '0.00%'), ('AN', 'AN'): ('NUMBER', '#,##0')}
 for (c1, c2), (t, p) in FMT.items():
     reqs.append({'repeatCell': {'range': rng(c1, c2, 1), 'cell': {'userEnteredFormat': {
         'numberFormat': {'type': t, 'pattern': p}}},
@@ -78,7 +78,7 @@ for (c1, c2), (t, p) in FMT.items():
 
 # --- zone-boundary vertical rules + header underline
 EDGE = {'style': 'SOLID_MEDIUM', 'color': hx(LIGHT)}
-for c in ['D', 'K', 'U', 'AA', 'AB', 'AM', 'AO']:
+for c in ['D', 'K', 'U', 'AB', 'AC', 'AN']:
     reqs.append({'updateBorders': {'range': rng(c, c), 'right': EDGE}})
 reqs.append({'updateBorders': {'range': rng('A', 'AP', 0, 1),
                                'bottom': {'style': 'SOLID_THICK', 'color': hx(CBRE_GREEN)}}})
@@ -96,9 +96,9 @@ reqs.append({'updateDimensionProperties': {
 WIDTHS = {'A': 88, 'B': 96, 'C': 168, 'D': 92, 'E': 200, 'F': 148, 'G': 104, 'H': 88,
           'I': 108, 'J': 128, 'K': 128, 'L': 78, 'M': 66, 'N': 72, 'O': 96, 'P': 96,
           'Q': 96, 'R': 64, 'S': 76, 'T': 108, 'U': 100, 'V': 108, 'W': 140, 'X': 96,
-          'Y': 116, 'Z': 168, 'AA': 100, 'AB': 260, 'AC': 108, 'AD': 100, 'AE': 104,
-          'AF': 128, 'AG': 100, 'AH': 112, 'AI': 100, 'AJ': 78, 'AK': 96, 'AL': 118,
-          'AM': 104, 'AN': 128, 'AO': 240, 'AP': 130}
+          'Y': 116, 'Z': 168, 'AA': 100, 'AB': 130, 'AC': 260, 'AD': 108, 'AE': 100, 'AF': 104,
+          'AG': 128, 'AH': 100, 'AI': 112, 'AJ': 100, 'AK': 78, 'AL': 96, 'AM': 118,
+          'AN': 104, 'AO': 128, 'AP': 240}
 for c, w in WIDTHS.items():
     reqs.append({'updateDimensionProperties': {
         'range': {'sheetId': lc, 'dimension': 'COLUMNS', 'startIndex': ci(c), 'endIndex': ci(c) + 1},
@@ -108,8 +108,8 @@ for c, w in WIDTHS.items():
 #     the pre-v4 per-column "Calculated" warnings are superseded and removed.
 LEGACY = 'Calculated -- edit the inputs, not this column'
 added, removed = [], []
-for c1, c2, desc in [('V', 'AA', 'Wired from Companies/Funding Rounds — edit those tabs instead'),
-                     ('AC', 'AO', 'Computed — edit inputs, not results')]:
+for c1, c2, desc in [('V', 'AB', 'Wired from Companies/Funding Rounds — edit those tabs instead'),
+                     ('AD', 'AP', 'Computed — edit inputs, not results')]:
     if desc not in have:
         reqs.append({'addProtectedRange': {'protectedRange': {
             'range': rng(c1, c2, 1), 'description': desc, 'warningOnly': True}}})

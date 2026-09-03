@@ -42,17 +42,19 @@ F_SPEC = {
          'MATCH($D{r},Companies!$A:$A,0)),"UNKNOWN ID"))',
     'AA': '=IF($D{r}="","",IFERROR(LET(h,INDEX(Companies!$G:$G,'
           'MATCH($D{r},Companies!$A:$A,0)),IF(h=0,"",h)),""))',
-    'AF': '=IF(OR($L{r}="",$N{r}="",$O{r}=""),"",LET(nmo,ROUND($N{r}*12,0),rz,$O{r},'
+    'AB': '=IF($C{r}="","",IF($W{r}="","No Funding Data",'
+          'IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),"Stage Unknown")))',
+    'AG': '=IF(OR($L{r}="",$N{r}="",$O{r}=""),"",LET(nmo,ROUND($N{r}*12,0),rz,$O{r},'
           'rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mA,MIN(nmo,60),'
           'mB,MIN(MAX(nmo-60,0),60),mC,MAX(nmo-120,0),$L{r}*(rz*mA+rsix*mB+relev*mC)/12))',
-    'AG': '=IF(OR($AF{r}="",$L{r}="",$N{r}=""),"",$AF{r}/$L{r}/$N{r})',
-    'AK': '=IF(OR($AC{r}="",$X{r}=""),"",$AC{r}/($X{r}*1000000))',
-    'AL': '=IF(OR($AF{r}="",$Y{r}="",$Y{r}=0),"",$AF{r}/($Y{r}*1000000))',
-    'AM': '=IF(OR($Y{r}="",$AC{r}="",$AC{r}=0),"",($Y{r}*1000000)/($AC{r}/12))',
-    'AN': '=IF($C{r}="","",IF(OR($A{r}="",$L{r}="",$N{r}="",$O{r}="",$B{r}="",$F{r}=""),'
+    'AH': '=IF(OR($AG{r}="",$L{r}="",$N{r}=""),"",$AG{r}/$L{r}/$N{r})',
+    'AL': '=IF(OR($AD{r}="",$X{r}=""),"",$AD{r}/($X{r}*1000000))',
+    'AM': '=IF(OR($AG{r}="",$Y{r}="",$Y{r}=0),"",$AG{r}/($Y{r}*1000000))',
+    'AN': '=IF(OR($Y{r}="",$AD{r}="",$AD{r}=0),"",($Y{r}*1000000)/($AD{r}/12))',
+    'AO': '=IF($C{r}="","",IF(OR($A{r}="",$L{r}="",$N{r}="",$O{r}="",$B{r}="",$F{r}=""),'
           '"MISSING INPUTS",IF(OR($M{r}="",$S{r}=""),"NEEDS REVIEW",'
           'IF(AND($U{r}<>"",$U{r}<TODAY()-180),"STALE - REVERIFY","READY"))))',
-    'AO': '=IF($C{r}="","",TEXTJOIN("; ",TRUE,IF($A{r}="","MISSING COMP ID",""),'
+    'AP': '=IF($C{r}="","",TEXTJOIN("; ",TRUE,IF($A{r}="","MISSING COMP ID",""),'
           'IF($L{r}="","MISSING RSF",""),IF($N{r}="","MISSING TERM",""),'
           'IF($O{r}="","MISSING STARTING RENT",""),IF($B{r}="","MISSING DATE",""),'
           'IF($F{r}="","MISSING SUBMARKET",""),IF($M{r}="","SEATS UNKNOWN",""),'
@@ -89,7 +91,7 @@ else:
 if already_migrated:
     # Re-run: rewrite only the formula columns whose row-2 formula drifted from spec
     # (formula fixes land here so the script stays the single source of truth).
-    current = get_values(s, "'Lease Comps'!A2:AO2", render='FORMULA')[0]
+    current = get_values(s, "'Lease Comps'!A2:AP2", render='FORMULA')[0]
     drift = []
     for c, tpl in F_SPEC.items():
         i = 0

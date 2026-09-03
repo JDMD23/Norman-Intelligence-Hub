@@ -35,21 +35,21 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | Y | Total Tracked Funding ($M) | `total_fund` | num | calc |  |  | Sum of tracked rounds (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. Blank (never 0) when tracked rounds have no amounts. Semantic: tracked receipts, not researched narrative totals. |
 | Z | Company (canonical) | `company` | text | calc |  |  | Canonical company name (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
 | AA | HQ City | `hq` | text | calc |  |  | HQ city (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
-| AB | Notes | `notes` | text | input |  |  | Free-form deal notes. |
-| AC | Year 1 Rent ($) | `y1_rent` | usd | calc |  |  | RSF x P1 rent. |
-| AD | Free Rent $ Value | `free_val` | usd | calc |  |  | (Free months / 12) x P1 rent x RSF. |
-| AE | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
-| AF | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Nominal rent over the term on FLAT tranches (no assumed escalation). |
-| AG | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross / RSF / Term. |
-| AH | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown. |
-| AI | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. |
-| AJ | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. |
-| AK | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / wired latest round. |
-| AL | Lease-to-Total-Funding % | `l2tf` | pct | calc |  |  | Projected Gross / wired total tracked funding. |
-| AM | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total tracked funding / monthly Year-1 rent. |
-| AN | Record Status | `status` | text | qa |  | RecordStatuses | READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed. |
-| AO | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields + staleness flag. |
-| AP | Benchmark Cohort | `cohort` | text | calc |  |  | Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here. |
+| AB | Benchmark Cohort | `cohort` | text | calc |  |  | Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here. |
+| AC | Notes | `notes` | text | input |  |  | Free-form deal notes. |
+| AD | Year 1 Rent ($) | `y1_rent` | usd | calc |  |  | RSF x P1 rent. |
+| AE | Free Rent $ Value | `free_val` | usd | calc |  |  | (Free months / 12) x P1 rent x RSF. |
+| AF | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
+| AG | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Nominal rent over the term on FLAT tranches (no assumed escalation). |
+| AH | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross / RSF / Term. |
+| AI | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown. |
+| AJ | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. |
+| AK | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. |
+| AL | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / wired latest round. |
+| AM | Lease-to-Total-Funding % | `l2tf` | pct | calc |  |  | Projected Gross / wired total tracked funding. |
+| AN | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total tracked funding / monthly Year-1 rent. |
+| AO | Record Status | `status` | text | qa |  | RecordStatuses | READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed. |
+| AP | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields + staleness flag. |
 
 ## Companies
 

@@ -56,18 +56,18 @@ Executed by `tools/sheet_ops/run_all.py`; receipts in Changelog (STRUCTURE MIGRA
 FUNDING ROUNDS BACKFILL, MIGRATION VERIFIED, STYLE, SCHEMA UPDATE, DASHBOARD LAYOUT). QA 19/19 PASS.
 Pre-migration copy: tab `LC_BACKUP_2026-09-02` (delete once the v4 tab has been used in anger).
 
-Final column map (41 columns; Zones 1–3 unchanged so the onEdit auto-ID triggers keep working):
+Final column map (42 columns, Benchmark Cohort moved into the wired zone 2026-09-03; Zones 1–3 unchanged so the onEdit auto-ID triggers keep working):
 
 | Cols | Zone | Fields |
 | --- | --- | --- |
 | A–D | Identity (input) | Comp ID, Date Signed, Tenant, Company ID |
 | E–K | Premises (input) | Address, Submarket, Building Class, Floor(s), Condition, Deal Type, Delivery Condition |
 | L–U | Deal terms (input) | RSF, Seats, Term, Rent P1 / P2 / P3, Free Rent, TI $/SF, Comp Source, Verified Date |
-| V–AA | Company wire (calc) | Latest Round Date, Latest Round Type, Latest Round Amt, Total Tracked Funding, Company (canonical), HQ City |
-| AB | Notes (input) | Free-form deal notes |
-| AC–AJ | Economics (calc) | Year 1 Rent, Free Rent $, TI Total, Projected Gross (flat tranches), Avg Rate, NER, Cost/Seat, RSF/Seat |
-| AK–AM | Ratios (calc) | Rent-to-Raise, Lease-to-Total-Funding, Months of Rent Covered |
-| AN–AO | Governance (qa) | Record Status, QA Notes |
+| V–AB | Company wire (calc) | Latest Round Date, Latest Round Type, Latest Round Amt, Total Tracked Funding, Company (canonical), HQ City, Benchmark Cohort |
+| AC | Notes (input) | Free-form deal notes |
+| AD–AK | Economics (calc) | Year 1 Rent, Free Rent $, TI Total, Projected Gross (flat tranches), Avg Rate, NER, Cost/Seat, RSF/Seat |
+| AL–AN | Ratios (calc) | Rent-to-Raise, Lease-to-Total-Funding, Months of Rent Covered |
+| AO–AP | Governance (qa) | Record Status, QA Notes |
 
 Wire semantics: Latest Round = most recent row in Funding Rounds for the company; Total Tracked Funding =
 Company Metrics tracked sum, blank (never 0) when tracked rounds carry no amounts. Total Tracked is a

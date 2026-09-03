@@ -264,6 +264,16 @@
         },
         {
           "column": "AB",
+          "header": "Benchmark Cohort",
+          "key": "cohort",
+          "type": "text",
+          "role": "calc",
+          "required": false,
+          "formula_pattern": "=IF($C{r}=\"\",\"\",IF($W{r}=\"\",\"No Funding Data\",IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),\"Stage Unknown\")))",
+          "description": "Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> \"Late Stage (D+)\", IPO + reverse merger -> \"Public\". Add new round types to the Reference map, never here."
+        },
+        {
+          "column": "AC",
           "header": "Notes",
           "key": "notes",
           "type": "text",
@@ -272,7 +282,7 @@
           "description": "Free-form deal notes."
         },
         {
-          "column": "AC",
+          "column": "AD",
           "header": "Year 1 Rent ($)",
           "key": "y1_rent",
           "type": "usd",
@@ -282,7 +292,7 @@
           "description": "RSF x P1 rent."
         },
         {
-          "column": "AD",
+          "column": "AE",
           "header": "Free Rent $ Value",
           "key": "free_val",
           "type": "usd",
@@ -292,7 +302,7 @@
           "description": "(Free months / 12) x P1 rent x RSF."
         },
         {
-          "column": "AE",
+          "column": "AF",
           "header": "TI Allowance Total ($)",
           "key": "ti_total",
           "type": "usd",
@@ -302,7 +312,7 @@
           "description": "TI $/SF x RSF."
         },
         {
-          "column": "AF",
+          "column": "AG",
           "header": "Projected Gross Rent (Term)",
           "key": "pgr",
           "type": "usd",
@@ -312,17 +322,17 @@
           "description": "Nominal rent over the term on FLAT tranches (no assumed escalation)."
         },
         {
-          "column": "AG",
+          "column": "AH",
           "header": "Avg Rate ($/RSF/Yr)",
           "key": "avg_rate",
           "type": "rent",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($AF{r}=\"\",$L{r}=\"\",$N{r}=\"\"),\"\",$AF{r}/$L{r}/$N{r})",
+          "formula_pattern": "=IF(OR($AG{r}=\"\",$L{r}=\"\",$N{r}=\"\"),\"\",$AG{r}/$L{r}/$N{r})",
           "description": "Projected Gross / RSF / Term."
         },
         {
-          "column": "AH",
+          "column": "AI",
           "header": "NER Annuity ($/RSF/Yr) @ 6%",
           "key": "ner",
           "type": "rent",
@@ -332,17 +342,17 @@
           "description": "Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown."
         },
         {
-          "column": "AI",
+          "column": "AJ",
           "header": "Cost/Seat (Year 1)",
           "key": "cost_seat",
           "type": "usd",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR(AC{r}=\"\",M{r}=\"\",M{r}=0),\"\",AC{r}/M{r})",
+          "formula_pattern": "=IF(OR(AD{r}=\"\",M{r}=\"\",M{r}=0),\"\",AD{r}/M{r})",
           "description": "Year 1 Rent / Seats."
         },
         {
-          "column": "AJ",
+          "column": "AK",
           "header": "RSF / Seat",
           "key": "rsf_seat",
           "type": "num1",
@@ -352,37 +362,37 @@
           "description": "Density: RSF / Seats."
         },
         {
-          "column": "AK",
+          "column": "AL",
           "header": "Rent-to-Raise (Yr 1) %",
           "key": "rent_raise",
           "type": "pct",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($AC{r}=\"\",$X{r}=\"\"),\"\",$AC{r}/($X{r}*1000000))",
+          "formula_pattern": "=IF(OR($AD{r}=\"\",$X{r}=\"\"),\"\",$AD{r}/($X{r}*1000000))",
           "description": "Year 1 Rent / wired latest round."
         },
         {
-          "column": "AL",
+          "column": "AM",
           "header": "Lease-to-Total-Funding %",
           "key": "l2tf",
           "type": "pct",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($AF{r}=\"\",$Y{r}=\"\",$Y{r}=0),\"\",$AF{r}/($Y{r}*1000000))",
+          "formula_pattern": "=IF(OR($AG{r}=\"\",$Y{r}=\"\",$Y{r}=0),\"\",$AG{r}/($Y{r}*1000000))",
           "description": "Projected Gross / wired total tracked funding."
         },
         {
-          "column": "AM",
+          "column": "AN",
           "header": "Months of Rent Covered",
           "key": "mo_cover",
           "type": "num1",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($Y{r}=\"\",$AC{r}=\"\",$AC{r}=0),\"\",($Y{r}*1000000)/($AC{r}/12))",
+          "formula_pattern": "=IF(OR($Y{r}=\"\",$AD{r}=\"\",$AD{r}=0),\"\",($Y{r}*1000000)/($AD{r}/12))",
           "description": "Total tracked funding / monthly Year-1 rent."
         },
         {
-          "column": "AN",
+          "column": "AO",
           "header": "Record Status",
           "key": "status",
           "type": "text",
@@ -393,7 +403,7 @@
           "description": "READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed."
         },
         {
-          "column": "AO",
+          "column": "AP",
           "header": "QA Notes",
           "key": "qa",
           "type": "text",
@@ -401,16 +411,6 @@
           "required": false,
           "formula_pattern": "(auto list incl. staleness)",
           "description": "Auto list of missing fields + staleness flag."
-        },
-        {
-          "column": "AP",
-          "header": "Benchmark Cohort",
-          "key": "cohort",
-          "type": "text",
-          "role": "calc",
-          "required": false,
-          "formula_pattern": "=IF($C{r}=\"\",\"\",IF($W{r}=\"\",\"No Funding Data\",IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),\"Stage Unknown\")))",
-          "description": "Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> \"Late Stage (D+)\", IPO + reverse merger -> \"Public\". Add new round types to the Reference map, never here."
         }
       ]
     },

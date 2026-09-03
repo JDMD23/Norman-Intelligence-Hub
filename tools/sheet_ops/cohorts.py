@@ -40,7 +40,7 @@ values_batch(s, [
 ])
 print('Reference: %d type->cohort mappings, %d ordered cohorts' % (len(MAP), len(ORDER)))
 
-# --- Lease Comps: Benchmark Cohort calc column at AP (grid is exactly 41 wide; widen it)
+# --- Lease Comps: Benchmark Cohort wired column at AB (wired zone V-AB)
 grid = s.get(f'https://sheets.googleapis.com/v4/spreadsheets/{SID}', params={
     'fields': 'sheets(properties(title,gridProperties(columnCount)))'}).json()
 ncols = next(x['properties']['gridProperties']['columnCount']
@@ -53,11 +53,11 @@ if ncols < 42:
 COHORT_F = ('=IF($C{r}="","",IF($W{r}="","No Funding Data",'
             'IFERROR(INDEX(CohortLabels,MATCH($W{r},CohortTypes,0)),"Stage Unknown")))')
 values_batch(s, [
-    {'range': "'Lease Comps'!AP1", 'values': [['Benchmark Cohort']]},
-    {'range': "'Lease Comps'!AP2:AP%d" % last,
+    {'range': "'Lease Comps'!AB1", 'values': [['Benchmark Cohort']]},
+    {'range': "'Lease Comps'!AB2:AB%d" % last,
      'values': [[COHORT_F.format(r=r)] for r in range(2, last + 1)]},
 ])
-print('Lease Comps: Benchmark Cohort column (AP) written')
+print('Lease Comps: Benchmark Cohort column (AB) written')
 
 # --- named ranges
 def add(name, sheet, c1, c2, r1, r2):
@@ -74,7 +74,7 @@ batch_update(s, [
     add('CohortTypes', ref, 14, 15, 1, len(MAP) + 1),
     add('CohortLabels', ref, 15, 16, 1, len(MAP) + 1),
     add('CohortOrder', ref, 17, 18, 1, len(ORDER) + 1),
-    add('LeaseComps_Cohorts', lc, 41, 42, 1, rows_end),
+    add('LeaseComps_Cohorts', lc, 27, 28, 1, rows_end),
 ])
 print('named ranges: CohortTypes, CohortLabels, CohortOrder, LeaseComps_Cohorts')
 

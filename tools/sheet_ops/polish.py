@@ -20,9 +20,9 @@ ORDER = ['Start Here', 'Dashboard', 'Lease Comps', 'Companies', 'Funding Rounds'
 
 # Collapsed column groups: (first, last, why)
 GROUPS = [('V', 'Y', 'funding round detail'),
-          ('AD', 'AE', 'concession $ restatements'),
-          ('AK', 'AM', 'funding ratios'),
-          ('AO', 'AO', 'QA notes')]
+          ('AE', 'AF', 'concession $ restatements'),
+          ('AL', 'AN', 'funding ratios'),
+          ('AP', 'AP', 'QA notes')]
 
 # Status pills: value -> (background, text)
 STATUS = [('READY', OK_BG, OK_FG),
@@ -32,9 +32,9 @@ STATUS = [('READY', OK_BG, OK_FG),
 
 # Zone banding: (first, last, base color, alternate) — alternate is a touch deeper so
 # the eye can track a row across 30+ columns without losing the zone colour coding.
-BANDS = [('A', 'U', WHITE, INPUT_ALT), ('V', 'AA', WIRE, WIRE_ALT),
-         ('AB', 'AB', WHITE, INPUT_ALT), ('AC', 'AM', CALC, CALC_ALT),
-         ('AN', 'AO', GOV, GOV_ALT), ('AP', 'AP', WIRE, WIRE_ALT)]
+BANDS = [('A', 'U', WHITE, INPUT_ALT), ('V', 'AB', WIRE, WIRE_ALT),
+         ('AC', 'AC', WHITE, INPUT_ALT), ('AD', 'AN', CALC, CALC_ALT),
+         ('AO', 'AP', GOV, GOV_ALT)]
 
 NROWS = 1207
 
@@ -111,11 +111,11 @@ for c1, c2, why in GROUPS:
 
 # --- 4. status colors (replace any prior rules on the status column)
 for i, cf in reversed(list(enumerate(lc_sheet.get('conditionalFormats', [])))):
-    if any(r.get('startColumnIndex') == ci('AN') for r in cf.get('ranges', [])):
+    if any(r.get('startColumnIndex') == ci('AO') for r in cf.get('ranges', [])):
         reqs.append({'deleteConditionalFormatRule': {'sheetId': lc, 'index': i}})
 for i, (val, bg, fg) in enumerate(STATUS):
     reqs.append({'addConditionalFormatRule': {'index': i, 'rule': {
-        'ranges': [rng('AN', 'AN', 1)],
+        'ranges': [rng('AO', 'AO', 1)],
         'booleanRule': {
             'condition': {'type': 'TEXT_EQ', 'values': [{'userEnteredValue': val}]},
             'format': {'backgroundColor': hx(bg),
