@@ -129,7 +129,7 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 
 ## Reference vocabularies
 
-- **Submarkets**: Chelsea, Chelsea/Meatpacking, Financial District, Flatiron, Grand Central, Hudson Square, Hudson Yards / Penn Station, Meatpacking, Midtown, NoMad, PAS / Mad. Square Park, Penn Station, SoHo/NoHo, Union Square, World Trade Center
+- **Submarkets**: Chelsea, Financial District, Flatiron, Grand Central, Hudson Square, Hudson Yards / Penn Station, Meatpacking, Midtown, NoMad, PAS / Mad. Square Park, SoHo/NoHo, Union Square, World Trade Center
 - **BuildingClasses**: Trophy, Glass & Steel, Class A, Class B, Commodity
 - **DealTypes**: Expansion, Extension/Expansion, New Lease, Renewal, Renewal + Expansion, Sublease
 - **Conditions**: Raw, New prebuilt, Second Gen

@@ -83,6 +83,13 @@ Both affect Company Metrics rollups, which feed the wired columns on every comp 
   $76 → $79 — LC-0004 NextDoor, LC-0088 Radar Labs); the other 13 he confirmed genuinely flat and
   now say so in Notes. **A blank Rent P2 on those 13 is an answer, not a gap** — do not re-raise
   them. Any *new* long comp with a blank P2 is still an open question.
+- **Submarket vocabulary: settled 2026-09-06.** "SoHo"/"Soho/Noho" merged into `SoHo/NoHo` (22
+  comps), `Chelsea/Meatpacking` and `Penn Station` retired, and Reference narrowed 16 -> 13 with the
+  dropdown repointed so none of the retired spellings can be picked again. Building-level rulings on
+  record: 1 Madison Avenue is PAS / Mad. Square Park, 675 Avenue of the Americas is Flatiron, 837
+  Washington Street is Meatpacking, and the whole Penn cluster (2/5/21 Penn Plaza, 330 W 34th, 1245
+  and 1375 Broadway) is Hudson Yards / Penn Station. `Midtown` and `NoMad` remain in Reference with
+  no comps — kept deliberately for future deals.
 - **23 comps have no seat count**, together 2,591,445 RSF — 55% of the book. Cost/Seat, RSF/Seat
   and the Dashboard's Avg cost/seat are all computed off the other 90. This is now the single
   largest hole in the database. Seats come from JD's own deal knowledge; nothing can source them.
@@ -90,6 +97,9 @@ Both affect Company Metrics rollups, which feed the wired columns on every comp 
   so each is a confirmed zero rather than an unknown entered as 0 (down from 87 before the
   2026-09-03 TI pass). Per JD 7/28/2026 a confirmed zero on an as-is deal is a real zero; unknown
   TI is left blank.
+- **LC-0064 (Tempus, 11 Madison) has no TI figure**, so it computes no NER and sits out of every
+  average — the only comp in that state. JD does not have the TIA. Blank is correct per the
+  contract; the comp becomes complete the moment a real number surfaces.
 - **8 LL Turnkey comps sit on the $150/SF benchmark rather than a real number** — Tenex, Tempo Labs,
   Charlie Health, Vercel, Whatnot, Notion, Fireblocks, Imprint. The benchmark is an estimate and
   moves NER $10–20/SF when wrong. Replace each as a real figure surfaces.
