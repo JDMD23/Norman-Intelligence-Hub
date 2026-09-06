@@ -77,9 +77,24 @@ Both affect Company Metrics rollups, which feed the wired columns on every comp 
 
 ## 4. Standing data-quality notes
 
-- **86 comps carry TI $/SF = 0** (QA-072, INFO). Per JD 7/28/2026 a confirmed zero on an as-is deal
-  is a real zero, and unknown TI is left blank instead. Worth a spot check that all 86 are genuinely
-  as-is rather than unknowns entered as 0 — a false zero inflates NER.
+- **Rent escalations: resolved 2026-09-06.** 17 comps longer than five years carried a blank
+  Rent P2, which asserts flat rent for the whole term. JD answered all 17: four carry a real
+  escalation and now hold a Rent P2 (LC-0093 Sigma, LC-0086 Plaid — whose P1 was also corrected
+  $76 → $79 — LC-0004 NextDoor, LC-0088 Radar Labs); the other 13 he confirmed genuinely flat and
+  now say so in Notes. **A blank Rent P2 on those 13 is an answer, not a gap** — do not re-raise
+  them. Any *new* long comp with a blank P2 is still an open question.
+- **23 comps have no seat count**, together 2,591,445 RSF — 55% of the book. Cost/Seat, RSF/Seat
+  and the Dashboard's Avg cost/seat are all computed off the other 90. This is now the single
+  largest hole in the database. Seats come from JD's own deal knowledge; nothing can source them.
+- **65 comps carry TI $/SF = 0** (QA-072, INFO), all of them now on an `As-Is` delivery condition,
+  so each is a confirmed zero rather than an unknown entered as 0 (down from 87 before the
+  2026-09-03 TI pass). Per JD 7/28/2026 a confirmed zero on an as-is deal is a real zero; unknown
+  TI is left blank.
+- **8 LL Turnkey comps sit on the $150/SF benchmark rather than a real number** — Tenex, Tempo Labs,
+  Charlie Health, Vercel, Whatnot, Notion, Fireblocks, Imprint. The benchmark is an estimate and
+  moves NER $10–20/SF when wrong. Replace each as a real figure surfaces.
+- **92% of funding rounds have no source URL.** Confidence is asserted, not evidenced. This is why
+  section 1 exists.
 - **29 rounds flagged REVIEW** (QA-050, INFO). Verify, then downgrade the flag.
 - **43 companies** show tracked funding below their researched narrative total, because early rounds
   are not tracked. This is expected and by design — Total Tracked Funding is a receipts number — but
