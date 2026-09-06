@@ -107,9 +107,14 @@ Both affect Company Metrics rollups, which feed the wired columns on every comp 
 - **LC-0064 (Tempus, 11 Madison) has no TI figure**, so it computes no NER and sits out of every
   average — the only comp in that state. JD does not have the TIA. Blank is correct per the
   contract; the comp becomes complete the moment a real number surfaces.
-- **8 LL Turnkey comps sit on the $150/SF benchmark rather than a real number** — Tenex, Tempo Labs,
-  Charlie Health, Vercel, Whatnot, Notion, Fireblocks, Imprint. The benchmark is an estimate and
-  moves NER $10–20/SF when wrong. Replace each as a real figure surfaces.
+- **Turnkey TI: closed 2026-09-06.** Ten comps sat on the $150/SF benchmark rather than a real
+  figure (the earlier count of eight was wrong — it missed Ramp and Grammarly). JD marked up all
+  ten. Five confirmed at $150 and are no longer estimates; four moved — Vercel and Grammarly to
+  $155, Tenex to $110, Notion to $140. Two standing building-level rules came out of it and are
+  recorded in `docs/LEASE_COMPS_DESIGN.md`: any **raw** space at 360 Park Avenue South takes
+  **$155/SF**, and 60 Madison Avenue takes **$110/SF**. **Only LC-0007 (Tempo Labs) is still on the
+  benchmark**, held there deliberately — see section 1, it already carries an unverified Seed round
+  and guessing its TI would compound one open question with another.
 - **92% of funding rounds have no source URL.** Confidence is asserted, not evidenced. This is why
   section 1 exists.
 - **29 rounds flagged REVIEW** (QA-050, INFO). Verify, then downgrade the flag.

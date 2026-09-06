@@ -147,6 +147,26 @@ the standing benchmark for turnkey installations. It is an estimate, not a sourc
 real number replaces it whenever one turns up — Rain AI is the cautionary case: it sat at $140,
 was normalised to the $150 benchmark, and JD's survey then showed the real figure was $130.
 
+**Building-level turnkey values beat the benchmark** where JD has set one. These are standing
+rules, not one-off answers — apply them to any future comp that meets the condition, and do not
+fall back to $150 in these buildings:
+
+| Building | Turnkey value | Applies to | Source |
+| --- | --- | --- | --- |
+| 360 Park Avenue South | **$155/SF** | any **raw** space | the figure Rogo negotiated (LC-0099) |
+| 60 Madison Avenue | **$110/SF** | turnkey deals | Pace (LC-0006), adopted for Tenex (LC-0003) |
+
+Second-generation space at those buildings falls outside the rule — Rogo's own September 2025
+deal (LC-0060) is Second Gen / As-Is at $0 and is untouched by the 360 PAS rule.
+
+Note the open question at 60 Madison: Pace's $110 was a **Second Gen** installation while Tenex is
+**Raw**, and a raw build normally costs more, not less. JD applied $110 to both. If a better Tenex
+figure surfaces it should replace it.
+
+**A $150 in the sheet is now one of two things**, and Notes say which: a figure JD confirmed as
+real, or the benchmark estimate still standing in for an unknown. After the 2026-09-06 markup only
+LC-0007 (Tempo Labs) is still the latter.
+
 **$0 means a confirmed as-is deal**, not an unknown. Delivery condition and TI have to agree: a
 Custom TIA or LL Turnkey deal cannot carry $0, and a new prebuilt is recorded as As-Is with $0
 because the landlord built the space rather than passing an allowance. That contradiction is what
