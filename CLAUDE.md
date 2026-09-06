@@ -5,6 +5,16 @@ https://docs.google.com/spreadsheets/d/1qZlc8BUZRObyoeygAToWicor-UFFLmO_aCjk3axB
 
 ## Read this first
 
+- **Run the audit before you start and before you finish**: `python3 tools/sheet_ops/audit.py`
+  (add `--all` to see every settled decision and its reasoning). It is read-only and writes
+  nothing. Exit code is 1 if anything CRITICAL or HIGH is open. `run_all.py` ends with it too.
+- `schema/decisions.json` — **settled questions, in machine-readable form.** A blank cell cannot
+  say whether nobody has answered the question or whether JD answered it and the answer was
+  "unknown". This file is that difference. The audit reads it and does not re-raise anything
+  already decided. **Do not re-litigate a decision recorded here, and do not delete one to make a
+  finding reappear** — if a ruling is wrong, change it and say why. Record a decision at the same
+  time you apply it to the workbook.
+
 - `schema/schema.json` — the machine-readable contract for every tab, column, and formula. It mirrors the workbook's `_Schema` tab, which is authoritative.
 - `schema/reference.json` — controlled vocabularies and the tenant-variant → canonical-company map.
 
@@ -36,5 +46,9 @@ Computed, never typed: `MISSING INPUTS` (missing any of comp ID, date, submarket
 - Keep `schema/schema.json` and `schema/reference.json` in sync with the workbook's `_Schema` and `Reference` tabs when they change; regenerate `docs/DATA_DICTIONARY.md` from the schema at the same time.
 - **Lease Comps is kept in date order, newest first.** Never append a comp and leave it at the bottom — run `tools/sheet_ops/sort_comps.py` (it is in `run_all.py`). It moves input cells only; the per-row calc formulas stay put and recompute against their new row.
 - Scripts address Lease Comps columns **by header text** (`common.headers`), never by hard-coded letter — three column moves in one day proved letters are not a stable key.
+- The **QA Harness tab checks structure** — formula errors, duplicate and dangling IDs. It cannot
+  see whether the *data* is coherent (a submarket entered two ways, a lease asserting flat rent
+  for eleven years, a turnkey comp still on the benchmark estimate). That is `audit.py`'s job, and
+  the two are complementary: a green QA tab does not mean a clean book.
 - Workbook operations live in `tools/sheet_ops/` (Sheets API via the `GOOGLE_SA_KEY` service account). Every script is re-runnable, appends Changelog receipts, and gates on QA. Run `python3 tools/sheet_ops/sync_schema.py` after any `_Schema` or Reference change to refresh the mirrors and the data dictionary.
 - Data snapshots, scripts, or an API layer added later must obey the contract above.

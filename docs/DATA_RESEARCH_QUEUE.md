@@ -1,8 +1,14 @@
 # Data research queue
 
 Open data questions in the Norman Intelligence Hub that need a human with sources, not a script.
-Compiled 2026-09-03 from the workbook's own flags. Work top to bottom: the first section distorts
-what the Dashboard shows today.
+
+**This file is prose for humans. `schema/decisions.json` is the machine-readable record, and it
+wins.** Prose drifts: on 2026-09-06 this page claimed eight turnkey comps sat on the benchmark
+when the real number was ten, and it had no way to stop a re-run of the flat-rent audit from
+re-raising thirteen leases JD had already confirmed. Run `python3 tools/sheet_ops/audit.py` for
+the truthful, live state of what is open; read this for the reasoning behind the hard ones.
+
+Work top to bottom: the first section distorts what the Dashboard shows today.
 
 The workbook stages every comp by its **latest tracked funding round**. That is only as good as
 Funding Rounds is complete. When a company's recent rounds are not tracked, its comps sit in an
@@ -104,9 +110,13 @@ Both affect Company Metrics rollups, which feed the wired columns on every comp 
   so each is a confirmed zero rather than an unknown entered as 0 (down from 87 before the
   2026-09-03 TI pass). Per JD 7/28/2026 a confirmed zero on an as-is deal is a real zero; unknown
   TI is left blank.
-- **LC-0064 (Tempus, 11 Madison) has no TI figure**, so it computes no NER and sits out of every
-  average — the only comp in that state. JD does not have the TIA. Blank is correct per the
-  contract; the comp becomes complete the moment a real number surfaces.
+- **Two comps have no TI figure**, so they compute no NER and sit out of every average:
+  **LC-0064 (Tempus, 11 Madison)** — JD does not have the TIA, and its delivery condition is blank
+  for the same reason, since As-Is / Custom TIA / LL Turnkey each assert something about an
+  allowance nobody knows — and **LC-0096 (Mirage, 71 Fifth Avenue)**, which additionally carries an
+  **As-Is delivery condition**, normally implying a confirmed $0 rather than an unknown. That
+  contradiction is worth resolving one way or the other. Mirage is also the company with the open
+  identity question in section 3.
 - **Turnkey TI: closed 2026-09-06.** Ten comps sat on the $150/SF benchmark rather than a real
   figure (the earlier count of eight was wrong — it missed Ramp and Grammarly). JD marked up all
   ten. Five confirmed at $150 and are no longer estimates; four moved — Vercel and Grammarly to
