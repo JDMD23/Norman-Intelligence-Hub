@@ -115,6 +115,8 @@
     ]
   },
   "tenant_variant_map": {
-    "HARVEY AI (E6)": "HARVEY AI"
+    "HARVEY AI (E6)": "HARVEY AI",
+    "GlossGenius": "Genius",
+    "Sierra AI": "Sierra Technologies"
   }
 }

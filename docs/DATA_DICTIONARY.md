@@ -144,3 +144,5 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 ### Tenant variant map
 
 - `HARVEY AI (E6)` → `HARVEY AI`
+- `GlossGenius` → `Genius`
+- `Sierra AI` → `Sierra Technologies`
