@@ -9,7 +9,9 @@ row. Input columns are read from _Schema by role, not hard-coded, and must be co
 the separate Notes column.
 
 The sort is stable: comps sharing a signing date keep their existing relative order, so a run
-moves as few rows as possible.
+moves as few rows as possible. A comp with no signing date yet is parked at the bottom and
+named in the output rather than blocking the run — it will show MISSING INPUTS until the date
+is filled in.
 
 Idempotent: writes nothing when the tab is already ordered.
 """
@@ -52,10 +54,18 @@ notes = [(x + [''] * (ci(extra[0]) + 1))[ci(extra[0])] if extra else '' for x in
 date_i = ci(H['Date Signed'])
 undated = [g[0] for g in grid if not isinstance(g[date_i], (int, float))]
 if undated:
-    print('refusing to sort — these comps have no usable date: %s' % ', '.join(undated))
-    sys.exit(1)
+    print('%d comp(s) have no signing date and are parked at the bottom: %s'
+          % (len(undated), ', '.join(undated)))
 
-order = sorted(range(n), key=lambda i: -grid[i][date_i])       # stable: ties keep their order
+# Dated comps first, newest at the top; undated ones fall to the bottom in their existing order.
+# Stable, so comps sharing a date keep their relative positions and a run moves as few rows as
+# it can.
+def key(i):
+    d = grid[i][date_i]
+    return (0, -d) if isinstance(d, (int, float)) else (1, 0)
+
+
+order = sorted(range(n), key=key)
 if order == list(range(n)):
     print('Lease Comps already in date order (newest first) — %d comps, nothing to do' % n)
     sys.exit(0)
