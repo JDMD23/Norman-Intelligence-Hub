@@ -136,3 +136,21 @@ comp's NER by roughly $15/SF — about 26%, or ~$4M of concession value over the
 **Decision rule.** Same lease and same term across the floors: one comp, blend it, record the
 floors. Genuinely different terms per floor: those are two deals and belong in two comps, because
 differing terms cannot be blended honestly.
+
+## TI conventions (JD, 2026-09-03)
+
+**A TI figure JD supplies always wins.** Where he has the number, it goes in verbatim and his
+wording goes in Notes.
+
+**Where he does not have the number and the deal was a landlord turnkey, use $150/SF.** That is
+the standing benchmark for turnkey installations. It is an estimate, not a sourced figure, so a
+real number replaces it whenever one turns up — Rain AI is the cautionary case: it sat at $140,
+was normalised to the $150 benchmark, and JD's survey then showed the real figure was $130.
+
+**$0 means a confirmed as-is deal**, not an unknown. Delivery condition and TI have to agree: a
+Custom TIA or LL Turnkey deal cannot carry $0, and a new prebuilt is recorded as As-Is with $0
+because the landlord built the space rather than passing an allowance. That contradiction is what
+QA-072 and the 2026-09-03 markup pass were for — 26 comps carried $0 against a contributing
+delivery condition, overstating their NER, on 48% of the book by RSF.
+
+**Unknown is blank**, which blanks the NER rather than overstating it.

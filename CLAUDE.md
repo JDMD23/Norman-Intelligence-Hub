@@ -10,6 +10,7 @@ https://docs.google.com/spreadsheets/d/1qZlc8BUZRObyoeygAToWicor-UFFLmO_aCjk3axB
 
 ## The workbook contract (non-negotiable)
 
+- **TI convention:** an owner-supplied figure always wins; absent one, a landlord-turnkey deal takes the **$150/SF** benchmark (an estimate — replace it when a real number appears). `0` means a confirmed as-is deal and must agree with the delivery condition. See `docs/LEASE_COMPS_DESIGN.md`.
 - **Unknown values stay BLANK, never 0.** A `0` corrupts averages; blank propagates correctly. Exception: a confirmed-zero TI on an as-is deal is a real zero (per JD, 7/28/2026).
 - **IDs are immutable and never reused.** Formats: `LC-####` (Lease Comps), `CO-####` (Companies), `FR-####` (Funding Rounds). In-sheet edits get IDs auto-assigned by onEdit triggers; API writers must assign the next ID themselves following `_Schema`.
 - **Input tabs hold no formulas in input columns; calc columns hold no typed values.** Columns with role `calc` or `qa` in the schema are computed — never write into them.
