@@ -90,9 +90,16 @@ Both affect Company Metrics rollups, which feed the wired columns on every comp 
   Washington Street is Meatpacking, and the whole Penn cluster (2/5/21 Penn Plaza, 330 W 34th, 1245
   and 1375 Broadway) is Hudson Yards / Penn Station. `Midtown` and `NoMad` remain in Reference with
   no comps — kept deliberately for future deals.
-- **23 comps have no seat count**, together 2,591,445 RSF — 55% of the book. Cost/Seat, RSF/Seat
-  and the Dashboard's Avg cost/seat are all computed off the other 90. This is now the single
-  largest hole in the database. Seats come from JD's own deal knowledge; nothing can source them.
+- **Seat counts: closed 2026-09-06, and mostly closed as "unknowable."** JD was asked about all 23
+  comps that had none. Three now carry an approximate figure — LC-0110 Legora ~600, LC-0104 Suno AI
+  ~620, LC-0087 Peregrine ~45, all noted as approximate. The other **20 stay permanently blank**:
+  they are custom build-outs whose layout the tenant's own real estate team set, and JD has no
+  visibility into it. **Do not re-raise these and do not estimate them** — a guessed seat count on a
+  462,000 SF comp would move the Dashboard's cost/seat more than any real number in the book.
+  Coverage is 93 of 113 comps (2,396,344 RSF still seatless), and the Dashboard methodology note now
+  states that count live so nobody reads Avg cost/seat as full-book. The 20: Anthropic, PayPal,
+  Fanatics, Clay, Monday.com, Ramp, Rippling, Figma, Harvey AI ×2, Coinbase, Chime, EliseAI, Sigma,
+  Altana AI, Current Bank, David Protein, BILT Rewards, Tempus, Notion.
 - **65 comps carry TI $/SF = 0** (QA-072, INFO), all of them now on an `As-Is` delivery condition,
   so each is a confirmed zero rather than an unknown entered as 0 (down from 87 before the
   2026-09-03 TI pass). Per JD 7/28/2026 a confirmed zero on an as-is deal is a real zero; unknown

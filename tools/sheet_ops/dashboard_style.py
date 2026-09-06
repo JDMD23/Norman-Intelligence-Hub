@@ -130,13 +130,16 @@ data = [
     {'range': f'Dashboard!A{SUB_FIRST}', 'values': [[
         '=LET(u,UNIQUE(FILTER(LeaseComps_Submarkets,LeaseComps_Submarkets<>"")),'
         f'ARRAY_CONSTRAIN(SORT(u,COUNTIF(LeaseComps_Submarkets,u),FALSE),{SUB_N},1))']]},
+    # written as a formula so the seat-coverage count can never go stale against the data
     {'range': 'Dashboard!A37', 'values': [[
-        'Methodology: NER is a 6% annuity on flat rent tranches with free rent and TI taken upfront (docs/NER_MODEL.md). '
-        'Blank means unknown, never zero. Cohorts and submarkets with fewer than 3 comps show their count but no '
-        'averages — too few to benchmark. Sample: Reliable n ≥ 8, Directional 5–7, Thin 3–4. '
-        'Funding figures are tracked receipts in Funding Rounds, not narrative totals; a comp is staged by its latest '
-        'tracked round, so a company whose recent rounds are untracked can sit in an earlier stage — see '
-        'docs/DATA_RESEARCH_QUEUE.md.']]},
+        '="Methodology: NER is a 6% annuity on flat rent tranches with free rent and TI taken upfront '
+        '(docs/NER_MODEL.md). Blank means unknown, never zero. Cohorts and submarkets with fewer than 3 comps '
+        'show their count but no averages — too few to benchmark. Sample: Reliable n ≥ 8, Directional 5–7, '
+        'Thin 3–4. Cost/seat and RSF/seat are computed on the "&COUNT(LeaseComps_Seats)&" of "'
+        '&COUNTA(LeaseComps_IDs)&" comps that carry a seat count — the rest are custom build-outs whose '
+        'layout is not known, and are left blank rather than estimated. Funding figures are tracked receipts '
+        'in Funding Rounds, not narrative totals; a comp is staged by its latest tracked round, so a company '
+        'whose recent rounds are untracked can sit in an earlier stage — see docs/DATA_RESEARCH_QUEUE.md."']]},
 ]
 for (lr, vr), row_tiles in zip(TILE_ROWS, (TILES[:4], TILES[4:])):
     for (c1, _), (label, formula, _) in zip(TILE_COLS, row_tiles):
