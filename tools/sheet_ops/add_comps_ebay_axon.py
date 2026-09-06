@@ -70,6 +70,6 @@ for i, (comp_id, cid, x) in enumerate(added):
 
 changelog(s, 'COMPS ADDED', 'Added %d comps from JD: %s. Rent entered as flat tranches from his '
           'years-at-rate notation; seats from his approximate desk counts. eBay keeps his own '
-          '$140/SF turnkey figure rather than the $150 benchmark. Deal type assumed New Lease on '
-          'both — not stated.' % (len(added), ', '.join(x['tenant'] for _, _, x in added)), len(added))
+          '$140/SF turnkey figure rather than the $150 benchmark. Both New Leases, confirmed '
+          'by JD.' % (len(added), ', '.join(x['tenant'] for _, _, x in added)), len(added))
 print('\nQA:', qa_status(s)[0])
