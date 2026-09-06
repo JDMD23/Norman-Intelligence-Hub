@@ -41,7 +41,7 @@ tools/sheet_ops/     Receipted, QA-gated workbook operations (Sheets API; needs 
                      Structural moves after v4 (idempotent, receipted)
   style.py / polish.py / dashboard_style.py / style_workbook.py / copy_pass.py
                      Presentation passes (Lease Comps zones, tab tiering, Dashboard v2, supporting tabs, copy)
-  cohorts.py / companies_view.py / tidy_vocab.py
+  cohorts.py / companies_view.py / tidy_vocab.py / sort_comps.py
                      Benchmark cohorts, Companies reading view, vocabulary normalisation
   sync_schema.py     Pull _Schema + Reference into schema/ and regenerate the data dictionary
 CLAUDE.md          Contract for AI agents working on the hub

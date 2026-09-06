@@ -34,6 +34,7 @@ Computed, never typed: `MISSING INPUTS` (missing any of comp ID, date, submarket
 ## In this repo
 
 - Keep `schema/schema.json` and `schema/reference.json` in sync with the workbook's `_Schema` and `Reference` tabs when they change; regenerate `docs/DATA_DICTIONARY.md` from the schema at the same time.
+- **Lease Comps is kept in date order, newest first.** Never append a comp and leave it at the bottom — run `tools/sheet_ops/sort_comps.py` (it is in `run_all.py`). It moves input cells only; the per-row calc formulas stay put and recompute against their new row.
 - Scripts address Lease Comps columns **by header text** (`common.headers`), never by hard-coded letter — three column moves in one day proved letters are not a stable key.
 - Workbook operations live in `tools/sheet_ops/` (Sheets API via the `GOOGLE_SA_KEY` service account). Every script is re-runnable, appends Changelog receipts, and gates on QA. Run `python3 tools/sheet_ops/sync_schema.py` after any `_Schema` or Reference change to refresh the mirrors and the data dictionary.
 - Data snapshots, scripts, or an API layer added later must obey the contract above.
