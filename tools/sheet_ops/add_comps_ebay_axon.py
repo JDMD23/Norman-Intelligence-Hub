@@ -10,14 +10,13 @@ COMPS = [
          free=7, ti=140,
          note='From JD. Turnkey at $140/SF — his figure, so it stands rather than the $150 '
               'turnkey benchmark. Seats approximate (~140 desks). Condition not stated. '
-              'Deal type assumed New Lease — correct if it was a renewal or expansion.'),
+              'Deal type New Lease, confirmed by JD.'),
     dict(tenant='Axon', company='Axon', date='2026-07-01', addr='225 Park Avenue South',
          sub='PAS / Mad. Square Park', cls='', floors='E3', cond='', deal='New Lease',
          delivery='Custom TIA', rsf=42855, seats=250, term=10.0, p1=100, p2=110, p3='',
          free=16, ti=150,
          note='From JD. Rent $100 (5yr) / $110 (5yr), $150/SF in TIA. Seats approximate '
-              '(~250). Building class and condition not stated. Deal type assumed New Lease — '
-              'correct if it was a renewal or expansion.'),
+              '(~250). Deal type New Lease, confirmed by JD. Building class and condition not stated.'),
 ]
 
 s = session()
