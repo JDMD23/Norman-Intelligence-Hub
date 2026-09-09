@@ -2,7 +2,6 @@
   "vocabularies": {
     "Submarkets": [
       "Chelsea",
-      "Chelsea/Meatpacking",
       "Financial District",
       "Flatiron",
       "Grand Central",
@@ -12,9 +11,7 @@
       "Midtown",
       "NoMad",
       "PAS / Mad. Square Park",
-      "Penn Station",
-      "SoHo",
-      "Soho/Noho",
+      "SoHo/NoHo",
       "Union Square",
       "World Trade Center"
     ],
@@ -68,15 +65,7 @@
     "RecordStatuses": [
       "READY",
       "NEEDS REVIEW",
-      "MISSING INPUTS",
-      "STALE - REVERIFY"
-    ],
-    "CompSources": [
-      "CoStar",
-      "CBRE",
-      "Broker Intel",
-      "Press",
-      "Direct/Landlord"
+      "MISSING INPUTS"
     ],
     "CohortTypes": [
       "Seed",
@@ -123,6 +112,8 @@
     ]
   },
   "tenant_variant_map": {
-    "HARVEY AI (E6)": "HARVEY AI"
+    "HARVEY AI (E6)": "HARVEY AI",
+    "GlossGenius": "Genius",
+    "Sierra AI": "Sierra Technologies"
   }
 }

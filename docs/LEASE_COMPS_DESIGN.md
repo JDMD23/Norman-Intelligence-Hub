@@ -56,18 +56,20 @@ Executed by `tools/sheet_ops/run_all.py`; receipts in Changelog (STRUCTURE MIGRA
 FUNDING ROUNDS BACKFILL, MIGRATION VERIFIED, STYLE, SCHEMA UPDATE, DASHBOARD LAYOUT). QA 19/19 PASS.
 Pre-migration copy: tab `LC_BACKUP_2026-09-02` (delete once the v4 tab has been used in anger).
 
-Final column map (41 columns; Zones 1–3 unchanged so the onEdit auto-ID triggers keep working):
+Final column map (45 columns after the 2026-09-03 moves: Benchmark Cohort into the wired zone; Comp Source and Verified Date removed — the owner is the provenance and comps are final once entered, so STALE - REVERIFY retired with them; and the Floor Detail tab added with its four wired columns plus a blend check; Zones 1–3 unchanged so the onEdit auto-ID triggers keep working):
 
 | Cols | Zone | Fields |
 | --- | --- | --- |
 | A–D | Identity (input) | Comp ID, Date Signed, Tenant, Company ID |
 | E–K | Premises (input) | Address, Submarket, Building Class, Floor(s), Condition, Deal Type, Delivery Condition |
-| L–U | Deal terms (input) | RSF, Seats, Term, Rent P1 / P2 / P3, Free Rent, TI $/SF, Comp Source, Verified Date |
-| V–AA | Company wire (calc) | Latest Round Date, Latest Round Type, Latest Round Amt, Total Tracked Funding, Company (canonical), HQ City |
-| AB | Notes (input) | Free-form deal notes |
-| AC–AJ | Economics (calc) | Year 1 Rent, Free Rent $, TI Total, Projected Gross (flat tranches), Avg Rate, NER, Cost/Seat, RSF/Seat |
-| AK–AM | Ratios (calc) | Rent-to-Raise, Lease-to-Total-Funding, Months of Rent Covered |
-| AN–AO | Governance (qa) | Record Status, QA Notes |
+| L–S | Deal terms (input) | RSF, Seats, Term, Rent P1 / P2 / P3, Free Rent, TI $/SF |
+| T–Z | Company wire (calc) | Latest Round Date, Latest Round Type, Latest Round Amt, Total Tracked Funding, Company (canonical), HQ City, Benchmark Cohort |
+| AA–AD | Floor wire (calc) | Floors on File, Detail RSF, Detail Rent (wtd), Detail TI (wtd) — from the Floor Detail tab |
+| AE | Blend check (qa) | Where the typed RSF / rent / TI disagrees with the floor detail |
+| AF | Notes (input) | Free-form deal notes |
+| AG–AN | Economics (calc) | Year 1 Rent, Free Rent $, TI Total, Projected Gross (flat tranches), Avg Rate, NER, Cost/Seat, RSF/Seat |
+| AO–AQ | Ratios (calc) | Rent-to-Raise, Lease-to-Total-Funding, Months of Rent Covered |
+| AR–AS | Governance (qa) | Record Status, QA Notes |
 
 Wire semantics: Latest Round = most recent row in Funding Rounds for the company; Total Tracked Funding =
 Company Metrics tracked sum, blank (never 0) when tracked rounds carry no amounts. Total Tracked is a
@@ -109,3 +111,66 @@ Add new round types to the Reference map, never to the formula. Display order is
 **The Dashboard shows median RSF next to average.** RSF is right-skewed in every cohort
 (Series C averages 41,108 but medians 26,427), which is what made Series D read as a dip
 below Series C. Rent and NER are per-SF rates and far less skewed, so mean is fine there.
+
+## Multi-floor deals (2026-09-03)
+
+**One comp is still one row.** Benchmarks count transactions, so the grain does not move for a
+deal that happens to cover several floors.
+
+When a deal's floors carry *different* economics, the per-floor numbers go on the **Floor Detail**
+tab — one row per floor, linked by Comp ID, the same way Funding Rounds links to a company. The
+comp row then carries four wired columns showing what the floors add up to (count, RSF, RSF-weighted
+rent, RSF-weighted TI) and a **Blend Check** comparing them against what was typed. Tolerances are
+1 SF, $0.50/RSF and $1/SF; a typed 0 or blank TI against a positive detail blend reads `TI MISSING`.
+A mismatch flows into Record Status and QA Notes, so it reaches the Dashboard's needing-review
+count, and QA-073 counts it.
+
+Only deals whose floors differ need rows there. Single-floor comps — 79 of 103 — never touch it and
+their check columns stay blank.
+
+**Why the check is aimed at TI, not rent.** On LC-0103 (Moment, 325 Hudson, E3 + E10, 43,190 SF)
+a simple average of two floors' rents lands within about 20 cents of the RSF-weighted answer:
+immaterial. The TI, by contrast, was entered as $0 during hand-blending, which overstates that
+comp's NER by roughly $15/SF — about 26%, or ~$4M of concession value over the term.
+
+**Decision rule.** Same lease and same term across the floors: one comp, blend it, record the
+floors. Genuinely different terms per floor: those are two deals and belong in two comps, because
+differing terms cannot be blended honestly.
+
+## TI conventions (JD, 2026-09-03)
+
+**A TI figure JD supplies always wins.** Where he has the number, it goes in verbatim and his
+wording goes in Notes.
+
+**Where he does not have the number and the deal was a landlord turnkey, use $150/SF.** That is
+the standing benchmark for turnkey installations. It is an estimate, not a sourced figure, so a
+real number replaces it whenever one turns up — Rain AI is the cautionary case: it sat at $140,
+was normalised to the $150 benchmark, and JD's survey then showed the real figure was $130.
+
+**Building-level turnkey values beat the benchmark** where JD has set one. These are standing
+rules, not one-off answers — apply them to any future comp that meets the condition, and do not
+fall back to $150 in these buildings:
+
+| Building | Turnkey value | Applies to | Source |
+| --- | --- | --- | --- |
+| 360 Park Avenue South | **$155/SF** | any **raw** space | the figure Rogo negotiated (LC-0099) |
+| 60 Madison Avenue | **$110/SF** | turnkey deals | Pace (LC-0006), adopted for Tenex (LC-0003) |
+
+Second-generation space at those buildings falls outside the rule — Rogo's own September 2025
+deal (LC-0060) is Second Gen / As-Is at $0 and is untouched by the 360 PAS rule.
+
+Note the open question at 60 Madison: Pace's $110 was a **Second Gen** installation while Tenex is
+**Raw**, and a raw build normally costs more, not less. JD applied $110 to both. If a better Tenex
+figure surfaces it should replace it.
+
+**A $150 in the sheet is now one of two things**, and Notes say which: a figure JD confirmed as
+real, or the benchmark estimate still standing in for an unknown. After the 2026-09-06 markup only
+LC-0007 (Tempo Labs) is still the latter.
+
+**$0 means a confirmed as-is deal**, not an unknown. Delivery condition and TI have to agree: a
+Custom TIA or LL Turnkey deal cannot carry $0, and a new prebuilt is recorded as As-Is with $0
+because the landlord built the space rather than passing an allowance. That contradiction is what
+QA-072 and the 2026-09-03 markup pass were for — 26 comps carried $0 against a contributing
+delivery condition, overstating their NER, on 48% of the book by RSF.
+
+**Unknown is blank**, which blanks the NER rather than overstating it.

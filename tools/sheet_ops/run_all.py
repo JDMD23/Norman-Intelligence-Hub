@@ -6,11 +6,19 @@ import sys
 import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-for step in ['migrate_structure.py', 'verify_wire.py', 'style.py', 'polish.py', 'cohorts.py', 'dashboard_style.py', 'finalize.py',
-             'sync_schema.py']:
+for step in ['migrate_cohort_column.py', 'remove_provenance_columns.py',
+             'migrate_floor_detail.py', 'migrate_structure.py', 'verify_wire.py', 'tidy_vocab.py', 'fix_backfill_confidence.py', 'companies_view.py',
+             'copy_pass.py', 'sort_comps.py', 'style.py', 'polish.py', 'cohorts.py', 'dashboard_style.py',
+             'style_workbook.py', 'finalize.py', 'sync_schema.py']:
     print(f'\n=== {step} ===')
     r = subprocess.run([sys.executable, os.path.join(HERE, step)], cwd=HERE)
     if r.returncode != 0:
         print(f'STOPPED at {step} (exit {r.returncode})')
         sys.exit(r.returncode)
 print('\nMIGRATION COMPLETE')
+
+# The audit is read-only and advisory: it reports what is still open in the data, which is not
+# a reason to call the migration failed. Its exit code is deliberately ignored here — run it
+# directly (python3 tools/sheet_ops/audit.py) when you want that code for a gate.
+print('\n=== audit.py (read-only) ===')
+subprocess.run([sys.executable, os.path.join(HERE, 'audit.py')], cwd=HERE)

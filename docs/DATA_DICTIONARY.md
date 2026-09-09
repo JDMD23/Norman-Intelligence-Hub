@@ -27,34 +27,38 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | Q | Rent P3 ($/RSF, mo 121+) | `rent_p3` | rent | input |  |  | Tranche-3 rent, months 121+. BLANK = carries P2 flat. |
 | R | Free Rent (months) | `free_mo` | num | input |  |  | Free rent concession in months. |
 | S | TI $/SF | `ti_psf` | rent | input |  |  | TI allowance per SF. Blank = unknown (NER stays blank). Confirmed-zero on as-is deals is a real 0. |
-| T | Comp Source | `source` | text | input |  | CompSources | Where this comp came from. |
-| U | Verified Date | `verified` | date | input |  |  | When this comp was last verified. >6 months old flips status to STALE - REVERIFY. |
-| V | Latest Round Date | `lr_date` | date | calc |  |  | Most recent round date (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
-| W | Latest Round Type | `lr_type` | text | calc |  |  | Type of most recent round; same-day rounds resolve to the larger amount (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
-| X | Latest Round Amt ($M) | `lr_amt` | num | calc |  |  | Amount of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
-| Y | Total Tracked Funding ($M) | `total_fund` | num | calc |  |  | Sum of tracked rounds (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. Blank (never 0) when tracked rounds have no amounts. Semantic: tracked receipts, not researched narrative totals. |
-| Z | Company (canonical) | `company` | text | calc |  |  | Canonical company name (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
-| AA | HQ City | `hq` | text | calc |  |  | HQ city (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
-| AB | Notes | `notes` | text | input |  |  | Free-form deal notes. |
-| AC | Year 1 Rent ($) | `y1_rent` | usd | calc |  |  | RSF x P1 rent. |
-| AD | Free Rent $ Value | `free_val` | usd | calc |  |  | (Free months / 12) x P1 rent x RSF. |
-| AE | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
-| AF | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Nominal rent over the term on FLAT tranches (no assumed escalation). |
-| AG | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross / RSF / Term. |
-| AH | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown. |
-| AI | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. |
-| AJ | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. |
-| AK | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / wired latest round. |
-| AL | Lease-to-Total-Funding % | `l2tf` | pct | calc |  |  | Projected Gross / wired total tracked funding. |
-| AM | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total tracked funding / monthly Year-1 rent. |
-| AN | Record Status | `status` | text | qa |  | RecordStatuses | READY / NEEDS REVIEW / MISSING INPUTS / STALE - REVERIFY (verified >6mo ago) — computed, never typed. |
-| AO | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields + staleness flag. |
-| AP | Benchmark Cohort | `cohort` | text | calc |  |  | Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here. |
+| T | Latest Round Date | `lr_date` | date | calc |  |  | Most recent round date (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
+| U | Latest Round Type | `lr_type` | text | calc |  |  | Type of most recent round; same-day rounds resolve to the larger amount (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
+| V | Latest Round Amt ($M) | `lr_amt` | num | calc |  |  | Amount of most recent round (wired lookup — never type here; source of truth lives in the referenced tab) -> Funding Rounds. |
+| W | Total Tracked Funding ($M) | `total_fund` | num | calc |  |  | Sum of tracked rounds (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. Blank (never 0) when tracked rounds have no amounts. Semantic: tracked receipts, not researched narrative totals. |
+| X | Company (canonical) | `company` | text | calc |  |  | Canonical company name (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
+| Y | HQ City | `hq` | text | calc |  |  | HQ city (wired lookup — never type here; source of truth lives in the referenced tab) -> Companies. |
+| Z | Benchmark Cohort | `cohort` | text | calc |  |  | Benchmark cohort used to group the Dashboard table (wired lookup — never type here; source of truth lives in the referenced tab) -> Reference CohortTypes/CohortLabels. Thin stages are grouped: Series D/E/F/G + Late Stage Venture -> "Late Stage (D+)", IPO + reverse merger -> "Public". Add new round types to the Reference map, never here. |
+| AA | Floors on File | `floors_n` | int | calc |  |  | How many Floor Detail rows exist for this comp. Blank = none; the comp is single-floor or its floors share one economic deal. |
+| AB | Detail RSF | `detail_rsf` | int | calc |  |  | Sum of RSF across this comp’s Floor Detail rows. Must equal the typed RSF. |
+| AC | Detail Rent (wtd) | `detail_rent` | rent | calc |  |  | RSF-weighted starting rent across the floors on file. Weighted, never a simple average. |
+| AD | Detail TI (wtd) | `detail_ti` | rent | calc |  |  | RSF-weighted TI across the floors on file, over floors that carry a TI. This is what catches a concession dropped during hand-blending. |
+| AE | Blend Check | `blend_check` | text | qa |  |  | OK, or the mismatches between the typed RSF/rent/TI and the Floor Detail blend (tolerances 1 SF, $0.50/RSF, $1/SF). A typed 0 or blank TI against a positive detail blend reads TI MISSING. Feeds Record Status and QA Notes. |
+| AF | Notes | `notes` | text | input |  |  | Free-form deal notes. |
+| AG | Year 1 Rent ($) | `y1_rent` | usd | calc |  |  | RSF x P1 rent. |
+| AH | Free Rent $ Value | `free_val` | usd | calc |  |  | (Free months / 12) x P1 rent x RSF. |
+| AI | TI Allowance Total ($) | `ti_total` | usd | calc |  |  | TI $/SF x RSF. |
+| AJ | Projected Gross Rent (Term) | `pgr` | usd | calc |  |  | Nominal rent over the term on FLAT tranches (no assumed escalation). |
+| AK | Avg Rate ($/RSF/Yr) | `avg_rate` | rent | calc |  |  | Projected Gross / RSF / Term. |
+| AL | NER Annuity ($/RSF/Yr) @ 6% | `ner` | rent | calc |  |  | Baseline NER per docs/NER_MODEL.md: monthly 6%/12 discounting, beg-of-month, flat tranches, free rent + TI nominal upfront, levelized. Blank when TI unknown. |
+| AM | Cost/Seat (Year 1) | `cost_seat` | usd | calc |  |  | Year 1 Rent / Seats. |
+| AN | RSF / Seat | `rsf_seat` | num1 | calc |  |  | Density: RSF / Seats. |
+| AO | Rent-to-Raise (Yr 1) % | `rent_raise` | pct | calc |  |  | Year 1 Rent / wired latest round. |
+| AP | Lease-to-Total-Funding % | `l2tf` | pct | calc |  |  | Projected Gross / wired total tracked funding. |
+| AQ | Months of Rent Covered | `mo_cover` | num1 | calc |  |  | Total tracked funding / monthly Year-1 rent. |
+| AR | Record Status | `status` | text | qa |  | RecordStatuses | READY / NEEDS REVIEW / MISSING INPUTS — computed, never typed. NEEDS REVIEW also when Blend Check is not OK. |
+| AS | QA Notes | `qa` | text | qa |  |  | Auto list of missing fields, plus any Floor Detail blend mismatch. |
 
 ## Companies
 
 | Col | Header | Key | Type | Role | Req | Enum | Description |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| A | Company ID | `company_id` | id | input | yes |  | AUTO-ASSIGNED by onEdit trigger when Canonical Name is entered. Immutable, never reused. FK target for Lease Comps + Funding Rounds. |
 | B | Canonical Name | `name` | text | input | yes |  | One row per real company. Tenant-name variants map here via Reference!VariantMap. |
 | C | Crunchbase URL | `cb_url` | text | input |  |  | Verified Crunchbase profile. |
 | D | Website | `website` | text | input |  |  | Company website. |
@@ -66,6 +70,8 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | J | Funding Accel/Decel Note | `accel` | text | input |  |  | Acceleration/deceleration read. |
 | K | Sources | `sources` | text | input |  |  | Research source list. |
 | L | Notes | `notes` | text | input |  |  | Identity caveats (e.g. Mirage<->Captions), review flags. |
+| M | Latest Round | `latest_round` | text | calc |  |  | Latest tracked round type and month (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. |
+| N | Total Tracked Funding ($M) | `total_fund` | num | calc |  |  | Sum of tracked rounds, blank (never 0) when amounts are unknown (wired lookup — never type here; source of truth lives in the referenced tab) -> Company Metrics. |
 
 ## Funding Rounds
 
@@ -106,17 +112,31 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 | N | Avg Months Between Rounds | `avg_cadence` | num1 | calc |  |  | Average of computed inter-round gaps. |
 | O | Benchmark Band | `benchmark` | text | calc |  |  | Cohort label for benchmarking. |
 
+## Floor Detail
+
+| Col | Header | Key | Type | Role | Req | Enum | Description |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| A | Detail ID | `detail_id` | id | input | yes |  | FD-#### . One row per floor (or per premises component) of a comp. Assign the next ID; immutable, never reused. |
+| B | Comp ID | `comp_id` | id | input | yes | LeaseComps_IDs | FK to Lease Comps. Every floor row belongs to exactly one comp. |
+| C | Tenant | `tenant` | text | calc |  |  | Looked up from Lease Comps by Comp ID (wired — never type here). |
+| D | Floor | `floor` | text | input | yes |  | Floor or premises label as it appears on the lease, e.g. E3, P8, E7-8. |
+| E | RSF | `rsf` | int | input | yes |  | Rentable square feet for this floor. The floors must sum to the comp’s typed RSF. |
+| F | Rent P1 ($/RSF) | `rent_p1` | rent | input |  |  | Starting rent for this floor. Blank = unknown, never 0. |
+| G | TI $/SF | `ti_psf` | rent | input |  |  | TI allowance for this floor. Blank = unknown; a confirmed-zero on an as-is floor is a real 0. |
+| H | Free Rent (months) | `free_mo` | num | input |  |  | Free rent on this floor, in months. |
+| I | Share of Comp RSF | `share` | pct | calc |  |  | This floor’s share of the comp’s detailed RSF. |
+| J | Notes | `notes` | text | input |  |  | Why this floor’s economics differ — condition, buildout, floor premium. |
+
 ## Reference vocabularies
 
-- **Submarkets**: Chelsea, Chelsea/Meatpacking, Financial District, Flatiron, Grand Central, Hudson Square, Hudson Yards / Penn Station, Meatpacking, Midtown, NoMad, PAS / Mad. Square Park, Penn Station, SoHo, Soho/Noho, Union Square, World Trade Center
+- **Submarkets**: Chelsea, Financial District, Flatiron, Grand Central, Hudson Square, Hudson Yards / Penn Station, Meatpacking, Midtown, NoMad, PAS / Mad. Square Park, SoHo/NoHo, Union Square, World Trade Center
 - **BuildingClasses**: Trophy, Glass & Steel, Class A, Class B, Commodity
 - **DealTypes**: Expansion, Extension/Expansion, New Lease, Renewal, Renewal + Expansion, Sublease
 - **Conditions**: Raw, New prebuilt, Second Gen
 - **DeliveryConditions**: LL Turnkey, As-Is, Custom TIA
 - **RoundTypes**: Debt, IPO, Late Stage Venture, Private Equity, Public Listing / Reverse Merger, Seed, Series A, Series B, Series C, Series D, Series E, Series F, Series G, Venture - Series Unknown
 - **ConfidenceLevels**: HIGH, MEDIUM, LOW, REVIEW
-- **RecordStatuses**: READY, NEEDS REVIEW, MISSING INPUTS, STALE - REVERIFY
-- **CompSources**: CoStar, CBRE, Broker Intel, Press, Direct/Landlord
+- **RecordStatuses**: READY, NEEDS REVIEW, MISSING INPUTS
 - **CohortTypes**: Seed, Series A, Series B, Series C, Series D, Series E, Series F, Series G, Late Stage Venture, Private Equity, IPO, Public Listing / Reverse Merger, Debt, Venture - Series Unknown
 - **CohortLabels**: Seed, Series A, Series B, Series C, Late Stage (D+), Late Stage (D+), Late Stage (D+), Late Stage (D+), Late Stage (D+), Late Stage (D+), Public, Public, Debt, Stage Unknown
 - **CohortOrder**: Seed, Series A, Series B, Series C, Late Stage (D+), Public, Debt, Stage Unknown, No Funding Data
@@ -124,3 +144,5 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 ### Tenant variant map
 
 - `HARVEY AI (E6)` → `HARVEY AI`
+- `GlossGenius` → `Genius`
+- `Sierra AI` → `Sierra Technologies`

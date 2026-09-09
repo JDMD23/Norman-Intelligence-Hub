@@ -5,11 +5,22 @@ https://docs.google.com/spreadsheets/d/1qZlc8BUZRObyoeygAToWicor-UFFLmO_aCjk3axB
 
 ## Read this first
 
+- **Run the audit before you start and before you finish**: `python3 tools/sheet_ops/audit.py`
+  (add `--all` to see every settled decision and its reasoning). It is read-only and writes
+  nothing. Exit code is 1 if anything CRITICAL or HIGH is open. `run_all.py` ends with it too.
+- `schema/decisions.json` — **settled questions, in machine-readable form.** A blank cell cannot
+  say whether nobody has answered the question or whether JD answered it and the answer was
+  "unknown". This file is that difference. The audit reads it and does not re-raise anything
+  already decided. **Do not re-litigate a decision recorded here, and do not delete one to make a
+  finding reappear** — if a ruling is wrong, change it and say why. Record a decision at the same
+  time you apply it to the workbook.
+
 - `schema/schema.json` — the machine-readable contract for every tab, column, and formula. It mirrors the workbook's `_Schema` tab, which is authoritative.
 - `schema/reference.json` — controlled vocabularies and the tenant-variant → canonical-company map.
 
 ## The workbook contract (non-negotiable)
 
+- **TI convention:** an owner-supplied figure always wins; absent one, a landlord-turnkey deal takes the **$150/SF** benchmark (an estimate — replace it when a real number appears). `0` means a confirmed as-is deal and must agree with the delivery condition. See `docs/LEASE_COMPS_DESIGN.md`.
 - **Unknown values stay BLANK, never 0.** A `0` corrupts averages; blank propagates correctly. Exception: a confirmed-zero TI on an as-is deal is a real zero (per JD, 7/28/2026).
 - **IDs are immutable and never reused.** Formats: `LC-####` (Lease Comps), `CO-####` (Companies), `FR-####` (Funding Rounds). In-sheet edits get IDs auto-assigned by onEdit triggers; API writers must assign the next ID themselves following `_Schema`.
 - **Input tabs hold no formulas in input columns; calc columns hold no typed values.** Columns with role `calc` or `qa` in the schema are computed — never write into them.
@@ -19,18 +30,25 @@ https://docs.google.com/spreadsheets/d/1qZlc8BUZRObyoeygAToWicor-UFFLmO_aCjk3axB
 
 ## Data model
 
-- `Lease Comps` (input): signed leases. FK `company_id` → Companies. Since v4 (2026-09-02) the funding/company columns (V–AA) are **wired lookups** from Funding Rounds, Company Metrics and Companies — never typed; update those tabs instead. Rent is a flat three-tranche schedule (P1 months 1–60, P2 61–120, P3 121+; blank carries the prior tranche). See `docs/LEASE_COMPS_DESIGN.md`.
+- `Lease Comps` (input): signed leases. FK `company_id` → Companies. Since v4 (2026-09-02) the funding/company columns (T–Z, including Benchmark Cohort) are **wired lookups** from Funding Rounds, Company Metrics and Companies — never typed; update those tabs instead. Rent is a flat three-tranche schedule (P1 months 1–60, P2 61–120, P3 121+; blank carries the prior tranche). See `docs/LEASE_COMPS_DESIGN.md`.
 - `Companies` (input): one row per real company; canonical name. Tenant name variants map via `Reference!VariantMap`.
 - `Funding Rounds` (input): one row per round. FK `company_id` → Companies. Requires source + confidence (`HIGH`/`MEDIUM`/`LOW`/`REVIEW`).
+- `Floor Detail` (input): one row per floor of a multi-floor comp whose floors carry different economics. FK `comp_id` → Lease Comps. Only needed when floors differ; the comp row's wired AA–AD columns and `Blend Check` (AE) compare the RSF-weighted detail against the typed RSF/rent/TI. See `docs/LEASE_COMPS_DESIGN.md`.
 - `Company Metrics` (computed): per-company rollup. Never edit.
 - `Dashboard`, `QA`, `Changelog`, `_Schema`, `Start Here`: computed/meta. QA must show all checks PASS after any change.
 
 ## Record status semantics
 
-Computed, never typed: `MISSING INPUTS` (missing any of comp ID, date, submarket, RSF, term, starting rent) → `NEEDS REVIEW` (seats or TI unknown) → `STALE - REVERIFY` (Verified Date older than 6 months) → `READY`.
+Computed, never typed: `MISSING INPUTS` (missing any of comp ID, date, submarket, RSF, term, starting rent) → `NEEDS REVIEW` (seats or TI unknown, or `Blend Check` not OK) → `READY`.
 
 ## In this repo
 
 - Keep `schema/schema.json` and `schema/reference.json` in sync with the workbook's `_Schema` and `Reference` tabs when they change; regenerate `docs/DATA_DICTIONARY.md` from the schema at the same time.
+- **Lease Comps is kept in date order, newest first.** Never append a comp and leave it at the bottom — run `tools/sheet_ops/sort_comps.py` (it is in `run_all.py`). It moves input cells only; the per-row calc formulas stay put and recompute against their new row.
+- Scripts address Lease Comps columns **by header text** (`common.headers`), never by hard-coded letter — three column moves in one day proved letters are not a stable key.
+- The **QA Harness tab checks structure** — formula errors, duplicate and dangling IDs. It cannot
+  see whether the *data* is coherent (a submarket entered two ways, a lease asserting flat rent
+  for eleven years, a turnkey comp still on the benchmark estimate). That is `audit.py`'s job, and
+  the two are complementary: a green QA tab does not mean a clean book.
 - Workbook operations live in `tools/sheet_ops/` (Sheets API via the `GOOGLE_SA_KEY` service account). Every script is re-runnable, appends Changelog receipts, and gates on QA. Run `python3 tools/sheet_ops/sync_schema.py` after any `_Schema` or Reference change to refresh the mirrors and the data dictionary.
 - Data snapshots, scripts, or an API layer added later must obey the contract above.

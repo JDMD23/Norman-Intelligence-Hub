@@ -1,6 +1,6 @@
 """Post-migration gate: the wired funding columns must reproduce the audited values.
 
-Compares the wire (V/W/X latest round) per comp against the pre-migration snapshot
+Compares the wire (T/U/V latest round) per comp against the pre-migration snapshot
 (the 2026-08/09 audited values), backfills rounds that Funding Rounds is missing so the
 wire becomes correct at its source, then re-verifies. Also validates computed economics
 (Y1, flat-tranche PGR, NER) against the verified Python reference.
@@ -28,7 +28,7 @@ snap = json.load(open(os.path.join(HERE, 'data/pre_migration_funding.json')))
 
 s = session()
 hdr_check = get_values(s, "'Lease Comps'!T1:V1", render='FORMATTED_VALUE')[0]
-assert hdr_check[0] == 'Comp Source', 'v4 layout not present — run migrate_structure.py first'
+assert hdr_check[0].startswith('Latest Round Date'), 'unexpected layout — wired zone should start at T'
 
 MON = {m: i for i, m in enumerate(
     ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august',
@@ -67,8 +67,8 @@ def classify(rows):
         if not comp_id or comp_id not in snap:
             continue
         want, cid = snap[comp_id], col(row, 'D')
-        want_date, wire_date = datekey(want.get('lr_date')), datekey(col(row, 'V'))
-        wire_type, wire_amt = col(row, 'W'), num(col(row, 'X'))
+        want_date, wire_date = datekey(want.get('lr_date')), datekey(col(row, 'T'))
+        wire_type, wire_amt = col(row, 'U'), num(col(row, 'V'))
         want_type, want_amt = (want.get('lr_type') or '').strip(), num(want.get('lr_amt'))
         if not want_date:
             continue
@@ -97,7 +97,7 @@ def report(title, items):
 
 
 # ---- pass 1: classify and backfill genuinely missing rounds
-rows = get_values(s, "'Lease Comps'!A2:AO105")
+rows = get_values(s, "'Lease Comps'!A2:AS105")
 backfill, review, info = classify(rows)
 
 appended = []
@@ -109,8 +109,12 @@ if backfill:
     for r in fr_rows:
         if len(r) > 3 and r[0] and num(r[3]) is not None:
             round_no[r[1]] = max(round_no.get(r[1], 0), int(r[3]))
+    # A backfilled row is reconstructed from the audit snapshot, not sourced at write time,
+    # so it is MEDIUM by default — a human upgrades it after checking the company research.
+    # (The original run stamped HIGH; fix_backfill_confidence.py corrects the rows that
+    # the Companies narrative contradicts.)
     conf = [r[0] for r in get_values(s, 'ConfidenceLevels', render='FORMATTED_VALUE') if r]
-    high = next((c for c in conf if c.upper() == 'HIGH'), 'High')
+    high = next((c for c in conf if c.upper() == 'MEDIUM'), 'MEDIUM')
     values, n = [], max_fr
     for cid, (comp_id, w) in sorted(backfill.items()):
         n += 1
@@ -150,7 +154,7 @@ else:
 
 # ---- pass 2: re-verify wire vs snapshot
 if not DRY:
-    rows = get_values(s, "'Lease Comps'!A2:AO105")
+    rows = get_values(s, "'Lease Comps'!A2:AS105")
 backfill2, review, info = classify(rows)
 remaining = [] if DRY else list(backfill2.values())
 report('latest-round wire: unresolved (older than audit)', remaining)
@@ -162,7 +166,7 @@ for row in rows:
     comp_id = col(row, 'A')
     if not comp_id or comp_id not in snap:
         continue
-    ts, tg = num(snap[comp_id].get('total')), num(col(row, 'Y'))
+    ts, tg = num(snap[comp_id].get('total')), num(col(row, 'W'))
     if ts is not None and tg is not None and abs(ts - tg) > max(5, ts * 0.05):
         total_diffs.append((comp_id, round(tg, 1), ts))
 print(f'total-funding semantic diffs (tracked sum vs researched total, expected where prior '
@@ -179,7 +183,7 @@ for row in rows:
     if not col(row, 'C'):
         continue
     L, N, O, P, Q, R, S_ = (col(row, c) for c in 'LNOPQRS')
-    y1, pgr, ner_v = col(row, 'AC'), col(row, 'AF'), col(row, 'AH')
+    y1, pgr, ner_v = col(row, 'AG'), col(row, 'AJ'), col(row, 'AL')
     if None not in (L, O) and abs((y1 or 0) - L * O) > 1:
         bad += 1; print('  Y1 MISMATCH', col(row, 'A'), y1, 'vs', L * O)
     if None not in (L, N, O):

@@ -1,0 +1,233 @@
+{
+  "_comment": [
+    "Settled questions about the Lease Comps book, in machine-readable form.",
+    "",
+    "The problem this solves: a blank cell cannot tell you whether nobody has answered the",
+    "question or whether JD answered it and the answer was 'unknown'. Prose in the research",
+    "queue was the only record of the difference, and prose drifts \u2014 on 2026-09-06 the queue",
+    "claimed 8 turnkey comps sat on the benchmark when the real number was 10, and a re-run of",
+    "the flat-rent audit would have re-raised 13 leases JD had already confirmed as flat.",
+    "",
+    "tools/sheet_ops/audit.py reads this file and suppresses settled findings, so an agent or a",
+    "human running the audit sees only what is genuinely open. Add a decision here at the same",
+    "time you apply it to the workbook. Never delete one to make a finding reappear \u2014 if a",
+    "decision is wrong, change the ruling and say why."
+  ],
+  "version": 1,
+  "updated": "2026-09-06",
+  "conventions": {
+    "turnkey_benchmark_psf": 150,
+    "turnkey_benchmark_note": "Standing estimate where JD has no real figure. An owner-supplied number always wins.",
+    "building_ti": [
+      {
+        "address": "360 Park Avenue South",
+        "applies_to_condition": "Raw",
+        "ti_psf": 155,
+        "source_comp": "LC-0099",
+        "decided": "2026-09-06",
+        "ruling": "Any raw space at 360 PAS takes the turnkey value Rogo actually negotiated. Second-generation space falls outside the rule."
+      },
+      {
+        "address": "60 Madison Avenue",
+        "applies_to_condition": null,
+        "ti_psf": 110,
+        "source_comp": "LC-0006",
+        "decided": "2026-09-06",
+        "ruling": "60 Madison turnkey deals take $110/SF, from Pace.",
+        "caveat": "Pace's $110 was a Second Gen installation; Tenex (LC-0003) is Raw, and a raw build normally costs more. Replace if a real Tenex figure surfaces."
+      }
+    ]
+  },
+  "settled": [
+    {
+      "check": "long_lease_flat_rent",
+      "decided": "2026-09-06",
+      "by": "JD",
+      "ruling": "These leases run longer than five years and genuinely carry no escalation. A blank Rent P2 is the answer, not a gap. Do not re-raise.",
+      "comps": [
+        "LC-0012",
+        "LC-0024",
+        "LC-0030",
+        "LC-0032",
+        "LC-0039",
+        "LC-0042",
+        "LC-0045",
+        "LC-0055",
+        "LC-0072",
+        "LC-0089",
+        "LC-0095",
+        "LC-0101",
+        "LC-0103"
+      ]
+    },
+    {
+      "check": "missing_seats",
+      "decided": "2026-09-06",
+      "by": "JD",
+      "ruling": "Custom build-outs whose layout the tenant's own real estate team set. JD has no visibility and none is obtainable. Leave blank \u2014 never estimate. A guessed seat count on a 462,000 SF comp would move the Dashboard cost/seat further than any real number in the book.",
+      "comps": [
+        "LC-0019",
+        "LC-0020",
+        "LC-0038",
+        "LC-0043",
+        "LC-0047",
+        "LC-0049",
+        "LC-0050",
+        "LC-0051",
+        "LC-0052",
+        "LC-0053",
+        "LC-0064",
+        "LC-0079",
+        "LC-0082",
+        "LC-0093",
+        "LC-0105",
+        "LC-0106",
+        "LC-0107",
+        "LC-0108",
+        "LC-0109",
+        "LC-0113"
+      ]
+    },
+    {
+      "check": "turnkey_on_benchmark",
+      "decided": "2026-09-06",
+      "by": "JD",
+      "ruling": "Confirmed at $150/SF as a real figure, not the benchmark standing in for an unknown. The number is unchanged; the point is that it is no longer an estimate.",
+      "comps": [
+        "LC-0014",
+        "LC-0019",
+        "LC-0029",
+        "LC-0067",
+        "LC-0068"
+      ]
+    },
+    {
+      "check": "ti_zero",
+      "decided": "2026-07-28",
+      "by": "JD",
+      "ruling": "A confirmed zero on an as-is deal is a real zero, not an unknown. Every comp here carries an As-Is delivery condition, so TI $0 and the delivery condition agree. Unknown TI is left blank instead.",
+      "comps": [
+        "LC-0001",
+        "LC-0002",
+        "LC-0005",
+        "LC-0008",
+        "LC-0009",
+        "LC-0010",
+        "LC-0011",
+        "LC-0012",
+        "LC-0016",
+        "LC-0017",
+        "LC-0018",
+        "LC-0021",
+        "LC-0022",
+        "LC-0024",
+        "LC-0025",
+        "LC-0026",
+        "LC-0027",
+        "LC-0028",
+        "LC-0030",
+        "LC-0031",
+        "LC-0033",
+        "LC-0034",
+        "LC-0035",
+        "LC-0036",
+        "LC-0039",
+        "LC-0040",
+        "LC-0041",
+        "LC-0042",
+        "LC-0044",
+        "LC-0045",
+        "LC-0046",
+        "LC-0048",
+        "LC-0054",
+        "LC-0055",
+        "LC-0057",
+        "LC-0058",
+        "LC-0059",
+        "LC-0060",
+        "LC-0061",
+        "LC-0069",
+        "LC-0070",
+        "LC-0071",
+        "LC-0072",
+        "LC-0073",
+        "LC-0074",
+        "LC-0075",
+        "LC-0076",
+        "LC-0078",
+        "LC-0080",
+        "LC-0081",
+        "LC-0083",
+        "LC-0084",
+        "LC-0085",
+        "LC-0087",
+        "LC-0088",
+        "LC-0090",
+        "LC-0091",
+        "LC-0092",
+        "LC-0094",
+        "LC-0095",
+        "LC-0097",
+        "LC-0098",
+        "LC-0100",
+        "LC-0102",
+        "LC-0103"
+      ]
+    },
+    {
+      "check": "duplicate_comps",
+      "decided": "2026-09-05",
+      "by": "JD",
+      "ruling": "Same tenant, same building, genuinely separate transactions \u2014 an initial deal and a later expansion, on different floors and different dates. Comps stay one row per transaction and are never merged.",
+      "comps": [
+        "LC-0060",
+        "LC-0099",
+        "LC-0073",
+        "LC-0098",
+        "LC-0052",
+        "LC-0053"
+      ]
+    },
+    {
+      "check": "building_submarket_conflict",
+      "decided": "2026-09-06",
+      "by": "JD",
+      "ruling": "Building-level submarket rulings on the record: 1 Madison Avenue is PAS / Mad. Square Park; 675 Avenue of the Americas is Flatiron; 837 Washington Street is Meatpacking; the whole Penn cluster (2/5/21 Penn Plaza, 330 West 34th, 1245 and 1375 Broadway) is Hudson Yards / Penn Station. 'SoHo' and 'Soho/Noho' merged to 'SoHo/NoHo'. Chelsea/Meatpacking and Penn Station retired from Reference.",
+      "comps": []
+    },
+    {
+      "check": "enum_unused",
+      "decided": "2026-09-06",
+      "by": "JD",
+      "ruling": "Midtown and NoMad are kept in Reference with no comps on purpose \u2014 they are real submarkets that future deals will land in.",
+      "values": [
+        "Midtown",
+        "NoMad"
+      ]
+    }
+  ],
+  "open": [
+    {
+      "check": "turnkey_on_benchmark",
+      "comps": [
+        "LC-0007"
+      ],
+      "why": "Tempo Labs is held on the $150 benchmark deliberately. It already carries an unverified Seed round (the entire Seed cohort, n=1); guessing its TI would compound one open question with another."
+    },
+    {
+      "check": "missing_ti",
+      "comps": [
+        "LC-0064",
+        "LC-0096"
+      ],
+      "why": "No TIA figure, so no NER is computed and the comp sits out of every average. Blank is correct per the contract. LC-0096 (Mirage) additionally carries an As-Is delivery condition, which normally implies a confirmed $0 rather than an unknown \u2014 worth resolving one way or the other."
+    },
+    {
+      "check": "blank_enum",
+      "comps": [
+        "LC-0064"
+      ],
+      "why": "Tempus has no TIA figure, so its delivery condition cannot be stated either \u2014 As-Is, Custom TIA and LL Turnkey each assert something about an allowance nobody knows. Blank is the honest entry until a real TI number surfaces, at which point both fields get filled together."
+    }
+  ]
+}
