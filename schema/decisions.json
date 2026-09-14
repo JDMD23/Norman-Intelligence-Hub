@@ -14,7 +14,7 @@
     "decision is wrong, change the ruling and say why."
   ],
   "version": 1,
-  "updated": "2026-09-06",
+  "updated": "2026-09-14",
   "conventions": {
     "turnkey_benchmark_psf": 150,
     "turnkey_benchmark_note": "Standing estimate where JD has no real figure. An owner-supplied number always wins.",
@@ -64,7 +64,7 @@
       "check": "missing_seats",
       "decided": "2026-09-06",
       "by": "JD",
-      "ruling": "Custom build-outs whose layout the tenant's own real estate team set. JD has no visibility and none is obtainable. Leave blank \u2014 never estimate. A guessed seat count on a 462,000 SF comp would move the Dashboard cost/seat further than any real number in the book.",
+      "ruling": "Custom build-outs whose layout the tenant's own real estate team set. JD has no visibility and none is obtainable. Leave blank \u2014 never estimate. A guessed seat count on a 462,000 SF comp would move the Dashboard cost/seat further than any real number in the book. The 22 comps added from the broker decks on 2026-09-14 are here for a different reason: no deck in the set carries a seat count for any comp, so there is nothing to enter. If JD supplies density for one, remove it from this list.",
       "comps": [
         "LC-0019",
         "LC-0020",
@@ -85,7 +85,29 @@
         "LC-0107",
         "LC-0108",
         "LC-0109",
-        "LC-0113"
+        "LC-0113",
+        "LC-0114",
+        "LC-0115",
+        "LC-0116",
+        "LC-0117",
+        "LC-0118",
+        "LC-0119",
+        "LC-0120",
+        "LC-0121",
+        "LC-0122",
+        "LC-0123",
+        "LC-0124",
+        "LC-0125",
+        "LC-0126",
+        "LC-0127",
+        "LC-0128",
+        "LC-0129",
+        "LC-0130",
+        "LC-0131",
+        "LC-0132",
+        "LC-0133",
+        "LC-0134",
+        "LC-0135"
       ]
     },
     {
@@ -203,6 +225,45 @@
       "values": [
         "Midtown",
         "NoMad"
+      ]
+    },
+    {
+      "check": "blank_enum",
+      "decided": "2026-09-14",
+      "by": "JD",
+      "ruling": "Condition is blank on every comp sourced from the broker decks \u2014 none of the six decks records whether a space was delivered raw, prebuilt or second generation. Blank is the honest entry. It does not affect NER. Fill it if JD recalls a particular deal.",
+      "comps": [
+        "LC-0114",
+        "LC-0115",
+        "LC-0116",
+        "LC-0117",
+        "LC-0118",
+        "LC-0119",
+        "LC-0120",
+        "LC-0121",
+        "LC-0122",
+        "LC-0123",
+        "LC-0124",
+        "LC-0125",
+        "LC-0126",
+        "LC-0127",
+        "LC-0128",
+        "LC-0129",
+        "LC-0130",
+        "LC-0131",
+        "LC-0132",
+        "LC-0133",
+        "LC-0134",
+        "LC-0135"
+      ]
+    },
+    {
+      "check": "long_lease_flat_rent",
+      "decided": "2026-09-14",
+      "by": "deck",
+      "ruling": "LC-0118 (Uber, 3 World Trade Center) runs 5 years 1 month at a flat $96/SF. The deck prints a single rate with no escalation, so the blank Rent P2 is what the source says rather than a gap. It clears the five-year threshold only by a month.",
+      "comps": [
+        "LC-0118"
       ]
     }
   ],
