@@ -186,8 +186,21 @@ def col(r, hdr):
 
 
 live = [r for r in rows if col(r, 'Comp ID')]
-have = {(col(r, 'Tenant').lower(), col(r, 'Address').lower()) for r in live}
-todo = [x for x in COMPS if (x['t'].lower(), x['a'].lower()) not in have]
+
+
+def rsf_of(r):
+    try:
+        return int(float(col(r, 'RSF').replace(',', '') or 0))
+    except ValueError:
+        return 0
+
+
+# Keyed on tenant + address + RSF, not tenant + address. A tenant who signs twice in one
+# building is the normal case here, not an anomaly — Harvey, Rogo, Optiver and Sigma all do it.
+# The looser key silently skipped Sigma's 28,286 SF expansion against the 64,077 SF lease
+# already on file, and reported it as "already present".
+have = {(col(r, 'Tenant').lower(), col(r, 'Address').lower(), rsf_of(r)) for r in live}
+todo = [x for x in COMPS if (x['t'].lower(), x['a'].lower(), int(x['rsf'])) not in have]
 print(f'{len(COMPS)} selected, {len(COMPS)-len(todo)} already present, {len(todo)} to add')
 
 co = get_values(s, 'Companies!A2:B300', render='FORMATTED_VALUE')
