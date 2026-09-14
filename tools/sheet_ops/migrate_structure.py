@@ -47,12 +47,20 @@ F_SPEC = {
     #      floor with RSF but no TI does not drag the TI blend toward zero.
     'AA': '=IF($A{r}="","",LET(n,COUNTIF(FloorDetail_CompIds,$A{r}),IF(n=0,"",n)))',
     'AB': '=IF(OR($A{r}="",$AA{r}=""),"",SUMIF(FloorDetail_CompIds,$A{r},FloorDetail_RSF))',
-    'AC': '=IF(OR($A{r}="",$AA{r}=""),"",LET(m,(FloorDetail_CompIds=$A{r})*(FloorDetail_Rents<>""),'
-          'd,SUMPRODUCT(m*N(FloorDetail_RSF)),IF(d=0,"",'
-          'SUMPRODUCT(m*N(FloorDetail_RSF)*N(FloorDetail_Rents))/d)))',
-    'AD': '=IF(OR($A{r}="",$AA{r}=""),"",LET(m,(FloorDetail_CompIds=$A{r})*(FloorDetail_TIs<>""),'
-          'd,SUMPRODUCT(m*N(FloorDetail_RSF)),IF(d=0,"",'
-          'SUMPRODUCT(m*N(FloorDetail_RSF)*N(FloorDetail_TIs))/d)))',
+    #      AC and AD deliberately avoid LET. A named range used inside LET collapses to an
+    #      implicit intersection — Sheets returns #VALUE! asking for ARRAYFORMULA — so the
+    #      original LET version never produced a weighted average. It went unnoticed because
+    #      Floor Detail held no rows between the tab being built and 2026-09-14; the blend
+    #      check read OK the whole time while only ever comparing RSF. Written out in full,
+    #      SUMPRODUCT broadcasts correctly and blanks multiply to zero.
+    'AC': '=IF(OR($A{r}="",$AA{r}=""),"",IFERROR('
+          'SUMPRODUCT((FloorDetail_CompIds=$A{r})*(FloorDetail_Rents<>"")*FloorDetail_RSF'
+          '*FloorDetail_Rents)/SUMPRODUCT((FloorDetail_CompIds=$A{r})*(FloorDetail_Rents<>"")'
+          '*FloorDetail_RSF),""))',
+    'AD': '=IF(OR($A{r}="",$AA{r}=""),"",IFERROR('
+          'SUMPRODUCT((FloorDetail_CompIds=$A{r})*(FloorDetail_TIs<>"")*FloorDetail_RSF'
+          '*FloorDetail_TIs)/SUMPRODUCT((FloorDetail_CompIds=$A{r})*(FloorDetail_TIs<>"")'
+          '*FloorDetail_RSF),""))',
     # Tolerances: 1 SF, $0.50/RSF, $1/SF. A typed 0 or blank TI against a positive detail
     # blend is called out separately — that failure mode cost ~$15/SF of NER on LC-0103.
     'AE': '=IF(OR($A{r}="",$AA{r}=""),"",LET(t,TEXTJOIN("; ",TRUE,'

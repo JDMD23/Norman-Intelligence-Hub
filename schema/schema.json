@@ -280,7 +280,7 @@
           "type": "rent",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($A{r}=\"\",$AA{r}=\"\"),\"\",LET(m,(FloorDetail_CompIds=$A{r})*(FloorDetail_Rents<>\"\"),d,SUMPRODUCT(m*N(FloorDetail_RSF)),IF(d=0,\"\",SUMPRODUCT(m*N(FloorDetail_RSF)*N(FloorDetail_Rents))/d)))",
+          "formula_pattern": "=IF(OR($A{r}=\"\",$AA{r}=\"\"),\"\",IFERROR(SUMPRODUCT((FloorDetail_CompIds=$A{r})*(FloorDetail_Rents<>\"\")*FloorDetail_RSF*FloorDetail_Rents)/SUMPRODUCT((FloorDetail_CompIds=$A{r})*(FloorDetail_Rents<>\"\")*FloorDetail_RSF),\"\"))",
           "description": "RSF-weighted starting rent across the floors on file. Weighted, never a simple average."
         },
         {
@@ -290,7 +290,7 @@
           "type": "rent",
           "role": "calc",
           "required": false,
-          "formula_pattern": "=IF(OR($A{r}=\"\",$AA{r}=\"\"),\"\",LET(m,(FloorDetail_CompIds=$A{r})*(FloorDetail_TIs<>\"\"),d,SUMPRODUCT(m*N(FloorDetail_RSF)),IF(d=0,\"\",SUMPRODUCT(m*N(FloorDetail_RSF)*N(FloorDetail_TIs))/d)))",
+          "formula_pattern": "=IF(OR($A{r}=\"\",$AA{r}=\"\"),\"\",IFERROR(SUMPRODUCT((FloorDetail_CompIds=$A{r})*(FloorDetail_TIs<>\"\")*FloorDetail_RSF*FloorDetail_TIs)/SUMPRODUCT((FloorDetail_CompIds=$A{r})*(FloorDetail_TIs<>\"\")*FloorDetail_RSF),\"\"))",
           "description": "RSF-weighted TI across the floors on file, over floors that carry a TI. This is what catches a concession dropped during hand-blending."
         },
         {
