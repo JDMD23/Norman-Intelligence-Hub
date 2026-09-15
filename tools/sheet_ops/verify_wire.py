@@ -176,7 +176,7 @@ for t in sorted(total_diffs, key=lambda x: -abs(x[1] - x[2]))[:15]:
 
 # ---- pass 3: economics vs Python reference
 sys.path.insert(0, os.path.join(HERE, '..', '..', 'scripts'))
-from ner import hub_baseline_ner  # noqa: E402
+from ner import hub_baseline_ner, _round_half_up  # noqa: E402
 
 bad = ok = 0
 for row in rows:
@@ -186,14 +186,21 @@ for row in rows:
     y1, pgr, ner_v = col(row, 'AG'), col(row, 'AJ'), col(row, 'AL')
     if None not in (L, O) and abs((y1 or 0) - L * O) > 1:
         bad += 1; print('  Y1 MISMATCH', col(row, 'A'), y1, 'vs', L * O)
+    # Free rent sits outside the stated term unless the deal is a sublease (JD 2026-09-15),
+    # so the lease runs Term + abated months and the first bump lands at month 61 + free.
+    outside = col(row, 'J') != 'Sublease'
+    shift = (R or 0.0) if outside else 0.0
     if None not in (L, N, O):
-        T = round(N * 12)
+        T = _round_half_up(N * 12 + shift)
+        bnd = _round_half_up(60 + shift)
         rz, r6 = O, (O if P is None else P)
         r11 = r6 if Q is None else Q
-        want_pgr = L * (rz * min(T, 60) + r6 * min(max(T - 60, 0), 60) + r11 * max(T - 120, 0)) / 12
+        want_pgr = L * (rz * min(T, bnd) + r6 * min(max(T - bnd, 0), 60)
+                        + r11 * max(T - bnd - 60, 0)) / 12
         if abs((pgr or 0) - want_pgr) > 1:
             bad += 1; print('  PGR MISMATCH', col(row, 'A'), pgr, 'vs', round(want_pgr))
-    want_ner = hub_baseline_ner(N, O, P, Q, R or 0.0, S_) if None not in (N, O) else None
+    want_ner = (hub_baseline_ner(N, O, P, Q, R or 0.0, S_, free_outside=outside)
+                if None not in (N, O) else None)
     if want_ner is not None and (ner_v is None or abs(ner_v - want_ner) > 0.01):
         bad += 1; print('  NER MISMATCH', col(row, 'A'), ner_v, 'vs', round(want_ner, 2))
     else:

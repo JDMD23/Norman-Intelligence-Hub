@@ -8,6 +8,12 @@ https://docs.google.com/spreadsheets/d/1qZlc8BUZRObyoeygAToWicor-UFFLmO_aCjk3axB
 - **Run the audit before you start and before you finish**: `python3 tools/sheet_ops/audit.py`
   (add `--all` to see every settled decision and its reasoning). It is read-only and writes
   nothing. Exit code is 1 if anything CRITICAL or HIGH is open. `run_all.py` ends with it too.
+- **The NER model is the analysts' Net Effective Rent Calculator**, not a hub invention.
+  `python3 scripts/verify_ner.py` proves it: it reimplements their calculator from first
+  principles, reproduces eight of their ten published comps to the cent, and runs every comp in
+  the book through the same engine. The two that do not reproduce are a rate-mixing bug in
+  *their* sheet, documented in the module. Run it after any change to the rent, term, free-rent
+  or TI columns; `run_all.py` ends with it.
 - `schema/decisions.json` — **settled questions, in machine-readable form.** A blank cell cannot
   say whether nobody has answered the question or whether JD answered it and the answer was
   "unknown". This file is that difference. The audit reads it and does not re-raise anything

@@ -71,10 +71,17 @@ F_SPEC = {
           'IF(t="","OK",t)))',
 
     # ---- Zones 5-6: economics on flat rent tranches (no assumed escalation)
-    'AJ': '=IF(OR($L{r}="",$N{r}="",$O{r}=""),"",LET(nmo,ROUND($N{r}*12,0),rz,$O{r},'
-          'rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mA,MIN(nmo,60),'
-          'mB,MIN(MAX(nmo-60,0),60),mC,MAX(nmo-120,0),$L{r}*(rz*mA+rsix*mB+relev*mC)/12))',
-    'AK': '=IF(OR($AJ{r}="",$L{r}="",$N{r}=""),"",$AJ{r}/$L{r}/$N{r})',
+    #      Free rent sits OUTSIDE the stated term (JD, 2026-09-15) unless the deal is a
+    #      sublease. A 10-year lease with 16 months free is 136 months long, and the rent
+    #      clock starts at rent commencement, so the year-6 bump lands at month 77 not 61.
+    #      Term (Years) stays the stated paying term a broker quotes; the total is derived.
+    'AJ': '=IF(OR($L{r}="",$N{r}="",$O{r}=""),"",LET(freemo,IF($R{r}="",0,$R{r}),'
+          'shift,IF($J{r}="Sublease",0,freemo),nmo,ROUND($N{r}*12+shift,0),bnd,ROUND(60+shift,0),'
+          'rz,$O{r},rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mA,MIN(nmo,bnd),'
+          'mB,MIN(MAX(nmo-bnd,0),60),mC,MAX(nmo-bnd-60,0),$L{r}*(rz*mA+rsix*mB+relev*mC)/12))',
+    'AK': '=IF(OR($AJ{r}="",$L{r}="",$N{r}=""),"",LET(freemo,IF($R{r}="",0,$R{r}),'
+          'shift,IF($J{r}="Sublease",0,freemo),nmo,ROUND($N{r}*12+shift,0),'
+          '$AJ{r}/$L{r}/(nmo/12)))',
     'AO': '=IF(OR($AG{r}="",$V{r}=""),"",$AG{r}/($V{r}*1000000))',
     'AP': '=IF(OR($AJ{r}="",$W{r}="",$W{r}=0),"",$AJ{r}/($W{r}*1000000))',
     'AQ': '=IF(OR($W{r}="",$AG{r}="",$AG{r}=0),"",($W{r}*1000000)/($AG{r}/12))',
@@ -84,7 +91,7 @@ F_SPEC = {
     'AG': '=IF(OR($L{r}="",$O{r}=""),"",$L{r}*$O{r})',
     'AH': '=IF(OR($R{r}="",$O{r}="",$L{r}=""),"",$R{r}/12*$O{r}*$L{r})',
     'AI': '=IF(OR($S{r}="",$L{r}=""),"",$S{r}*$L{r})',
-    'AL': '=IF(OR($N{r}="",$O{r}="",$S{r}=""),"",LET(nmo,ROUND($N{r}*12,0),im,0.06/12,rz,$O{r},rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mos,SEQUENCE(nmo),pvbeg,SUMPRODUCT(MAP(mos,LAMBDA(mm,IF(mm<=60,rz,IF(mm<=120,rsix,relev))/12*(1+im)^-(mm-1)))),afbeg,(1-(1+im)^-nmo)/im/12*(1+im),freemo,IF($R{r}="",0,$R{r}),ROUND(pvbeg/afbeg,2)-(freemo/12*rz+$S{r})/afbeg))',
+    'AL': '=IF(OR($N{r}="",$O{r}="",$S{r}=""),"",LET(freemo,IF($R{r}="",0,$R{r}),shift,IF($J{r}="Sublease",0,freemo),nmo,ROUND($N{r}*12+shift,0),bnd,ROUND(60+shift,0),im,0.06/12,rz,$O{r},rsix,IF($P{r}="",rz,$P{r}),relev,IF($Q{r}="",rsix,$Q{r}),mos,SEQUENCE(nmo),pvbeg,SUMPRODUCT(MAP(mos,LAMBDA(mm,IF(mm<=bnd,rz,IF(mm<=bnd+60,rsix,relev))/12*(1+im)^-(mm-1)))),afbeg,(1-(1+im)^-nmo)/im/12*(1+im),ROUND(pvbeg/afbeg,2)-(freemo/12*rz+$S{r})/afbeg))',
     'AM': '=IF(OR($AG{r}="",$M{r}="",$M{r}=0),"",$AG{r}/$M{r})',
     'AN': '=IF(OR($L{r}="",$M{r}="",$M{r}=0),"",$L{r}/$M{r})',
 

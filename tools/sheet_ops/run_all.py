@@ -22,3 +22,10 @@ print('\nMIGRATION COMPLETE')
 # directly (python3 tools/sheet_ops/audit.py) when you want that code for a gate.
 print('\n=== audit.py (read-only) ===')
 subprocess.run([sys.executable, os.path.join(HERE, 'audit.py')], cwd=HERE)
+
+# Proves the workbook's NER is the analysts' Net Effective Rent Calculator and nothing else:
+# reproduces their ten published comps from first principles, then runs the whole book through
+# the same engine. Read-only, and advisory like the audit.
+print('\n=== verify_ner.py (read-only) ===')
+subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), '..', 'scripts',
+                                             'verify_ner.py')], cwd=HERE)

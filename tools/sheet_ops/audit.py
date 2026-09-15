@@ -113,10 +113,12 @@ def main():
     # ---- 1. the NER model still agrees with the sheet -----------------------------------
     drift = []
     for r in comps:
+        # Free rent sits outside the stated term unless the deal is a sublease (JD 2026-09-15).
         model = hub_baseline_ner(num(col(r, 'Term (Years)')), num(col(r, 'Rent P1 ($/RSF, mo 1-60)')),
                                  num(col(r, 'Rent P2 ($/RSF, mo 61-120)')),
                                  num(col(r, 'Rent P3 ($/RSF, mo 121+)')),
-                                 num(col(r, 'Free Rent (months)')) or 0, num(col(r, 'TI $/SF')))
+                                 num(col(r, 'Free Rent (months)')) or 0, num(col(r, 'TI $/SF')),
+                                 free_outside=txt(r, 'Deal Type') != 'Sublease')
         sheet = num(col(r, 'NER Annuity ($/RSF/Yr) @ 6%'))
         if model is None and sheet is None:
             continue
