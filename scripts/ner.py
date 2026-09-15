@@ -4,6 +4,7 @@ every computed cell of its 18 scenarios (see docs/NER_MODEL.md).
 Conventions: monthly discounting at annual_rate/12, beginning-of-month
 annuities, concessions charged nominally at t=0 and levelized over the term.
 """
+import math
 
 from dataclasses import dataclass, field
 
@@ -78,21 +79,48 @@ class Lease:
         }
 
 
+def _round_half_up(x):
+    """Match Google Sheets' ROUND, which goes half away from zero.
+
+    Python's built-in round() is banker's rounding — round(128.5) is 128, not 129 — and that
+    one-month difference showed up as a 7-cent NER split on the only comp in the book with a
+    fractional free-rent figure (LC-0120, 8.5 months). The sheet and this module have to round
+    the same way or they disagree wherever term-plus-abatement lands on a half month.
+    """
+    return int(math.floor(x + 0.5))
+
+
 def hub_baseline_ner(term_years, start_rent, rent_y6=None, rent_y11=None,
-                     free_months=0.0, ti_psf=None, annual_rate=0.06):
-    """The hub's finalized NER (owner-approved 2026-09-02): flat tranches
-    (start rent through month 60, Yr-6 rate through 120, Yr-11 rate after;
-    blank bump carries the prior rate), monthly discounting, beg-of-month,
-    free rent at the starting rate + TI nominal upfront, levelized.
-    Returns None when TI is unknown (hub blank-propagation policy)."""
+                     free_months=0.0, ti_psf=None, annual_rate=0.06, free_outside=True):
+    """The hub's NER, which is the analysts' Net Effective Rent Calculator.
+
+    Monthly discounting, beginning of month, levelized over the full lease term. Free rent is
+    valued at the starting rate and the allowance at face, both taken upfront as concessions.
+    Commissions and downtime are excluded. See scripts/verify_ner.py, which reproduces the
+    analysts' published comps from these same primitives.
+
+    FREE RENT SITS OUTSIDE THE TERM (JD, 2026-09-15), unless the deal is a sublease. A
+    "10-year lease with 16 months free" is 120 months of PAYING rent plus 16 abated months —
+    a 136-month lease — and the rent clock starts at rent commencement, so the year-6 bump
+    lands at month 77, not month 61. Pass free_outside=False for a sublease, where the
+    abatement is carved out of the stated term instead.
+
+    term_years is always the stated (paying) term as a broker quotes it; the total lease
+    length is derived. Returns None when TI is unknown, per the blank-propagation policy.
+    """
     if ti_psf is None or term_years is None or start_rent is None:
         return None
-    T = round(term_years * 12)
+    free_months = free_months or 0.0
+    shift = free_months if free_outside else 0.0
+    T = _round_half_up(term_years * 12 + shift)
+    b1 = _round_half_up(60 + shift)                      # end of the first five paying years
     r6 = start_rent if rent_y6 is None else rent_y6
     r11 = r6 if rent_y11 is None else rent_y11
-    bumps = [(start_rent, min(T, 60))]
-    if T > 60: bumps.append((r6, min(T, 120) - 60))
-    if T > 120: bumps.append((r11, T - 120))
+    bumps = [(start_rent, min(T, b1))]
+    if T > b1:
+        bumps.append((r6, min(T - b1, 60)))
+    if T > b1 + 60:
+        bumps.append((r11, T - b1 - 60))
     return Lease(bumps=bumps, annual_rate=annual_rate,
                  free_months=free_months, ti_psf=ti_psf).ner()['ner']
 

@@ -96,3 +96,51 @@ Sheet formula for `Lease Comps!AI{r}` (verified equivalent to `scripts/ner.py hu
 ```
 
 **Impact note:** every existing NER value shifts when this is applied — a typical comp (10 yr, $89 start, $96 yr-6 bump, 12 mo free, $100 TI) moves from $71.67 (current annual formula with 3% intra-tranche escalation) to **$66.93**. The dominant effect is dropping the 3% escalation assumption, which the owner's deal shapes don't have; monthly discounting is a second-order effect. `Projected Gross Rent` (AG) still assumes 3% escalation — flagged for a follow-up decision on whether to align it.
+
+
+## Free rent sits outside the term
+
+JD, 2026-09-15: **all free rent is outside the term unless the deal is a sublease.**
+
+A "10-year lease with 16 months free" is therefore 120 months of PAYING rent plus 16 abated
+months — a 136-month lease — and the rent clock starts at rent commencement, so the year-6 bump
+lands at month 77, not month 61. On a sublease the abatement is carved out of the stated term
+instead, and the old behaviour applies.
+
+`Term (Years)` always holds the **stated, paying term**, the way a broker quotes it. The total
+lease length is derived: `Term x 12 + free months`. Five comps had been entered from surveys that
+printed the total and were restated on 2026-09-15 — Suno, Sierra, PayPal, Warby Parker and
+Anthropic — with their total length unchanged.
+
+Effect on the book: Avg NER moved from $71.40 to $72.29. 120 comps moved, median +$0.91,
+maximum +$3.05 (Pinterest, 18 months free). The 14 subleases did not move.
+
+`scripts/verify_ner.py` proves the whole book against the analysts' own calculator.
+
+### Downtime and commissions are permanently zero
+
+JD, 2026-09-15: every comp in this book is a **new tenant-rep lease**, so there is no vacancy
+carry to absorb and no tenant-side commission to net out. `scripts/ner.py` can model both —
+`Lease()` takes `downtime_months` and `n_commissions` — but `hub_baseline_ner` never passes
+them. The analysts' calculator carries the same two fields and shows 0 and 0% on every comp
+they have published, so the two agree by construction, not by luck. Not a gap; do not raise it.
+
+### Two things the analysts' sheet gets wrong
+
+Their calculator and this one are the same formula; these are input errors on their side.
+
+1. **Their sheet is inconsistent about this very rule.** In the 2026-09 version, Anthropic (77),
+   PayPal (79) and Sierra (76) put the first bump at 60 + free months — free rent outside, which
+   is right — while Fanatics, Clay, Monday.com, Ramp, Rippling, Figma and Legora use a flat 60,
+   which is free rent inside. Seven of the ten need redoing.
+2. **Anthropic and PayPal mix discount rates.** Both are set to 7%, but the rent stream is
+   present-valued at 7%, the base rent is levelized with the **6%** annuity factor and the
+   concessions at 7% — three rates in one calculation. It understates Anthropic by $6.72 and
+   PayPal by $5.28 against a clean 7%.
+
+### A rounding trap
+
+Google Sheets' `ROUND` goes half away from zero; Python's `round()` is banker's rounding, so
+`round(128.5)` is 128, not 129. That one-month gap produced a 7-cent NER split on LC-0120, the
+only comp with a fractional free-rent figure (8.5 months). `scripts/ner.py` uses
+`_round_half_up` so the two agree everywhere.
