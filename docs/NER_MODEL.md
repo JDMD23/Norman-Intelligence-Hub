@@ -117,6 +117,14 @@ maximum +$3.05 (Pinterest, 18 months free). The 14 subleases did not move.
 
 `scripts/verify_ner.py` proves the whole book against the analysts' own calculator.
 
+### Downtime and commissions are permanently zero
+
+JD, 2026-09-15: every comp in this book is a **new tenant-rep lease**, so there is no vacancy
+carry to absorb and no tenant-side commission to net out. `scripts/ner.py` can model both —
+`Lease()` takes `downtime_months` and `n_commissions` — but `hub_baseline_ner` never passes
+them. The analysts' calculator carries the same two fields and shows 0 and 0% on every comp
+they have published, so the two agree by construction, not by luck. Not a gap; do not raise it.
+
 ### Two things the analysts' sheet gets wrong
 
 Their calculator and this one are the same formula; these are input errors on their side.

@@ -14,7 +14,7 @@
     "decision is wrong, change the ruling and say why."
   ],
   "version": 1,
-  "updated": "2026-09-14",
+  "updated": "2026-09-15",
   "conventions": {
     "turnkey_benchmark_psf": 150,
     "turnkey_benchmark_note": "Standing estimate where JD has no real figure. An owner-supplied number always wins.",
@@ -269,6 +269,13 @@
       "comps": [
         "LC-0118"
       ]
+    },
+    {
+      "check": "ner_model_scope",
+      "decided": "2026-09-15",
+      "by": "JD",
+      "ruling": "Downtime and leasing commissions are permanently zero in this book: every comp is a new tenant-rep lease, so there is no vacancy carry to absorb and no commission on the tenant side to net out. scripts/ner.py can model both \u2014 Lease() takes downtime_months and n_commissions \u2014 but hub_baseline_ner deliberately never passes them. The analysts' calculator carries the same two fields and shows 0 and 0% on every comp they have published, so the two models agree by construction rather than by coincidence. Do not add either to the model or raise them as a gap.",
+      "comps": []
     }
   ],
   "open": [
