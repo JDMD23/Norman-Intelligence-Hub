@@ -167,6 +167,18 @@ figure surfaces it should replace it.
 real, or the benchmark estimate still standing in for an unknown. After the 2026-09-06 markup only
 LC-0007 (Tempo Labs) is still the latter.
 
+**Annually escalating rent is carried at one representative rate.** The workbook models rent as
+three flat tranches, so a lease that steps up every year cannot be expressed literally. Record a
+single rate JD nominates and write the full schedule into Notes. The worked case is LC-0032
+(Candid Health): a broker deck reported $55.00 / $56.38 / $57.78 / $59.23 / $60.71 / $62.23 /
+$63.78, which is 2.5% a year off $55 and averages $59.30; JD carries it at $58. Do not mistake
+such a schedule for a different deal — it is the same lease with the escalation written out, and
+that is exactly what made "Candid Group" look like a second tenant.
+
+Distinguish it from a **tranche schedule**, which steps 7-10% every five years and maps onto P1 /
+P2 / P3 directly: $103 / $113 / $123 / $133 is three tranches, not annual growth. The tell is step
+size — under about 3% a step, evenly spaced, is annual escalation.
+
 **$0 means a confirmed as-is deal**, not an unknown. Delivery condition and TI have to agree: a
 Custom TIA or LL Turnkey deal cannot carry $0, and a new prebuilt is recorded as As-Is with $0
 because the landlord built the space rather than passing an allowance. That contradiction is what

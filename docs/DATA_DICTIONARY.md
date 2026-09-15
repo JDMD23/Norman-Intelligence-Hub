@@ -146,3 +146,4 @@ Generated from [`schema/schema.json`](../schema/schema.json), a mirror of the wo
 - `HARVEY AI (E6)` → `HARVEY AI`
 - `GlossGenius` → `Genius`
 - `Sierra AI` → `Sierra Technologies`
+- `Candid Group` → `Candid Health`
